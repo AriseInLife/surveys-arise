@@ -46,7 +46,9 @@ const html = `<!DOCTYPE html>
 <body>
   <div class="container" id="survey-container">
     <div class="logo">
-      <img src="../../assets/logo.png" alt="Arise In Life">
+      <a href="https://ariseinlife.com/" target="_blank">
+        <img src="../../assets/logo.png" alt="Arise In Life">
+      </a>
     </div>
     <div id="content-wrapper">
       <h1>${surveyData.title}</h1>
@@ -83,7 +85,7 @@ const html = `<!DOCTYPE html>
           <p class="question-text">\${q.text}</p>
           
           <div class="research-context">
-            <div class="research-icon">🔬</div>
+            <div class="research-icon">🧠</div>
             <div class="research-text">
               <strong>Context științific:</strong> \${context.researchBasis}
             </div>
@@ -139,7 +141,7 @@ const html = `<!DOCTYPE html>
               <strong>Analiză:</strong> \${selectedOption.analysis}
             </div>
             <div class="scientific-basis">
-              <span class="science-icon">🔬</span>
+              <span class="science-icon">🧠</span>
               <strong>Bază științifică:</strong> \${selectedOption.scientificBasis}
             </div>
           </div>
@@ -168,7 +170,7 @@ const html = `<!DOCTYPE html>
           </div>
           
           <div class="score-display">
-            <div class="score">\${totalScore}/9</div>
+            <div class="score">\${totalScore}/10</div>
             <div class="score-label">Scorul tău</div>
           </div>
           
@@ -220,27 +222,9 @@ const html = `<!DOCTYPE html>
                 </div>
               \`).join('')}
             </div>
-            <div class="research-metadata">
-              <div class="metadata-item">
-                <strong>📅 Data cercetării:</strong> \${surveyData.metadata.researchDate}
-              </div>
-              <div class="metadata-item">
-                <strong>👥 Sample total:</strong> \${surveyData.metadata.sampleSize.toLocaleString()} participanți
-              </div>
-              \${surveyData.metadata.demographics ? \`
-                <div class="metadata-item">
-                  <strong>🌍 Demografie:</strong> 
-                  \${surveyData.metadata.demographics.ageRange ? 'Vârsta: ' + surveyData.metadata.demographics.ageRange : ''}
-                  \${surveyData.metadata.demographics.countries ? ', Țări: ' + surveyData.metadata.demographics.countries.join(', ') : ''}
-                </div>
-              \` : ''}
-            </div>
           </div>
           
           <div class="action-buttons">
-            <a href="https://ariseinlife.com/" class="primary-btn" target="_blank">
-              Află mai multe
-            </a>
             <button class="secondary-btn" onclick="downloadResults()">
               Descarcă rezultate
             </button>
@@ -248,6 +232,11 @@ const html = `<!DOCTYPE html>
               Începe din nou
             </button>
           </div>
+          
+          <!-- Fixed floating button -->
+          <a href="https://ariseinlife.com/" class="floating-cta-btn" target="_blank">
+            Află mai multe
+          </a>
           
           <!-- Footer pentru export PNG -->
           <div class="export-footer" id="export-footer">
@@ -266,12 +255,13 @@ const html = `<!DOCTYPE html>
     function createComparisonChart() {
       const ctx = document.getElementById('resultsChart');
       
-      // Calculăm răspunsurile utilizatorului
-      const userScores = answers.map((ansIdx, qIdx) => 
-        surveyData.questions[qIdx].options[ansIdx].score
-      );
+      // Calculăm răspunsurile utilizatorului (scalate la 10)
+      const userScores = answers.map((ansIdx, qIdx) => {
+        const score = surveyData.questions[qIdx].options[ansIdx].score;
+        return (score / 3) * 10; // Scalăm de la 1-3 la 0-10
+      });
       
-      // Calculăm media reală din cercetare
+      // Calculăm media reală din cercetare (scalată la 10)
       const avgScores = answers.map((ansIdx, qIdx) => {
         const distribution = surveyData.questions[qIdx].context.realWorldData.distribution;
         const options = surveyData.questions[qIdx].options;
@@ -283,7 +273,7 @@ const html = `<!DOCTYPE html>
           weightedSum += (percentage * score / 100);
         });
         
-        return parseFloat(weightedSum.toFixed(2));
+        return parseFloat(((weightedSum / 3) * 10).toFixed(2)); // Scalăm la 10
       });
       
       new Chart(ctx, {
@@ -315,12 +305,12 @@ const html = `<!DOCTYPE html>
           scales: {
             y: {
               beginAtZero: true,
-              max: 3,
+              max: 10,
               ticks: {
-                stepSize: 0.5,
+                stepSize: 1,
                 color: '#c1c7d0',
                 callback: function(value) {
-                  return value.toFixed(1);
+                  return value.toFixed(0);
                 }
               },
               grid: {
@@ -357,7 +347,7 @@ const html = `<!DOCTYPE html>
               displayColors: true,
               callbacks: {
                 label: function(context) {
-                  return context.dataset.label + ': ' + context.parsed.y.toFixed(2) + '/3';
+                  return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + '/10';
                 }
               }
             }
@@ -380,9 +370,11 @@ const html = `<!DOCTYPE html>
       
       try {
         const actionButtons = document.querySelector('.action-buttons');
+        const floatingBtn = document.querySelector('.floating-cta-btn');
         const exportFooter = document.getElementById('export-footer');
         
         actionButtons.style.display = 'none';
+        floatingBtn.style.display = 'none';
         exportFooter.classList.add('export-footer-visible');
         
         await new Promise(resolve => setTimeout(resolve, 300));
@@ -401,6 +393,7 @@ const html = `<!DOCTYPE html>
         });
         
         actionButtons.style.display = 'flex';
+        floatingBtn.style.display = 'inline-block';
         exportFooter.classList.remove('export-footer-visible');
         
         const link = document.createElement('a');
@@ -422,9 +415,11 @@ const html = `<!DOCTYPE html>
         console.error('Eroare la generarea imaginii:', error);
         
         const actionButtons = document.querySelector('.action-buttons');
+        const floatingBtn = document.querySelector('.floating-cta-btn');
         const exportFooter = document.getElementById('export-footer');
         
         if (actionButtons) actionButtons.style.display = 'flex';
+        if (floatingBtn) floatingBtn.style.display = 'inline-block';
         if (exportFooter) exportFooter.classList.remove('export-footer-visible');
         
         button.innerHTML = '❌ Eroare';

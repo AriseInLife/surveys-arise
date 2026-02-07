@@ -62,6 +62,15 @@ body {
   margin-bottom: 40px;
 }
 
+.logo a {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.logo a:hover {
+  transform: scale(1.05);
+}
+
 .logo img {
   max-width: 420px;
   height: auto;
@@ -153,6 +162,15 @@ h1 {
 .research-icon {
   font-size: 24px;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(139, 158, 255, 0.15), rgba(157, 111, 212, 0.15));
+  border: 2px solid var(--primary-color);
+  border-radius: 10px;
+  width: 44px;
+  height: 44px;
+}
 }
 
 .research-text {
@@ -419,6 +437,7 @@ h1 {
   background: var(--bg-dark);
   border-radius: 8px;
   margin-bottom: 12px;
+  text-align: center;
 }
 
 .scientific-basis {
@@ -431,12 +450,22 @@ h1 {
   border-left: 3px solid var(--secondary-color);
   display: flex;
   gap: 10px;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .science-icon {
   font-size: 16px;
   flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(139, 158, 255, 0.15), rgba(157, 111, 212, 0.15));
+  border: 2px solid var(--primary-color);
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
 }
 
 /* Recommendations */
@@ -632,6 +661,46 @@ h1 {
 }
 
 /* Action Buttons */
+.floating-cta-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  border: none;
+  padding: 18px 35px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(139, 158, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-decoration: none;
+  display: inline-block;
+  z-index: 1000;
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 4px 20px rgba(139, 158, 255, 0.5);
+  }
+  50% {
+    box-shadow: 0 4px 30px rgba(139, 158, 255, 0.8), 0 0 20px rgba(139, 158, 255, 0.4);
+  }
+}
+
+.floating-cta-btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 35px rgba(139, 158, 255, 0.7);
+}
+
+.floating-cta-btn:active {
+  transform: translateY(-1px) scale(1.02);
+}
+
 .action-buttons {
   display: flex;
   flex-direction: row;
@@ -788,6 +857,13 @@ h1 {
     flex-direction: column;
   }
 
+  .floating-cta-btn {
+    bottom: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    font-size: 14px;
+  }
+
   .primary-btn,
   .secondary-btn,
   .tertiary-btn {
@@ -830,6 +906,10 @@ h1 {
   }
 
   .action-buttons {
+    display: none;
+  }
+
+  .floating-cta-btn {
     display: none;
   }
 }
