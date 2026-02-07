@@ -1,0 +1,85 @@
+{
+  "id": "survey_001",
+  "title": "Test de Inteligență Emolțională",
+  "topic": "Inteligență Emolțională",
+  "description": "Descoperă cât de bine îți înțelegi și gestionezi emoțiile",
+  "questions": [
+    {
+      "text": "Când cineva din echipă face o greșeală, cum reacționezi?",
+      "options": [
+        {
+          "text": "Îl critic direct pentru a evita greșeli viitoare",
+          "score": 1,
+          "analysis": "Critica directă poate crea tensiune. Încearcă o abordare mai constructivă care să încurajeze învățarea."
+        },
+        {
+          "text": "Discut cu persoana respectivă în privat despre ce s-a întâmplat",
+          "score": 3,
+          "analysis": "Excelent! Abordarea ta respectuoasă și privată demonstrează empatie și maturitate emoțională."
+        },
+        {
+          "text": "Ignor situația pentru a evita conflictul",
+          "score": 2,
+          "analysis": "Evitarea poate preveni tensiunea momentană, dar problemele nerezolvate pot escalada."
+        }
+      ]
+    },
+    {
+      "text": "Cum îți gestionezi stresul în situații intense?",
+      "options": [
+        {
+          "text": "Îmi iau o pauză și respir adânc",
+          "score": 3,
+          "analysis": "Perfect! Tehnicile de respirație și pauzele sunt metode dovedite științific pentru gestionarea stresului."
+        },
+        {
+          "text": "Continui să lucrez fără să îmi recunosc stresul",
+          "score": 1,
+          "analysis": "Ignorarea stresului poate duce la burnout. E important să îți recunoști limitele."
+        },
+        {
+          "text": "Vorbesc cu cineva despre cum mă simt",
+          "score": 2,
+          "analysis": "Bine! Comunicarea ajută, dar combină-o cu tehnici active de gestionare a stresului."
+        }
+      ]
+    },
+    {
+      "text": "Ce faci când observi că un coleg este supărat?",
+      "options": [
+        {
+          "text": "Îl întreb dacă vrea să vorbească despre asta",
+          "score": 3,
+          "analysis": "Extraordinar! Empatia ta și disponibilitatea de a asculta arată inteligență emoțională ridicată."
+        },
+        {
+          "text": "Aștept ca el să vină la mine",
+          "score": 2,
+          "analysis": "E ok să respecți spațiul personal, dar uneori un gest de susținere face diferența."
+        },
+        {
+          "text": "Nu bag de seamă, nu e treaba mea",
+          "score": 1,
+          "analysis": "Lipsa de empatie poate afecta relațiile profesionale și personale. Încearcă să fii mai atent la ceilalți."
+        }
+      ]
+    }
+  ],
+  "results": [
+    {
+      "range": "3-4",
+      "title": "Începător în Inteligență Emoțională",
+      "description": "Ai potențial de dezvoltare! Inteligența emoțională se poate învăța. Începe prin a-ți observa mai atent emoțiile și reacțiile. Practică ascultarea activă și empatia în interacțiunile zilnice."
+    },
+    {
+      "range": "5-7",
+      "title": "Nivel Intermediar de Inteligență Emoțională",
+      "description": "Ești pe drumul cel bun! Ai o bună înțelegere a emoțiilor tale și ale celorlalți, dar mai există loc de creștere. Continuă să practici comunicarea empatică și tehnicile de gestionare a stresului."
+    },
+    {
+      "range": "8-9",
+      "title": "Expert în Inteligență Emoțională",
+      "description": "Felicitări! Demonstrezi o inteligență emoțională ridicată. Îți înțelegi bine emoțiile, reacționezi constructiv și arăți empatie față de ceilalți. Aceste abilități te vor ajuta în toate aspectele vieții."
+    }
+  ]
+}
