@@ -1,0 +1,89 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Survey Schema",
+  "type": "object",
+  "required": ["id", "title", "topic", "questions", "results"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^survey_[0-9]{3}$",
+      "description": "ID format: survey_001, survey_002, etc."
+    },
+    "title": {
+      "type": "string",
+      "description": "Titlul chestionarului"
+    },
+    "topic": {
+      "type": "string",
+      "description": "Subiectul principal"
+    },
+    "description": {
+      "type": "string",
+      "description": "Descriere scurtă a chestionarului"
+    },
+    "questions": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["text", "options"],
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Textul întrebării"
+          },
+          "options": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "items": {
+              "type": "object",
+              "required": ["text", "score", "analysis"],
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "description": "Textul răspunsului"
+                },
+                "score": {
+                  "type": "number",
+                  "minimum": 1,
+                  "maximum": 3,
+                  "description": "Punctaj: 1 (slab), 2 (mediu), 3 (bun)"
+                },
+                "analysis": {
+                  "type": "string",
+                  "description": "Analiza pentru acest răspuns"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "results": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["range", "title", "description"],
+        "properties": {
+          "range": {
+            "type": "string",
+            "description": "Range de puncte (ex: 3-4, 5-7, 8-9)",
+            "pattern": "^[0-9]+-[0-9]+$"
+          },
+          "title": {
+            "type": "string",
+            "description": "Titlul rezultatului"
+          },
+          "description": {
+            "type": "string",
+            "description": "Descrierea detaliată a rezultatului"
+          }
+        }
+      }
+    }
+  }
+}

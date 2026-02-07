@@ -1,0 +1,16 @@
+{
+  "name": "survey-generator",
+  "version": "1.0.0",
+  "description": "Survey generator with Gemini and Netlify",
+  "main": "index.js",
+  "scripts": {
+    "validate": "node scripts/validate-survey.js",
+    "generate": "node scripts/generate-page.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ajv": "^8.12.0"
+  }
+}
