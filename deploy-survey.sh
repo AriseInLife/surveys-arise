@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Survey Deployment Script"
+echo "Survey Deployment Script - Enhanced with Real Data"
 echo "================================"
 
 # Culori
@@ -82,25 +82,37 @@ if [ ! -d .git ]; then
     success "Git repository inițializat"
 fi
 
+# Verifică dacă există schema nouă
+if [ -f "survey-schema-enhanced.json" ]; then
+    SCHEMA_FILE="survey-schema-enhanced.json"
+    info "Folosesc schema enhanced (cu date reale)"
+elif [ -f "survey-schema.json" ]; then
+    SCHEMA_FILE="survey-schema.json"
+    warning "Folosesc schema veche (fără date reale)"
+else
+    error_exit "Nu găsesc fișierul de schemă! Ai survey-schema.json sau survey-schema-enhanced.json?"
+fi
+
 # Caută surveys noi sau modificate AUTOMAT
 echo ""
-info "Scanez folderul surveys/ pentru fișiere noi sau modificate..."
+info "Scanez folderul surveys/ pentru fișiere JSON noi sau modificate..."
 echo ""
 
 NEW_SURVEYS=()
 
-for file in surveys/survey_*.json; do
+# Parcurge TOATE fișierele .json din surveys/
+for file in surveys/*.json; do
     if [ -f "$file" ]; then
         survey_id=$(basename "$file" .json)
         
         # Verifică dacă e fișier nou (untracked)
         if ! git ls-files --error-unmatch "$file" > /dev/null 2>&1; then
             NEW_SURVEYS+=("$survey_id")
-            info "Găsit survey NOU: $survey_id"
+            info "Găsit survey NOU: $survey_id (fișier: $(basename "$file"))"
         # Verifică dacă e fișier modificat
         elif [ -n "$(git diff HEAD "$file" 2>/dev/null)" ]; then
             NEW_SURVEYS+=("$survey_id")
-            info "Găsit survey MODIFICAT: $survey_id"
+            info "Găsit survey MODIFICAT: $survey_id (fișier: $(basename "$file"))"
         fi
     fi
 done
@@ -110,8 +122,20 @@ if [ ${#NEW_SURVEYS[@]} -eq 0 ]; then
     warning "Nu am găsit surveys noi sau modificate în folderul surveys/"
     echo ""
     echo "Pentru a adăuga un survey:"
-    echo "  1. Creează un fișier surveys/survey_XXX.json"
+    echo "  1. Creează un fișier surveys/numele-tau.json (orice nume .json)"
     echo "  2. Rulează din nou acest script"
+    echo ""
+    if [ "$SCHEMA_FILE" = "survey-schema-enhanced.json" ]; then
+        echo "📊 Pentru survey-uri cu DATE REALE din cercetare:"
+        echo "  - Folosește Gemini cu GEMINI_INSTRUCTIONS.md"
+        echo "  - Cere-i să caute pe web studii științifice"
+        echo "  - Verifică că include surse reale și verificabile"
+        echo ""
+    fi
+    echo "Exemple de nume valide:"
+    echo "  - surveys/survey_001.json"
+    echo "  - surveys/inteligenta-emotionala.json"
+    echo "  - surveys/test-personalitate.json"
     echo ""
     read -p "Apasă Enter pentru a închide..."
     exit 0
@@ -138,7 +162,7 @@ for survey_id in "${NEW_SURVEYS[@]}"; do
     
     # Validare JSON
     echo ""
-    step "1" "Validare JSON"
+    step "1" "Validare JSON cu $SCHEMA_FILE"
     ((CURRENT_STEP++))
     show_progress $CURRENT_STEP $TOTAL_STEPS
     echo ""
@@ -146,6 +170,26 @@ for survey_id in "${NEW_SURVEYS[@]}"; do
     # Rulează validarea și arată output-ul direct
     if node scripts/validate-survey.js "$SURVEY_FILE"; then
         success "JSON valid pentru $survey_id"
+        
+        # Verifică dacă sunt date reale (dacă e schema enhanced)
+        if [ "$SCHEMA_FILE" = "survey-schema-enhanced.json" ]; then
+            # Verifică dacă JSON-ul conține metadata.dataSource
+            if grep -q '"dataSource"' "$SURVEY_FILE"; then
+                # Extrage sample size dacă există
+                SAMPLE_SIZE=$(grep -o '"sampleSize"[[:space:]]*:[[:space:]]*[0-9]*' "$SURVEY_FILE" | grep -o '[0-9]*$')
+                if [ -n "$SAMPLE_SIZE" ]; then
+                    info "📊 Survey bazat pe $SAMPLE_SIZE participanți din cercetare reală"
+                fi
+                
+                # Numără sursele
+                SOURCE_COUNT=$(grep -c '"name"[[:space:]]*:' "$SURVEY_FILE" | head -1)
+                if [ -n "$SOURCE_COUNT" ] && [ "$SOURCE_COUNT" -gt 0 ]; then
+                    info "📚 Găsite surse științifice în survey"
+                fi
+            else
+                warning "Survey-ul nu conține metadata cu surse (posibil format vechi)"
+            fi
+        fi
     else
         error_exit "JSON invalid pentru $survey_id! Corectează erorile și încearcă din nou."
     fi
@@ -234,8 +278,24 @@ for survey_id in "${NEW_SURVEYS[@]}"; do
     echo "  JSON: surveys/${survey_id}.json"
     echo "  HTML: public/survey/${survey_id}/index.html"
     echo "  URL (după deploy): https://yoursite.netlify.app/survey/${survey_id}"
+    
+    # Arată info despre date reale dacă există
+    if [ "$SCHEMA_FILE" = "survey-schema-enhanced.json" ]; then
+        SURVEY_FILE="surveys/${survey_id}.json"
+        if grep -q '"dataSource"' "$SURVEY_FILE"; then
+            echo -e "  ${GREEN}✓ Bazat pe date reale din cercetare${NC}"
+        fi
+    fi
     echo ""
 done
+
+if [ "$SCHEMA_FILE" = "survey-schema-enhanced.json" ]; then
+    echo -e "${CYAN}💡 Tips pentru survey-uri cu date reale:${NC}"
+    echo "  • Verifică că toate sursele sunt reale și accesibile"
+    echo "  • Testează link-urile din secțiunea 'Surse Științifice'"
+    echo "  • Asigură-te că procentele corespund cu realitatea"
+    echo ""
+fi
 
 info "Netlify va detecta automat push-ul și va face deploy în aproximativ 1-2 minute"
 echo ""

@@ -1,209 +1,59 @@
 const fs = require('fs');
 const path = require('path');
 
-// Verifică argumentul
 if (process.argv.length < 3) {
   console.error('❌ Utilizare: node scripts/generate-page.js <survey_id>');
-  console.error('   Exemplu: node scripts/generate-page.js survey_001');
   process.exit(1);
 }
 
 const surveyId = process.argv[2];
 const surveyPath = `surveys/${surveyId}.json`;
 
-// Verifică dacă survey-ul există
 if (!fs.existsSync(surveyPath)) {
   console.error(`❌ Fișierul ${surveyPath} nu există!`);
   process.exit(1);
 }
 
-// Încarcă datele survey-ului
 const surveyData = JSON.parse(fs.readFileSync(surveyPath, 'utf8'));
 
 console.log(`📄 Generez pagina pentru: ${surveyData.title}`);
+console.log(`📊 Bazat pe ${surveyData.metadata.sampleSize.toLocaleString()} participanți din cercetare reală`);
 
-// Template HTML
+// Convertește distribuțiile reale în numere absolute pentru afișare
+const convertToAbsoluteNumbers = () => {
+  return surveyData.questions.map((q, qIdx) => {
+    const total = q.context.realWorldData.totalResponses;
+    const distribution = q.context.realWorldData.distribution;
+    
+    return distribution.map(percentage => Math.round(total * percentage / 100));
+  });
+};
+
+const realStats = convertToAbsoluteNumbers();
+
+// Template HTML cu date reale și funcționalități îmbunătățite
 const html = `<!DOCTYPE html>
 <html lang="ro">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${surveyData.title}</title>
+  <meta name="description" content="${surveyData.description} - Bazat pe ${surveyData.metadata.sampleSize.toLocaleString()} participanți">
+  <link rel="stylesheet" href="../../assets/style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-    
-    .container {
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-      max-width: 600px;
-      width: 100%;
-      padding: 40px;
-    }
-    
-    h1 {
-      color: #333;
-      margin-bottom: 10px;
-      font-size: 28px;
-    }
-    
-    .description {
-      color: #666;
-      margin-bottom: 30px;
-      font-size: 16px;
-    }
-    
-    .question {
-      margin-bottom: 30px;
-    }
-    
-    .question h2 {
-      color: #667eea;
-      font-size: 18px;
-      margin-bottom: 15px;
-    }
-    
-    .question p {
-      color: #333;
-      font-size: 20px;
-      margin-bottom: 20px;
-      font-weight: 500;
-    }
-    
-    .options {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    
-    button {
-      background: #f8f9fa;
-      border: 2px solid #e9ecef;
-      border-radius: 12px;
-      padding: 15px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-align: left;
-      color: #333;
-    }
-    
-    button:hover {
-      background: #667eea;
-      color: white;
-      border-color: #667eea;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-    }
-    
-    .results {
-      text-align: center;
-    }
-    
-    .results h2 {
-      color: #667eea;
-      margin-bottom: 15px;
-      font-size: 26px;
-    }
-    
-    .score {
-      font-size: 48px;
-      font-weight: bold;
-      color: #764ba2;
-      margin: 20px 0;
-    }
-    
-    .result-description {
-      color: #555;
-      line-height: 1.6;
-      margin-bottom: 30px;
-      font-size: 16px;
-    }
-    
-    .analysis {
-      background: #f8f9fa;
-      border-radius: 12px;
-      padding: 20px;
-      margin: 20px 0;
-      text-align: left;
-    }
-    
-    .analysis h3 {
-      color: #667eea;
-      margin-bottom: 15px;
-      font-size: 20px;
-    }
-    
-    .analysis-item {
-      margin-bottom: 15px;
-      padding-bottom: 15px;
-      border-bottom: 1px solid #e9ecef;
-    }
-    
-    .analysis-item:last-child {
-      border-bottom: none;
-      margin-bottom: 0;
-      padding-bottom: 0;
-    }
-    
-    .analysis-item strong {
-      color: #333;
-      display: block;
-      margin-bottom: 5px;
-    }
-    
-    .analysis-item p {
-      color: #666;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-    
-    #chartContainer {
-      margin: 30px 0;
-      max-width: 300px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    
-    .restart-btn {
-      background: #667eea;
-      color: white;
-      border: none;
-      padding: 15px 40px;
-      font-size: 16px;
-      border-radius: 12px;
-      cursor: pointer;
-      margin-top: 20px;
-      transition: all 0.3s ease;
-    }
-    
-    .restart-btn:hover {
-      background: #764ba2;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-    }
-  </style>
+  <script src="https://cdn.jsdelivr.net/npm/dom-to-image@2.6.0/dist/dom-to-image.min.js"></script>
 </head>
 <body>
-  <div class="container">
-    <div id="survey-container">
+  <div class="container" id="survey-container">
+    <div class="logo">
+      <img src="../../assets/logo.png" alt="Arise In Life">
+    </div>
+    <div id="content-wrapper">
       <h1>${surveyData.title}</h1>
       <p class="description">${surveyData.description}</p>
+      <div class="research-badge">
+        📊 Bazat pe cercetare reală: ${surveyData.metadata.sampleSize.toLocaleString()} participanți
+      </div>
       <div id="content"></div>
     </div>
   </div>
@@ -213,16 +63,36 @@ const html = `<!DOCTYPE html>
     let currentQuestion = 0;
     let answers = [];
     
+    // Date reale din cercetare
+    const realWorldStats = {
+      totalResponses: surveyData.metadata.sampleSize,
+      questionStats: ${JSON.stringify(realStats)},
+      sources: surveyData.metadata.dataSource
+    };
+    
     function renderQuestion(index) {
       const q = surveyData.questions[index];
+      const context = q.context;
+      
       const html = \`
         <div class="question">
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: \${((index + 1) / 3) * 100}%"></div>
+          </div>
           <h2>Întrebarea \${index + 1} din 3</h2>
-          <p>\${q.text}</p>
+          <p class="question-text">\${q.text}</p>
+          
+          <div class="research-context">
+            <div class="research-icon">🔬</div>
+            <div class="research-text">
+              <strong>Context științific:</strong> \${context.researchBasis}
+            </div>
+          </div>
+          
           <div class="options">
             \${q.options.map((opt, i) => \`
-              <button onclick="selectAnswer(\${index}, \${i})">
-                \${opt.text}
+              <button class="option-btn" onclick="selectAnswer(\${index}, \${i})">
+                <div class="option-text">\${opt.text}</div>
               </button>
             \`).join('')}
           </div>
@@ -247,7 +117,6 @@ const html = `<!DOCTYPE html>
         return sum + surveyData.questions[qIdx].options[answerIdx].score;
       }, 0);
       
-      // Alege rezultatul bazat pe scor
       let result;
       surveyData.results.forEach(r => {
         const [min, max] = r.range.split('-').map(Number);
@@ -256,94 +125,343 @@ const html = `<!DOCTYPE html>
         }
       });
       
-      // Generează analiza pentru fiecare răspuns
       const analysisHTML = answers.map((ansIdx, qIdx) => {
         const q = surveyData.questions[qIdx];
+        const selectedOption = q.options[ansIdx];
         return \`
           <div class="analysis-item">
-            <strong>\${q.text}</strong>
-            <p>\${q.options[ansIdx].analysis}</p>
+            <div class="analysis-question">\${q.text}</div>
+            <div class="analysis-answer">
+              Răspunsul tău: "\${selectedOption.text}"
+              <span class="percentile-badge">\${selectedOption.realWorldPercentage}% aleg la fel</span>
+            </div>
+            <div class="analysis-text">
+              <strong>Analiză:</strong> \${selectedOption.analysis}
+            </div>
+            <div class="scientific-basis">
+              <span class="science-icon">🔬</span>
+              <strong>Bază științifică:</strong> \${selectedOption.scientificBasis}
+            </div>
           </div>
         \`;
       }).join('');
       
-      // Pie chart data
-      const chartData = answers.map((ansIdx, qIdx) => 
-        surveyData.questions[qIdx].options[ansIdx].score
-      );
+      const recommendationsHTML = result.recommendations ? 
+        \`<div class="recommendations">
+          <h3>📌 Recomandări Personalizate</h3>
+          \${result.recommendations.map(rec => \`
+            <div class="recommendation-item">
+              <div class="rec-text">\${rec.text}</div>
+              <div class="rec-source">📚 Sursă: \${rec.source}</div>
+            </div>
+          \`).join('')}
+        </div>\` : '';
       
       document.getElementById('content').innerHTML = \`
         <div class="results">
-          <h2>\${result.title}</h2>
-          <div class="score">\${totalScore}/9</div>
+          <div class="result-header">
+            <h2>\${result.title}</h2>
+            <div class="percentile-display">
+              <div class="percentile-value">\${result.percentile.value}%</div>
+              <div class="percentile-label">Percentila ta</div>
+            </div>
+          </div>
+          
+          <div class="score-display">
+            <div class="score">\${totalScore}/9</div>
+            <div class="score-label">Scorul tău</div>
+          </div>
+          
+          <div class="real-world-comparison">
+            <div class="comparison-icon">📊</div>
+            <div class="comparison-text">
+              <strong>\${result.percentile.interpretation}</strong><br>
+              \${result.realWorldComparison.description}
+            </div>
+          </div>
+          
           <p class="result-description">\${result.description}</p>
           
           <div id="chartContainer">
+            <h3 class="chart-title">📈 Comparație: Tu vs Cercetare Reală</h3>
             <canvas id="resultsChart"></canvas>
+            <div class="stats-legend">
+              <div class="stats-legend-item">
+                <div class="legend-color" style="background: #8b9eff;"></div>
+                <span>Scorurile tale</span>
+              </div>
+              <div class="stats-legend-item">
+                <div class="legend-color" style="background: #f178b6;"></div>
+                <span>Media din cercetare (\${realWorldStats.totalResponses.toLocaleString()} participanți)</span>
+              </div>
+            </div>
           </div>
           
           <div class="analysis">
-            <h3>Analiza răspunsurilor tale:</h3>
+            <h3>🔍 Analiza Detaliată a Răspunsurilor</h3>
             \${analysisHTML}
           </div>
           
-          <button class="restart-btn" onclick="location.reload()">
-            🔄 Încearcă din nou
-          </button>
+          \${recommendationsHTML}
+          
+          <div class="sources-section">
+            <h3>📚 Surse Științifice</h3>
+            <div class="sources-list">
+              \${realWorldStats.sources.map((source, idx) => \`
+                <div class="source-item">
+                  <div class="source-number">\${idx + 1}</div>
+                  <div class="source-details">
+                    <div class="source-name">\${source.name} (\${source.year})</div>
+                    <div class="source-type">\${source.type.toUpperCase()}</div>
+                    <a href="\${source.url}" target="_blank" class="source-link">
+                      Vezi sursa →
+                    </a>
+                  </div>
+                </div>
+              \`).join('')}
+            </div>
+            <div class="research-metadata">
+              <div class="metadata-item">
+                <strong>📅 Data cercetării:</strong> \${surveyData.metadata.researchDate}
+              </div>
+              <div class="metadata-item">
+                <strong>👥 Sample total:</strong> \${surveyData.metadata.sampleSize.toLocaleString()} participanți
+              </div>
+              \${surveyData.metadata.demographics ? \`
+                <div class="metadata-item">
+                  <strong>🌍 Demografie:</strong> 
+                  \${surveyData.metadata.demographics.ageRange ? 'Vârsta: ' + surveyData.metadata.demographics.ageRange : ''}
+                  \${surveyData.metadata.demographics.countries ? ', Țări: ' + surveyData.metadata.demographics.countries.join(', ') : ''}
+                </div>
+              \` : ''}
+            </div>
+          </div>
+          
+          <div class="action-buttons">
+            <a href="https://ariseinlife.com/" class="primary-btn" target="_blank">
+              Află mai multe
+            </a>
+            <button class="secondary-btn" onclick="downloadResults()">
+              Descarcă rezultate
+            </button>
+            <button class="tertiary-btn" onclick="restartSurvey()">
+              Începe din nou
+            </button>
+          </div>
+          
+          <!-- Footer pentru export PNG -->
+          <div class="export-footer" id="export-footer">
+            <div class="export-footer-text">Bazat pe cercetare științifică reală</div>
+            <div class="export-footer-link">Arise in Life</div>
+            <div class="export-footer-text" style="margin-top: 5px; font-size: 13px;">
+              https://ariseinlife.com
+            </div>
+          </div>
         </div>
       \`;
       
-      // Desenează chart
+      createComparisonChart();
+    }
+    
+    function createComparisonChart() {
       const ctx = document.getElementById('resultsChart');
+      
+      // Calculăm răspunsurile utilizatorului
+      const userScores = answers.map((ansIdx, qIdx) => 
+        surveyData.questions[qIdx].options[ansIdx].score
+      );
+      
+      // Calculăm media reală din cercetare
+      const avgScores = answers.map((ansIdx, qIdx) => {
+        const distribution = surveyData.questions[qIdx].context.realWorldData.distribution;
+        const options = surveyData.questions[qIdx].options;
+        
+        // Calculăm scorul mediu ponderat bazat pe distribuția reală
+        let weightedSum = 0;
+        distribution.forEach((percentage, idx) => {
+          const score = options[idx].score;
+          weightedSum += (percentage * score / 100);
+        });
+        
+        return parseFloat(weightedSum.toFixed(2));
+      });
+      
       new Chart(ctx, {
-        type: 'pie',
+        type: 'bar',
         data: {
           labels: ['Întrebarea 1', 'Întrebarea 2', 'Întrebarea 3'],
-          datasets: [{
-            data: chartData,
-            backgroundColor: [
-              'rgba(102, 126, 234, 0.8)',
-              'rgba(118, 75, 162, 0.8)',
-              'rgba(237, 100, 166, 0.8)'
-            ],
-            borderColor: [
-              'rgba(102, 126, 234, 1)',
-              'rgba(118, 75, 162, 1)',
-              'rgba(237, 100, 166, 1)'
-            ],
-            borderWidth: 2
-          }]
+          datasets: [
+            {
+              label: 'Scorul tău',
+              data: userScores,
+              backgroundColor: 'rgba(139, 158, 255, 0.8)',
+              borderColor: 'rgba(139, 158, 255, 1)',
+              borderWidth: 2,
+              borderRadius: 8
+            },
+            {
+              label: 'Media din cercetare (' + realWorldStats.totalResponses.toLocaleString() + ' participanți)',
+              data: avgScores,
+              backgroundColor: 'rgba(241, 120, 182, 0.8)',
+              borderColor: 'rgba(241, 120, 182, 1)',
+              borderWidth: 2,
+              borderRadius: 8
+            }
+          ]
         },
         options: {
           responsive: true,
+          maintainAspectRatio: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 3,
+              ticks: {
+                stepSize: 0.5,
+                color: '#c1c7d0',
+                callback: function(value) {
+                  return value.toFixed(1);
+                }
+              },
+              grid: {
+                color: 'rgba(54, 59, 82, 0.5)'
+              }
+            },
+            x: {
+              ticks: {
+                color: '#c1c7d0'
+              },
+              grid: {
+                display: false
+              }
+            }
+          },
           plugins: {
             legend: {
               position: 'bottom',
+              labels: {
+                color: '#c1c7d0',
+                padding: 15,
+                font: {
+                  size: 12
+                }
+              }
             },
-            title: {
-              display: true,
-              text: 'Scorul tău pe întrebare'
+            tooltip: {
+              backgroundColor: 'rgba(26, 29, 41, 0.95)',
+              titleColor: '#e4e7eb',
+              bodyColor: '#c1c7d0',
+              borderColor: '#363b52',
+              borderWidth: 1,
+              padding: 12,
+              displayColors: true,
+              callbacks: {
+                label: function(context) {
+                  return context.dataset.label + ': ' + context.parsed.y.toFixed(2) + '/3';
+                }
+              }
             }
           }
         }
       });
     }
     
-    // Start
+    async function downloadResults() {
+      const button = event.target;
+      const originalText = button.innerHTML;
+      
+      if (typeof domtoimage === 'undefined') {
+        alert('Librăria de export nu este încărcată. Te rugăm să reîmprospătezi pagina.');
+        return;
+      }
+      
+      button.innerHTML = '⏳ Generez...';
+      button.disabled = true;
+      
+      try {
+        const actionButtons = document.querySelector('.action-buttons');
+        const exportFooter = document.getElementById('export-footer');
+        
+        actionButtons.style.display = 'none';
+        exportFooter.classList.add('export-footer-visible');
+        
+        await new Promise(resolve => setTimeout(resolve, 300));
+        
+        const container = document.getElementById('survey-container');
+        
+        const dataUrl = await domtoimage.toPng(container, {
+          quality: 1.0,
+          bgcolor: '#2a2f45',
+          style: {
+            transform: 'scale(1)',
+            transformOrigin: 'top left'
+          },
+          width: container.offsetWidth,
+          height: container.offsetHeight
+        });
+        
+        actionButtons.style.display = 'flex';
+        exportFooter.classList.remove('export-footer-visible');
+        
+        const link = document.createElement('a');
+        const timestamp = new Date().toISOString().slice(0, 10);
+        link.download = \`rezultate-\${surveyData.id}-\${timestamp}.png\`;
+        link.href = dataUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        button.innerHTML = '✅ Descărcat!';
+        button.disabled = false;
+        
+        setTimeout(() => {
+          button.innerHTML = originalText;
+        }, 2000);
+        
+      } catch (error) {
+        console.error('Eroare la generarea imaginii:', error);
+        
+        const actionButtons = document.querySelector('.action-buttons');
+        const exportFooter = document.getElementById('export-footer');
+        
+        if (actionButtons) actionButtons.style.display = 'flex';
+        if (exportFooter) exportFooter.classList.remove('export-footer-visible');
+        
+        button.innerHTML = '❌ Eroare';
+        setTimeout(() => {
+          button.innerHTML = originalText;
+          button.disabled = false;
+        }, 2000);
+        
+        alert('A apărut o eroare. Încearcă din nou sau folosește Print (Ctrl+P).');
+      }
+    }
+    
+    function restartSurvey() {
+      currentQuestion = 0;
+      answers = [];
+      renderQuestion(0);
+    }
+    
+    // Start survey
     renderQuestion(0);
   </script>
 </body>
 </html>`;
 
-// Creează directorul pentru survey
 const outputDir = path.join('public', 'survey', surveyId);
 if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir, { recursive: true });
 }
 
-// Scrie HTML-ul
 fs.writeFileSync(path.join(outputDir, 'index.html'), html);
 
 console.log(`✅ Pagina generată cu succes!`);
 console.log(`   Locație: ${outputDir}/index.html`);
-console.log(`   Preview: deschide fișierul în browser`);
+console.log(`   Funcționalități:`);
+console.log(`   ✓ Grafic comparativ cu date reale din cercetare`);
+console.log(`   ✓ Afișare percentile și comparație realistă`);
+console.log(`   ✓ Surse științifice verificabile`);
+console.log(`   ✓ Context științific pentru fiecare întrebare`);
+console.log(`   ✓ Recomandări personalizate bazate pe rezultat`);
+console.log(`   ✓ Metadate complete despre cercetare`);
