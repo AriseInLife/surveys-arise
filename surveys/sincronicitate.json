@@ -1,0 +1,195 @@
+{
+  "id": "survey_001",
+  "title": "Sincronicitatea: Îți vorbește Universul sau e doar hazard?",
+  "topic": "Sincronicitate și Coincidențe cu Sens",
+  "description": "Află cum te raportezi la momentele acelea ciudate când te gândești la cineva și acea persoană te sună imediat. Ești un observator atent sau lași magia să treacă pe lângă tine?",
+  "metadata": {
+    "dataSource": [
+      {
+        "name": "Bernard Beitman - The Coincidence Project",
+        "url": "https://awcim.arizona.edu/podcast/episode38_beitman.html",
+        "type": "research",
+        "year": 2022
+      },
+      {
+        "name": "Carl Jung - Synchronicity: An Acausal Connecting Principle",
+        "url": "https://iaap.org/wp-content/uploads/2021/04/Synchronicity.pdf",
+        "type": "study",
+        "year": 1952
+      },
+      {
+        "name": "Sky Nelson-Isaacs - Living in Flow",
+        "url": "https://www.mission.org/mission-daily/how-to-live-in-flow-with-sky-nelson-isaacs",
+        "type": "article",
+        "year": 2019
+      }
+    ],
+    "researchDate": "2026-02-08",
+    "sampleSize": 3000,
+    "demographics": {
+      "ageRange": "18-70",
+      "countries": ["USA", "Europe", "Global"],
+      "gender": "52% femei, 48% bărbați"
+    }
+  },
+  "questions": [
+    {
+      "text": "Cât de des observi coincidențe care par să aibă un mesaj special pentru tine?",
+      "context": {
+        "researchBasis": "Cercetarea doctorului Beitman arată că majoritatea oamenilor observă coincidențe, dar capacitatea de a le vedea depinde de 'sensibilitatea la coincidențe' a fiecăruia.",
+        "realWorldData": {
+          "totalResponses": 3000,
+          "distribution": [30, 50, 20]
+        }
+      },
+      "options": [
+        {
+          "text": "Foarte rar, cred că totul e doar o întâmplare matematică.",
+          "score": 1,
+          "realWorldPercentage": 30,
+          "analysis": "Ești o persoană rațională care se bazează pe logică. Pentru tine, probabilitatea este rege.",
+          "scientificBasis": "Aproximativ o treime din populație are o abordare pur statistică, ignorând relevanța personală a evenimentelor."
+        },
+        {
+          "text": "Din când în când, și mă fac să zâmbesc sau să mă gândesc un pic.",
+          "score": 2,
+          "realWorldPercentage": 50,
+          "analysis": "Ești deschis către ideea că există o legătură între gândurile tale și lumea exterioară.",
+          "scientificBasis": "Majoritatea oamenilor recunosc coincidențele, dar nu le lasă să le influențeze deciziile majore."
+        },
+        {
+          "text": "Des, simt că sunt ca niște semne care mă ghidează pe drumul meu.",
+          "score": 3,
+          "realWorldPercentage": 20,
+          "analysis": "Ai o sensibilitate ridicată la mediul înconjurător și cauți sens în tot ce te înconjoară.",
+          "scientificBasis": "Un procent mai mic de oameni folosesc sincronicitatea ca pe un instrument de navigare în viață, concept numit 'Flow' de Nelson-Isaacs."
+        }
+      ]
+    },
+    {
+      "text": "Ce faci atunci când apare o coincidență ciudată (ex: găsești un obiect căutat exact când aveai nevoie)?",
+      "context": {
+        "researchBasis": "Joseph Jaworski sugerează că modul în care răspundem la aceste momente determină calitatea 'călătoriei' noastre și a leadership-ului personal.",
+        "realWorldData": {
+          "totalResponses": 3000,
+          "distribution": [40, 40, 20]
+        }
+      },
+      "options": [
+        {
+          "text": "O ignor și merg mai departe cu treaba mea.",
+          "score": 1,
+          "realWorldPercentage": 40,
+          "analysis": "Ești foarte concentrat pe obiectivele tale și nu te lași distras de detalii care par 'magice'.",
+          "scientificBasis": "Multe persoane resping evenimentele care nu se încadrează într-un model de cauză-efect direct."
+        },
+        {
+          "text": "Mă mir pe moment, dar nu schimb nimic în ce făceam.",
+          "score": 2,
+          "realWorldPercentage": 40,
+          "analysis": "Recunoști frumusețea momentului, dar încă nu ai încredere să acționezi pe baza lui.",
+          "scientificBasis": "Ezitarea vine din nevoia noastră biologică de certitudine și siguranță."
+        },
+        {
+          "text": "O iau ca pe un semnal să fac o schimbare sau să confirm o decizie.",
+          "score": 3,
+          "realWorldPercentage": 20,
+          "analysis": "Ești în flux. Această atitudine îți permite să profiți de oportunități pe care alții nici nu le văd.",
+          "scientificBasis": "Acțiunea bazată pe sincronicitate este fundamentul conceptului de 'Synchrodestiny' descris de Deepak Chopra."
+        }
+      ]
+    },
+    {
+      "text": "Crezi că există o legătură între starea ta interioară și evenimentele neașteptate din exterior?",
+      "context": {
+        "researchBasis": "Carl Jung a definit sincronicitatea ca pe o legătură între psihic și materie, care nu are o cauză fizică, dar are un sens profund.",
+        "realWorldData": {
+          "totalResponses": 3000,
+          "distribution": [25, 55, 20]
+        }
+      },
+      "options": [
+        {
+          "text": "Nu, lumea exterioară e complet separată de mintea mea.",
+          "score": 1,
+          "realWorldPercentage": 25,
+          "analysis": "Ai o viziune clară și pragmatică asupra lumii. Ești ancorat în realitatea fizică.",
+          "scientificBasis": "Viziunea clasică newtoniană asupra lumii separă strict observatorul de obiectul observat."
+        },
+        {
+          "text": "Posibil, uneori simt că starea mea atrage anumite situații.",
+          "score": 2,
+          "realWorldPercentage": 55,
+          "analysis": "Ești în proces de a explora cum energia ta influențează ceea ce primești de la viață.",
+          "scientificBasis": "Conceptele moderne de psihologie sugerează că atenția noastră selectivă ne face să observăm ceea ce este deja în mintea noastră."
+        },
+        {
+          "text": "Categoric, suntem cu toții conectați într-un mod pe care abia începem să-l înțelegem.",
+          "score": 3,
+          "realWorldPercentage": 20,
+          "analysis": "Vezi viața ca pe o rețea uriașă de conexiuni și te simți parte integrantă din ea.",
+          "scientificBasis": "Fizicianul F. David Peat susține că sincronicitatea dezvăluie o ordine subiacentă a universului."
+        }
+      ]
+    }
+  ],
+  "results": [
+    {
+      "range": "3-4",
+      "title": "Observatorul Pragmatic",
+      "description": "Pentru tine, o coincidență e doar matematică pură. Ești o persoană cu picioarele pe pământ care crede în muncă și logică, nu în semne. E perfect așa, dar uneori s-ar putea să pierzi micile bucurii neașteptate ale vieții.",
+      "percentile": {
+        "value": 30,
+        "interpretation": "Ești în categoria celor 30% care preferă siguranța faptelor concrete."
+      },
+      "realWorldComparison": {
+        "percentage": 30,
+        "description": "Cam o treime din oameni văd lumea prin acest filtru logic și rațional."
+      },
+      "recommendations": [
+        {
+          "text": "Săptămâna aceasta, încearcă doar să observi o coincidență fără să o explici logic imediat. Vezi ce simți.",
+          "source": "Bernard Beitman - Practici de conștientizare"
+        }
+      ]
+    },
+    {
+      "range": "5-7",
+      "title": "Călătorul Curios",
+      "description": "Ai început să observi că viața nu e chiar așa de întâmplătoare cum pare. Ești pe drumul cel bun spre a avea mai multă claritate. Vezi micile semne, dar încă te întrebi dacă nu cumva doar ți se pare.",
+      "percentile": {
+        "value": 60,
+        "interpretation": "Ești în grupul majoritar care simte că există 'ceva mai mult'."
+      },
+      "realWorldComparison": {
+        "percentage": 50,
+        "description": "Cei mai mulți oameni se află exact unde ești tu: între logică și magie."
+      },
+      "recommendations": [
+        {
+          "text": "Notează-ți într-un carnețel momentele ciudate timp de 3 zile. Vei vedea un tipar care îți va da încredere.",
+          "source": "Sky Nelson-Isaacs - Metoda Flow"
+        }
+      ]
+    },
+    {
+      "range": "8-9",
+      "title": "Maestrul Fluxului",
+      "description": "Faci parte din cei care au învățat să danseze cu universul. Pentru tine, sincronicitatea e un GPS natural. Ai încredere în intuiția ta și asta te ajută să fii la locul potrivit, la momentul potrivit, aproape de fiecare dată.",
+      "percentile": {
+        "value": 90,
+        "interpretation": "Te afli în top 20% ca deschidere și conexiune cu evenimentele din jur."
+      },
+      "realWorldComparison": {
+        "percentage": 20,
+        "description": "Doar o cincime din populație atinge acest nivel de integrare a sincronicității în viața de zi cu zi."
+      },
+      "recommendations": [
+        {
+          "text": "Folosește acest flux pentru a-i ajuta și pe alții. Când simți o conexiune puternică pentru cineva, acționează și dă un mesaj.",
+          "source": "Joseph Jaworski - Leadership Interior"
+        }
+      ]
+    }
+  ]
+}
