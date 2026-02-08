@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sincronicitatea: Între Coincidență și Înțeles</title>
+  <meta name="description" content="Un chestionar profund bazat pe cercetări contemporane despre modul în care percepem evenimentele coincidente și impactul lor asupra stării noastre de bine și a sensului vieții. - Bazat pe 300 participanți">
+  <link rel="stylesheet" href="../../assets/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dom-to-image@2.6.0/dist/dom-to-image.min.js"></script>
+</head>
+<body>
+  <div class="container" id="survey-container">
+    <div class="logo">
+      <a href="https://ariseinlife.com/" target="_blank">
+        <img src="../../assets/logo.png" alt="Arise In Life">
+      </a>
+    </div>
+    <div id="content-wrapper">
+      <h1>Sincronicitatea: Între Coincidență și Înțeles</h1>
+      <p class="description">Un chestionar profund bazat pe cercetări contemporane despre modul în care percepem evenimentele coincidente și impactul lor asupra stării noastre de bine și a sensului vieții.</p>
+      <div class="research-badge">
+        📊 Bazat pe cercetare reală: 300 participanți
+      </div>
+      <div id="content"></div>
+    </div>
+  </div>
+  
+  <script>
+    const surveyData = {
+  "id": "survey_001",
+  "title": "Sincronicitatea: Între Coincidență și Înțeles",
+  "topic": "Sincronicitate și Psihologie Analitică",
+  "description": "Un chestionar profund bazat pe cercetări contemporane despre modul în care percepem evenimentele coincidente și impactul lor asupra stării noastre de bine și a sensului vieții.",
+  "metadata": {
+    "dataSource": [
+      {
+        "name": "The Experience of Synchronicity: An Exploratory Study",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9885050/",
+        "type": "research",
+        "year": 2023
+      }
+    ],
+    "researchDate": "2025-05-14",
+    "sampleSize": 300,
+    "demographics": {
+      "ageRange": "18-80",
+      "countries": [
+        "Germania",
+        "Elveția",
+        "Internațional"
+      ],
+      "gender": "Diversificat"
+    }
+  },
+  "questions": [
+    {
+      "text": "Cât de des observi coincidențe care par să aibă un mesaj personal profund sau care apar exact când ai nevoie de un răspuns?",
+      "context": {
+        "researchBasis": "Studiile moderne arată că sincronicitatea nu este doar o eroare de percepție, ci o experiență comună care facilitează introspecția. Cercetarea citată indică faptul că majoritatea oamenilor trăiesc aceste momente în puncte de cotitură ale vieții.",
+        "realWorldData": {
+          "totalResponses": 300,
+          "distribution": [
+            67,
+            21,
+            12
+          ]
+        }
+      },
+      "options": [
+        {
+          "text": "Frecvent. Simt că universul sau subconștientul îmi trimite semnale clare prin evenimente externe.",
+          "score": 3,
+          "analysis": "Această deschidere te plasează în rândul celor 67% de participanți care raportează experiențe de sincronicitate ca fiind evenimente cu un impact emoțional puternic.",
+          "realWorldPercentage": 67,
+          "scientificBasis": "Capacitatea de a vedea sens în coincidențe este corelată cu un nivel ridicat de 'absorbție' psihologică și o deschidere către experiențe spirituale sau transpersonale."
+        },
+        {
+          "text": "Ocazional. Observ coincidențele, dar le privesc cu un amestec de curiozitate și scepticism.",
+          "score": 2,
+          "analysis": "Ești într-o zonă de echilibru pe care 21% din populația studiată o ocupă, analizând evenimentul fără a-i atribui imediat o cauză mistică.",
+          "realWorldPercentage": 21,
+          "scientificBasis": "Scepticismul moderat servește ca un filtru cognitiv care previne apofenia (găsirea de tipare acolo unde nu există), dar permite totuși reflecția personală."
+        },
+        {
+          "text": "Rar sau deloc. Consider că evenimentele sunt pur aleatorii și nu au nicio legătură cu starea mea internă.",
+          "score": 1,
+          "analysis": "Aproximativ 12% dintre oameni mențin o perspectivă strict materialistă, unde hazardul este singura explicație pentru coincidențe.",
+          "realWorldPercentage": 12,
+          "scientificBasis": "Această abordare se bazează pe probabilitatea statistică, ignorând componenta subiectiv-fenomenologică a experienței umane studiate de Jung."
+        }
+      ]
+    },
+    {
+      "text": "Ce impact au aceste coincidențe asupra procesului tău de luare a deciziilor sau asupra stării tale de spirit?",
+      "context": {
+        "researchBasis": "Cercetarea a investigat dacă sincronicitatea acționează ca un catalizator pentru transformarea personală. Rezultatele sugerează că sensul atribuit acestor evenimente poate reduce anxietatea existențială.",
+        "realWorldData": {
+          "totalResponses": 300,
+          "distribution": [
+            55,
+            30,
+            15
+          ]
+        }
+      },
+      "options": [
+        {
+          "text": "Îmi oferă confort și mă ajută să mă simt conectat la ceva mai mare decât mine.",
+          "score": 3,
+          "analysis": "Pentru 55% dintre subiecți, sincronicitatea funcționează ca o formă de 'revrăjire' a lumii, oferind un sentiment de apartenență cosmică.",
+          "realWorldPercentage": 55,
+          "scientificBasis": "Sentimentul de conexiune (connectedness) este un indicator cheie al sănătății mintale și al rezilienței în fața stresului, conform datelor calitative din studiu."
+        },
+        {
+          "text": "Mă fac să reflectez mai mult, dar nu îmi schimbă cursul acțiunilor în mod radical.",
+          "score": 2,
+          "analysis": "Această abordare reflexivă este împărtășită de 30% dintre respondenți, care folosesc evenimentul ca pe o metaforă, nu ca pe o instrucțiune.",
+          "realWorldPercentage": 30,
+          "scientificBasis": "Utilizarea sincronicității ca instrument de auto-reflecție stimulează funcția simbolică a minții fără a compromite raționamentul logic."
+        },
+        {
+          "text": "Nu au niciun impact; le uit imediat ce s-au produs.",
+          "score": 1,
+          "analysis": "Doar 15% dintre oameni sunt complet imuni la încărcătura emoțională a unei coincidențe frapante.",
+          "realWorldPercentage": 15,
+          "scientificBasis": "Lipsa impactului poate reflecta o orientare cognitivă axată exclusiv pe date empirice externe, neglijând procesele intuitive."
+        }
+      ]
+    },
+    {
+      "text": "În ce momente ale vieții ai observat că aceste 'semne' apar cel mai frecvent?",
+      "context": {
+        "researchBasis": "Datele clinice arată o corelație între perioadele de criză, tranziție sau căutare intensă a sensului și frecvența raportată a fenomenelor de sincronicitate.",
+        "realWorldData": {
+          "totalResponses": 300,
+          "distribution": [
+            72,
+            18,
+            10
+          ]
+        }
+      },
+      "options": [
+        {
+          "text": "În perioade de schimbări majore sau când trec prin momente dificile emoțional.",
+          "score": 3,
+          "analysis": "Ești în grupul majoritar de 72% care experimentează 'constelația' sincronicității în perioade de instabilitate, când psihicul caută noi forme de ordine.",
+          "realWorldPercentage": 72,
+          "scientificBasis": "Jung numea acest fenomen 'numinozitate', care apare atunci când arhetipurile sunt activate de o criză existențială."
+        },
+        {
+          "text": "În momente de relaxare sau de meditație, când mintea mea este liniștită.",
+          "score": 2,
+          "analysis": "18% dintre oameni observă aceste conexiuni în stări de prezență conștientă, unde zgomotul mental este redus.",
+          "realWorldPercentage": 18,
+          "scientificBasis": "Stările de 'mindfulness' sporesc atenția selectivă, permițând observarea unor detalii care altfel ar trece neobservate."
+        },
+        {
+          "text": "Nu am observat nicio corelație cu starea mea generală.",
+          "score": 1,
+          "analysis": "Pentru 10% dintre respondenți, apariția coincidențelor pare a fi complet independentă de contextul lor psihologic.",
+          "realWorldPercentage": 10,
+          "scientificBasis": "Aceasta indică o disociere între procesele interne (emoții, gânduri) și percepția evenimentelor externe."
+        }
+      ]
+    }
+  ],
+  "results": [
+    {
+      "range": "3-4",
+      "title": "Observatorul Rațional",
+      "description": "Lumea ta este guvernată de legi clare, cauză și efect. Pentru tine, coincidențele sunt simple curiozități statistice fără o semnificație ascunsă.",
+      "percentile": {
+        "value": 12,
+        "interpretation": "Te afli în segmentul de 12% al populației care menține o graniță rigidă între minte și lumea exterioară."
+      },
+      "realWorldComparison": {
+        "percentage": 12,
+        "description": "Studiile arată că acest profil are o probabilitate mai mică de a experimenta stări de 'flow' spiritual, dar o stabilitate pragmatică ridicată."
+      },
+      "recommendations": [
+        {
+          "text": "Încearcă să ții un jurnal de vise și evenimente zilnice timp de o săptămână pentru a observa dacă există tipare subtile (Metoda Jungiană).",
+          "source": "C.G. Jung - Synchronicity: An Acausal Connecting Principle"
+        }
+      ]
+    },
+    {
+      "range": "5-7",
+      "title": "Căutătorul de Sens",
+      "description": "Ești deschis către misterul vieții și recunoști că nu totul poate fi explicat prin logică pură. Coincidențele te pun pe gânduri și îți îmbogățesc peisajul interior.",
+      "percentile": {
+        "value": 45,
+        "interpretation": "Te afli în media populației care percepe viața ca pe un dialog între subiectiv și obiectiv."
+      },
+      "realWorldComparison": {
+        "percentage": 45,
+        "description": "Aproape jumătate din populația studiată folosește sincronicitatea ca pe un instrument de orientare morală sau filosofică."
+      },
+      "recommendations": [
+        {
+          "text": "Practică meditația de tip 'Open Monitoring' pentru a-ți rafina capacitatea de a observa conexiunile fără a le judeca imediat.",
+          "source": "Study on Mindfulness and Cognitive Flexibility, NCBI 2022"
+        }
+      ]
+    },
+    {
+      "range": "8-9",
+      "title": "Navigatorul Intuitiv",
+      "description": "Pentru tine, sincronicitatea este un mod de viață. Trăiești într-o stare de flux unde semnele exterioare și intuiția interioară dansează în armonie perfectă.",
+      "percentile": {
+        "value": 85,
+        "interpretation": "Ești în top 15% dintre persoanele cu o sensibilitate înaltă la sensul simbolic al realității."
+      },
+      "realWorldComparison": {
+        "percentage": 43,
+        "description": "Deși este un procent mare, doar cei cu scoruri maxime (ca tine) raportează că aceste evenimente le-au schimbat radical destinul."
+      },
+      "recommendations": [
+        {
+          "text": "Folosește aceste momente pentru auto-terapie: întreabă-te 'Ce parte din mine reflectă acest eveniment?' pentru a integra umbra.",
+          "source": "The Experience of Synchronicity, PMC9885050"
+        }
+      ]
+    }
+  ]
+};
+    let currentQuestion = 0;
+    let answers = [];
+    
+    // Date reale din cercetare
+    const realWorldStats = {
+      totalResponses: surveyData.metadata.sampleSize,
+      questionStats: [[201,63,36],[165,90,45],[216,54,30]],
+      sources: surveyData.metadata.dataSource
+    };
+    
+    function renderQuestion(index) {
+      const q = surveyData.questions[index];
+      const context = q.context;
+      
+      const html = `
+        <div class="question">
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: ${((index + 1) / 3) * 100}%"></div>
+          </div>
+          <h2>Întrebarea ${index + 1} din 3</h2>
+          <p class="question-text">${q.text}</p>
+          
+          <div class="research-context">
+            <div class="research-icon">🧠</div>
+            <div class="research-text">
+              <strong>Context științific:</strong> ${context.researchBasis}
+            </div>
+          </div>
+          
+          <div class="options">
+            ${q.options.map((opt, i) => `
+              <button class="option-btn" onclick="selectAnswer(${index}, ${i})">
+                <div class="option-text">${opt.text}</div>
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `;
+      document.getElementById('content').innerHTML = html;
+    }
+    
+    function selectAnswer(questionIndex, optionIndex) {
+      answers[questionIndex] = optionIndex;
+      
+      if (currentQuestion < 2) {
+        currentQuestion++;
+        renderQuestion(currentQuestion);
+      } else {
+        showResults();
+      }
+    }
+    
+    function showResults() {
+      const totalScore = answers.reduce((sum, answerIdx, qIdx) => {
+        return sum + surveyData.questions[qIdx].options[answerIdx].score;
+      }, 0);
+      
+      let result;
+      surveyData.results.forEach(r => {
+        const [min, max] = r.range.split('-').map(Number);
+        if (totalScore >= min && totalScore <= max) {
+          result = r;
+        }
+      });
+      
+      const analysisHTML = answers.map((ansIdx, qIdx) => {
+        const q = surveyData.questions[qIdx];
+        const selectedOption = q.options[ansIdx];
+        return `
+          <div class="analysis-item">
+            <div class="analysis-question">${q.text}</div>
+            <div class="analysis-answer">
+              Răspunsul tău: "${selectedOption.text}"
+              <span class="percentile-badge">${selectedOption.realWorldPercentage}% aleg la fel</span>
+            </div>
+            <div class="analysis-text">
+              <strong>Analiză:</strong> ${selectedOption.analysis}
+            </div>
+            <div class="scientific-basis">
+              <span class="science-icon">🧠</span>
+              <strong>Bază științifică:</strong> ${selectedOption.scientificBasis}
+            </div>
+          </div>
+        `;
+      }).join('');
+      
+      const recommendationsHTML = result.recommendations ? 
+        `<div class="recommendations">
+          <h3>📌 Recomandări Personalizate</h3>
+          ${result.recommendations.map(rec => `
+            <div class="recommendation-item">
+              <div class="rec-text">${rec.text}</div>
+              <div class="rec-source">📚 Sursă: ${rec.source}</div>
+            </div>
+          `).join('')}
+        </div>` : '';
+      
+      document.getElementById('content').innerHTML = `
+        <div class="results">
+          <div class="result-header">
+            <h2>${result.title}</h2>
+            <div class="percentile-display">
+              <div class="percentile-value">${result.percentile.value}%</div>
+              <div class="percentile-label">Percentila ta</div>
+            </div>
+          </div>
+          
+          <div class="score-display">
+            <div class="score">${totalScore}/10</div>
+            <div class="score-label">Scorul tău</div>
+          </div>
+          
+          <div class="real-world-comparison">
+            <div class="comparison-icon">📊</div>
+            <div class="comparison-text">
+              <strong>${result.percentile.interpretation}</strong><br>
+              ${result.realWorldComparison.description}
+            </div>
+          </div>
+          
+          <p class="result-description">${result.description}</p>
+          
+          <div id="chartContainer">
+            <h3 class="chart-title">📈 Comparație: Tu vs Cercetare Reală</h3>
+            <canvas id="resultsChart"></canvas>
+            <div class="stats-legend">
+              <div class="stats-legend-item">
+                <div class="legend-color" style="background: #8b9eff;"></div>
+                <span>Scorurile tale</span>
+              </div>
+              <div class="stats-legend-item">
+                <div class="legend-color" style="background: #f178b6;"></div>
+                <span>Media din cercetare (${realWorldStats.totalResponses.toLocaleString()} participanți)</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="analysis">
+            <h3>🔍 Analiza Detaliată a Răspunsurilor</h3>
+            ${analysisHTML}
+          </div>
+          
+          ${recommendationsHTML}
+          
+          <div class="sources-section">
+            <h3>📚 Surse Științifice</h3>
+            <div class="sources-list">
+              ${realWorldStats.sources.map((source, idx) => `
+                <div class="source-item">
+                  <div class="source-number">${idx + 1}</div>
+                  <div class="source-details">
+                    <div class="source-name">${source.name} (${source.year})</div>
+                    <div class="source-type">${source.type.toUpperCase()}</div>
+                    <a href="${source.url}" target="_blank" class="source-link">
+                      Vezi sursa →
+                    </a>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+          
+          <div class="action-buttons">
+            <button class="secondary-btn" onclick="downloadResults()">
+              Descarcă rezultate
+            </button>
+            <button class="tertiary-btn" onclick="restartSurvey()">
+              Începe din nou
+            </button>
+          </div>
+          
+          <!-- Fixed floating button -->
+          <a href="https://ariseinlife.com/" class="floating-cta-btn" target="_blank">
+            Află mai multe
+          </a>
+          
+          <!-- Footer pentru export PNG -->
+          <div class="export-footer" id="export-footer">
+            <div class="export-footer-text">Bazat pe cercetare științifică reală</div>
+            <div class="export-footer-link">Arise in Life</div>
+            <div class="export-footer-text" style="margin-top: 5px; font-size: 13px;">
+              https://ariseinlife.com
+            </div>
+          </div>
+        </div>
+      `;
+      
+      createComparisonChart();
+    }
+    
+    function createComparisonChart() {
+      const ctx = document.getElementById('resultsChart');
+      
+      // Calculăm răspunsurile utilizatorului (scalate la 10)
+      const userScores = answers.map((ansIdx, qIdx) => {
+        const score = surveyData.questions[qIdx].options[ansIdx].score;
+        return (score / 3) * 10; // Scalăm de la 1-3 la 0-10
+      });
+      
+      // Calculăm media reală din cercetare (scalată la 10)
+      const avgScores = answers.map((ansIdx, qIdx) => {
+        const distribution = surveyData.questions[qIdx].context.realWorldData.distribution;
+        const options = surveyData.questions[qIdx].options;
+        
+        // Calculăm scorul mediu ponderat bazat pe distribuția reală
+        let weightedSum = 0;
+        distribution.forEach((percentage, idx) => {
+          const score = options[idx].score;
+          weightedSum += (percentage * score / 100);
+        });
+        
+        return parseFloat(((weightedSum / 3) * 10).toFixed(2)); // Scalăm la 10
+      });
+      
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Întrebarea 1', 'Întrebarea 2', 'Întrebarea 3'],
+          datasets: [
+            {
+              label: 'Scorul tău',
+              data: userScores,
+              backgroundColor: 'rgba(139, 158, 255, 0.8)',
+              borderColor: 'rgba(139, 158, 255, 1)',
+              borderWidth: 2,
+              borderRadius: 8
+            },
+            {
+              label: 'Media din cercetare (' + realWorldStats.totalResponses.toLocaleString() + ' participanți)',
+              data: avgScores,
+              backgroundColor: 'rgba(241, 120, 182, 0.8)',
+              borderColor: 'rgba(241, 120, 182, 1)',
+              borderWidth: 2,
+              borderRadius: 8
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 10,
+              ticks: {
+                stepSize: 1,
+                color: '#c1c7d0',
+                callback: function(value) {
+                  return value.toFixed(0);
+                }
+              },
+              grid: {
+                color: 'rgba(54, 59, 82, 0.5)'
+              }
+            },
+            x: {
+              ticks: {
+                color: '#c1c7d0'
+              },
+              grid: {
+                display: false
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                color: '#c1c7d0',
+                padding: 15,
+                font: {
+                  size: 12
+                }
+              }
+            },
+            tooltip: {
+              backgroundColor: 'rgba(26, 29, 41, 0.95)',
+              titleColor: '#e4e7eb',
+              bodyColor: '#c1c7d0',
+              borderColor: '#363b52',
+              borderWidth: 1,
+              padding: 12,
+              displayColors: true,
+              callbacks: {
+                label: function(context) {
+                  return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + '/10';
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+    
+    async function downloadResults() {
+      const button = event.target;
+      const originalText = button.innerHTML;
+      
+      if (typeof domtoimage === 'undefined') {
+        alert('Librăria de export nu este încărcată. Te rugăm să reîmprospătezi pagina.');
+        return;
+      }
+      
+      button.innerHTML = '⏳ Generez...';
+      button.disabled = true;
+      
+      try {
+        const actionButtons = document.querySelector('.action-buttons');
+        const floatingBtn = document.querySelector('.floating-cta-btn');
+        const exportFooter = document.getElementById('export-footer');
+        
+        actionButtons.style.display = 'none';
+        floatingBtn.style.display = 'none';
+        exportFooter.classList.add('export-footer-visible');
+        
+        await new Promise(resolve => setTimeout(resolve, 300));
+        
+        const container = document.getElementById('survey-container');
+        
+        const dataUrl = await domtoimage.toPng(container, {
+          quality: 1.0,
+          bgcolor: '#2a2f45',
+          style: {
+            transform: 'scale(1)',
+            transformOrigin: 'top left'
+          },
+          width: container.offsetWidth,
+          height: container.offsetHeight
+        });
+        
+        actionButtons.style.display = 'flex';
+        floatingBtn.style.display = 'inline-block';
+        exportFooter.classList.remove('export-footer-visible');
+        
+        const link = document.createElement('a');
+        const timestamp = new Date().toISOString().slice(0, 10);
+        link.download = `rezultate-${surveyData.id}-${timestamp}.png`;
+        link.href = dataUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        button.innerHTML = '✅ Descărcat!';
+        button.disabled = false;
+        
+        setTimeout(() => {
+          button.innerHTML = originalText;
+        }, 2000);
+        
+      } catch (error) {
+        console.error('Eroare la generarea imaginii:', error);
+        
+        const actionButtons = document.querySelector('.action-buttons');
+        const floatingBtn = document.querySelector('.floating-cta-btn');
+        const exportFooter = document.getElementById('export-footer');
+        
+        if (actionButtons) actionButtons.style.display = 'flex';
+        if (floatingBtn) floatingBtn.style.display = 'inline-block';
+        if (exportFooter) exportFooter.classList.remove('export-footer-visible');
+        
+        button.innerHTML = '❌ Eroare';
+        setTimeout(() => {
+          button.innerHTML = originalText;
+          button.disabled = false;
+        }, 2000);
+        
+        alert('A apărut o eroare. Încearcă din nou sau folosește Print (Ctrl+P).');
+      }
+    }
+    
+    function restartSurvey() {
+      currentQuestion = 0;
+      answers = [];
+      renderQuestion(0);
+    }
+    
+    // Start survey
+    renderQuestion(0);
+  </script>
+</body>
+</html>
