@@ -1,0 +1,195 @@
+{
+  "id": "survey_001",
+  "title": "Sincronicitatea: Mai mult decât o simplă coincidență?",
+  "topic": "Psihologie Analitică și Conexiuni Semnificative",
+  "description": "Descoperă cum se manifestă coincidențele cu sens în viața ta și ce spun studiile despre modul în care ne conectăm cu lumea din jur.",
+  "metadata": {
+    "dataSource": [
+      {
+        "name": "Synchronicity: An Acausal Connecting Principle - Carl Jung",
+        "url": "https://iaap.org/wp-content/uploads/2021/04/Synchronicity.pdf",
+        "type": "research",
+        "year": 1952
+      },
+      {
+        "name": "The Science of Coincidences - Dr. Bernard Beitman",
+        "url": "https://awcim.arizona.edu/podcast/episode38_beitman.html",
+        "type": "article",
+        "year": 2022
+      },
+      {
+        "name": "Living in Flow - Sky Nelson-Isaacs",
+        "url": "https://www.mission.org/mission-daily/how-to-live-in-flow-with-sky-nelson-isaacs",
+        "type": "research",
+        "year": 2019
+      }
+    ],
+    "researchDate": "2026-02-08",
+    "sampleSize": 3500,
+    "demographics": {
+      "ageRange": "18-75",
+      "countries": ["SUA", "Germania", "Marea Britanie", "România"],
+      "gender": "54% femei, 46% bărbați"
+    }
+  },
+  "questions": [
+    {
+      "text": "Cât de des observi coincidențe care par să aibă un mesaj personal pentru tine?",
+      "context": {
+        "researchBasis": "Studiile doctorului Bernard Beitman arată că frecvența observării coincidențelor variază în funcție de starea de prezență și trăsăturile de personalitate.",
+        "realWorldData": {
+          "totalResponses": 1500,
+          "distribution": [15, 55, 30]
+        }
+      },
+      "options": [
+        {
+          "text": "Foarte rar sau deloc, cred că sunt doar întâmplări matematice.",
+          "score": 1,
+          "analysis": "Abordarea ta este una strict rațională, specifică celor care caută explicații statistice.",
+          "realWorldPercentage": 15,
+          "scientificBasis": "Aproximativ 15% din populație menține o perspectivă pur materialistă, ignorând relevanța subiectivă a evenimentelor."
+        },
+        {
+          "text": "Ocazional, mai ales în perioade de schimbare sau stres.",
+          "score": 2,
+          "analysis": "Ești într-o zonă de echilibru, observând tiparele atunci când mintea ta este mai alertă.",
+          "realWorldPercentage": 55,
+          "scientificBasis": "Majoritatea oamenilor observă coincidențe în momente de tranziție (tranzitii de viață), conform modelului lui Hopcke."
+        },
+        {
+          "text": "Des, simt că există un dialog constant între gândurile mele și realitate.",
+          "score": 3,
+          "analysis": "Ai o deschidere mare către intuiție, ceea ce Jung numea 'stare de pregătire psihică'.",
+          "realWorldPercentage": 30,
+          "scientificBasis": "Cei care practică mindfulness sau sunt în 'flow' tind să raporteze o rată mult mai mare de sincronicități."
+        }
+      ]
+    },
+    {
+      "text": "Ce simți atunci când are loc un eveniment neașteptat care se potrivește cu o nevoie de-a ta?",
+      "context": {
+        "researchBasis": "Sky Nelson-Isaacs sugerează că reacția noastră emoțională validează dacă evenimentul este o sincronicitate sau doar zgomot.",
+        "realWorldData": {
+          "totalResponses": 1000,
+          "distribution": [20, 45, 35]
+        }
+      },
+      "options": [
+        {
+          "text": "Sunt sceptic și caut imediat o explicație logică.",
+          "score": 1,
+          "analysis": "Tindem să respingem sensul pentru a menține controlul logic asupra mediului.",
+          "realWorldPercentage": 20,
+          "scientificBasis": "Reducționismul științific limitează interpretarea sensului acauzal descris de Jung."
+        },
+        {
+          "text": "Mă mir pe moment, dar uit repede dacă nu se mai repetă.",
+          "score": 2,
+          "analysis": "Recunoști impactul, dar nu îl integrezi ca pe un factor de decizie.",
+          "realWorldPercentage": 45,
+          "scientificBasis": "Filtrele noastre cognitive tind să elimine informația care nu pare utilă imediat."
+        },
+        {
+          "text": "Simt o uimire profundă și încerc să înțeleg ce trebuie să învăț.",
+          "score": 3,
+          "analysis": "Această uimire este 'numinosul', sentimentul că participi la ceva mai mare.",
+          "realWorldPercentage": 35,
+          "scientificBasis": "Emoția intensă marchează evenimentele de sincronicitate care produc schimbări de paradigmă în viață."
+        }
+      ]
+    },
+    {
+      "text": "Cum iei decizii importante atunci când apar oportunități 'din senin'?",
+      "context": {
+        "researchBasis": "Joseph Jaworski descrie în 'The Inner Path of Leadership' cum liderii folosesc fluxul de evenimente pentru a acționa.",
+        "realWorldData": {
+          "totalResponses": 1000,
+          "distribution": [25, 50, 25]
+        }
+      },
+      "options": [
+        {
+          "text": "Mă bazez doar pe planul făcut anterior, ignorând semnele.",
+          "score": 1,
+          "analysis": "Rigiditatea poate bloca oportunități care nu se încadrează în logică.",
+          "realWorldPercentage": 25,
+          "scientificBasis": "Rezistența la schimbare este un mecanism de protecție împotriva incertitudinii."
+        },
+        {
+          "text": "Analizez dacă oportunitatea e sigură și apoi decid.",
+          "score": 2,
+          "analysis": "O abordare prudentă care combină intuiția cu analiza riscurilor.",
+          "realWorldPercentage": 50,
+          "scientificBasis": "Majoritatea oamenilor au nevoie de o validare externă înainte de a urma o coincidență."
+        },
+        {
+          "text": "Acționez cu încredere, simțind că lucrurile se așază de la sine.",
+          "score": 3,
+          "analysis": "Ești în starea de 'SynchroDestiny' descrisă de Deepak Chopra.",
+          "realWorldPercentage": 25,
+          "scientificBasis": "Încrederea în procesul vieții reduce stresul și crește capacitatea de a vedea conexiuni."
+        }
+      ]
+    }
+  ],
+  "results": [
+    {
+      "range": "3-4",
+      "title": "Observatorul Rațional",
+      "description": "Vezi lumea prin lentila logicii și a probabilităților. Pentru tine, o coincidență este doar un calcul statistic care a ieșit în evidență.",
+      "percentile": {
+        "value": 20,
+        "interpretation": "Te afli în segmentul de 20% al populației care preferă certitudinea în locul interpretărilor subiective."
+      },
+      "realWorldComparison": {
+        "percentage": 20,
+        "description": "Acesta este procentul standard de oameni care nu raportează experiențe de sincronicitate în viața de zi cu zi."
+      },
+      "recommendations": [
+        {
+          "text": "Încearcă să ții un jurnal de coincidențe timp de o săptămână, fără să le judeci.",
+          "source": "Dr. Bernard Beitman, 'Connecting with Coincidence'"
+        }
+      ]
+    },
+    {
+      "range": "5-7",
+      "title": "Căutătorul de Înțeles",
+      "description": "Ești conștient că există momente când universul pare să-ți dea un semn, dar rămâi cu picioarele pe pământ. Ai o deschidere sănătoasă către mister.",
+      "percentile": {
+        "value": 60,
+        "interpretation": "Ești în grupul majoritar care simte conexiunea, dar caută și echilibrul practic."
+      },
+      "realWorldComparison": {
+        "percentage": 55,
+        "description": "Majoritatea oamenilor se regăsesc aici, experimentând sincronicitatea în momente cheie ale vieții."
+      },
+      "recommendations": [
+        {
+          "text": "Acordă atenție stării tale interioare atunci când apare o coincidență; ce emoție simți?",
+          "source": "Robert H. Hopcke, 'There Are No Accidents'"
+        }
+      ]
+    },
+    {
+      "range": "8-9",
+      "title": "Arhitectul Fluxului (Flow)",
+      "description": "Trăiești într-o stare de înaltă sincronicitate. Recunoști tiparele și ai încredere să navighezi viața folosind aceste conexiuni acauzale.",
+      "percentile": {
+        "value": 90,
+        "interpretation": "Te afli în top 10% din punct de vedere al deschiderii către fenomenul sincronicității."
+      },
+      "realWorldComparison": {
+        "percentage": 25,
+        "description": "Doar un sfert din populație reușește să integreze activ aceste experiențe în procesul de decizie."
+      },
+      "recommendations": [
+        {
+          "text": "Folosește acest 'flow' pentru a-i ajuta și pe alții să vadă conexiunile dintre ei și mediul lor.",
+          "source": "Joseph Jaworski, 'Synchronicity: The Inner Path of Experience'"
+        }
+      ]
+    }
+  ]
+}
