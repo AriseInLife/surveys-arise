@@ -5,38 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sincronicitatea: Dialogul tău cu Universul</title>
   <meta name="description" content="Te invit să descoperi cum se manifestă acele coincidențe pline de sens în viața ta. Acest chestionar nu este o evaluare, ci o oglindă care îți arată cât de deschis este sufletul tău să primească ghidarea de care are nevoie în călătoria evoluției tale. - Bazat pe 4,500 participanți">
-  
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Sincronicitatea: Dialogul tău cu Universul">
-  <meta property="og:description" content="Te invit să descoperi cum se manifestă acele coincidențe pline de sens în viața ta. Acest chestionar nu este o evaluare, ci o oglindă care îți arată cât de deschis este sufletul tău să primească ghidarea de care are nevoie în călătoria evoluției tale.">
-  <meta property="og:url" content="https://surveys.ariseinlife.com/survey/dsadsadsa">
-  
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:title" content="Sincronicitatea: Dialogul tău cu Universul">
-  <meta property="twitter:description" content="Te invit să descoperi cum se manifestă acele coincidențe pline de sens în viața ta. Acest chestionar nu este o evaluare, ci o oglindă care îți arată cât de deschis este sufletul tău să primească ghidarea de care are nevoie în călătoria evoluției tale.">
-  
   <link rel="stylesheet" href="../../assets/style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dom-to-image@2.6.0/dist/dom-to-image.min.js"></script>
-  
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-XXXXXXXXXX', {
-      page_title: 'Sincronicitatea: Dialogul tău cu Universul',
-      page_path: '/survey/dsadsadsa'
-    });
-    
-    // Custom event tracking function
-    function trackEvent(eventName, eventParams) {
-      gtag('event', eventName, eventParams);
-    }
-  </script>
 </head>
 <body>
   <div class="container" id="survey-container">
@@ -269,15 +240,6 @@
 };
     let currentQuestion = 0;
     let answers = [];
-    let surveyStartTime = Date.now();
-    
-    // Track survey start
-    if (typeof trackEvent !== 'undefined') {
-      trackEvent('survey_start', {
-        survey_id: surveyData.id,
-        survey_title: surveyData.title
-      });
-    }
     
     // Date reale din cercetare
     const realWorldStats = {
@@ -315,29 +277,10 @@
         </div>
       `;
       document.getElementById('content').innerHTML = html;
-      
-      // Track question view
-      if (typeof trackEvent !== 'undefined') {
-        trackEvent('question_view', {
-          survey_id: surveyData.id,
-          question_number: index + 1,
-          question_text: q.text
-        });
-      }
     }
     
     function selectAnswer(questionIndex, optionIndex) {
       answers[questionIndex] = optionIndex;
-      
-      // Track answer selection
-      if (typeof trackEvent !== 'undefined') {
-        trackEvent('answer_selected', {
-          survey_id: surveyData.id,
-          question_number: questionIndex + 1,
-          option_index: optionIndex,
-          option_text: surveyData.questions[questionIndex].options[optionIndex].text
-        });
-      }
       
       if (currentQuestion < 2) {
         currentQuestion++;
@@ -359,17 +302,6 @@
           result = r;
         }
       });
-      
-      // Track survey completion
-      const completionTime = Math.round((Date.now() - surveyStartTime) / 1000);
-      if (typeof trackEvent !== 'undefined') {
-        trackEvent('survey_complete', {
-          survey_id: surveyData.id,
-          total_score: totalScore,
-          result_range: result.range,
-          completion_time_seconds: completionTime
-        });
-      }
       
       const analysisHTML = answers.map((ansIdx, qIdx) => {
         const q = surveyData.questions[qIdx];
@@ -411,7 +343,7 @@
           </div>
           
           <div class="score-display">
-            <div class="score">${totalScore}/9</div>
+            <div class="score">${totalScore}/10</div>
             <div class="score-label">Scorul tău</div>
           </div>
           
@@ -445,55 +377,6 @@
           
           ${recommendationsHTML}
           
-          <!-- Netlify Form pentru Feedback -->
-          <div class="feedback-section">
-            <h3>💬 Spune-ne ce părere ai</h3>
-            <p style="color: var(--text-medium); margin-bottom: 20px;">
-              Feedback-ul tău ne ajută să îmbunătățim chestionarele pentru toți utilizatorii.
-            </p>
-            <form name="survey-feedback" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="handleFeedbackSubmit(event)">
-              <input type="hidden" name="form-name" value="survey-feedback">
-              <input type="hidden" name="survey_id" value="${surveyData.id}">
-              <input type="hidden" name="survey_title" value="${surveyData.title}">
-              <input type="hidden" name="user_score" value="${totalScore}">
-              
-              <!-- Honeypot pentru spam protection -->
-              <p style="display: none;">
-                <label>Don't fill this out: <input name="bot-field" /></label>
-              </p>
-              
-              <div class="form-group">
-                <label for="rating">Cât de util a fost acest chestionar?</label>
-                <select name="rating" id="rating" required style="width: 100%; padding: 12px; border-radius: 8px; background: var(--bg-dark); border: 2px solid var(--border-dark); color: var(--text-dark); font-size: 15px; margin-bottom: 15px;">
-                  <option value="">Alege o opțiune...</option>
-                  <option value="5">⭐⭐⭐⭐⭐ Extrem de util</option>
-                  <option value="4">⭐⭐⭐⭐ Foarte util</option>
-                  <option value="3">⭐⭐⭐ Util</option>
-                  <option value="2">⭐⭐ Puțin util</option>
-                  <option value="1">⭐ Deloc util</option>
-                </select>
-              </div>
-              
-              <div class="form-group">
-                <label for="feedback">Comentarii sau sugestii (opțional):</label>
-                <textarea name="feedback" id="feedback" rows="4" placeholder="Ce ți-a plăcut? Ce am putea îmbunătăți?" style="width: 100%; padding: 12px; border-radius: 8px; background: var(--bg-dark); border: 2px solid var(--border-dark); color: var(--text-dark); font-size: 15px; resize: vertical; font-family: inherit; margin-bottom: 15px;"></textarea>
-              </div>
-              
-              <div class="form-group">
-                <label for="email">Email (opțional, dacă vrei răspuns):</label>
-                <input type="email" name="email" id="email" placeholder="adresa@email.com" style="width: 100%; padding: 12px; border-radius: 8px; background: var(--bg-dark); border: 2px solid var(--border-dark); color: var(--text-dark); font-size: 15px; margin-bottom: 20px;">
-              </div>
-              
-              <button type="submit" class="secondary-btn" style="width: 100%;">
-                Trimite Feedback
-              </button>
-              
-              <div id="feedback-success" style="display: none; margin-top: 15px; padding: 15px; background: var(--success-color); color: white; border-radius: 8px; text-align: center; font-weight: 600;">
-                ✅ Mulțumim pentru feedback! Apreciem timpul tău.
-              </div>
-            </form>
-          </div>
-          
           <div class="sources-section">
             <h3>📚 Surse de Cercetare</h3>
             <div class="sources-list">
@@ -503,7 +386,7 @@
                   <div class="source-details">
                     <div class="source-name">${source.name} (${source.year})</div>
                     <div class="source-type">${source.type.toUpperCase()}</div>
-                    <a href="${source.url}" target="_blank" class="source-link" onclick="trackSourceClick('${source.name}')">
+                    <a href="${source.url}" target="_blank" class="source-link">
                       Vezi sursa →
                     </a>
                   </div>
@@ -514,15 +397,15 @@
           
           <div class="action-buttons">
             <button class="secondary-btn" onclick="downloadResults()">
-              📥 Descarcă rezultate
+              Descarcă rezultate
             </button>
             <button class="tertiary-btn" onclick="restartSurvey()">
-              🔄 Începe din nou
+              Începe din nou
             </button>
           </div>
           
           <!-- Fixed floating button -->
-          <a href="https://ariseinlife.com/" class="floating-cta-btn" target="_blank" onclick="trackCtaClick()">
+          <a href="https://ariseinlife.com/" class="floating-cta-btn" target="_blank">
             Află mai multe
           </a>
           
@@ -644,65 +527,9 @@
       });
     }
     
-    // Netlify Form handling
-    function handleFeedbackSubmit(event) {
-      event.preventDefault();
-      
-      const form = event.target;
-      const formData = new FormData(form);
-      
-      // Track feedback submission
-      if (typeof trackEvent !== 'undefined') {
-        trackEvent('feedback_submit', {
-          survey_id: surveyData.id,
-          rating: formData.get('rating')
-        });
-      }
-      
-      fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(formData).toString()
-      })
-      .then(() => {
-        form.style.display = 'none';
-        document.getElementById('feedback-success').style.display = 'block';
-      })
-      .catch((error) => {
-        console.error('Error submitting feedback:', error);
-        alert('A apărut o eroare. Te rugăm să încerci din nou.');
-      });
-    }
-    
-    // Analytics tracking helpers
-    function trackSourceClick(sourceName) {
-      if (typeof trackEvent !== 'undefined') {
-        trackEvent('source_click', {
-          survey_id: surveyData.id,
-          source_name: sourceName
-        });
-      }
-    }
-    
-    function trackCtaClick() {
-      if (typeof trackEvent !== 'undefined') {
-        trackEvent('cta_click', {
-          survey_id: surveyData.id,
-          cta_type: 'floating_button'
-        });
-      }
-    }
-    
     async function downloadResults() {
       const button = event.target;
       const originalText = button.innerHTML;
-      
-      // Track download attempt
-      if (typeof trackEvent !== 'undefined') {
-        trackEvent('results_download', {
-          survey_id: surveyData.id
-        });
-      }
       
       if (typeof domtoimage === 'undefined') {
         alert('Librăria de export nu este încărcată. Te rugăm să reîmprospătezi pagina.');
@@ -715,12 +542,10 @@
       try {
         const actionButtons = document.querySelector('.action-buttons');
         const floatingBtn = document.querySelector('.floating-cta-btn');
-        const feedbackSection = document.querySelector('.feedback-section');
         const exportFooter = document.getElementById('export-footer');
         
         actionButtons.style.display = 'none';
         floatingBtn.style.display = 'none';
-        if (feedbackSection) feedbackSection.style.display = 'none';
         exportFooter.classList.add('export-footer-visible');
         
         await new Promise(resolve => setTimeout(resolve, 300));
@@ -740,7 +565,6 @@
         
         actionButtons.style.display = 'flex';
         floatingBtn.style.display = 'inline-block';
-        if (feedbackSection) feedbackSection.style.display = 'block';
         exportFooter.classList.remove('export-footer-visible');
         
         const link = document.createElement('a');
@@ -763,12 +587,10 @@
         
         const actionButtons = document.querySelector('.action-buttons');
         const floatingBtn = document.querySelector('.floating-cta-btn');
-        const feedbackSection = document.querySelector('.feedback-section');
         const exportFooter = document.getElementById('export-footer');
         
         if (actionButtons) actionButtons.style.display = 'flex';
         if (floatingBtn) floatingBtn.style.display = 'inline-block';
-        if (feedbackSection) feedbackSection.style.display = 'block';
         if (exportFooter) exportFooter.classList.remove('export-footer-visible');
         
         button.innerHTML = '❌ Eroare';
@@ -782,53 +604,13 @@
     }
     
     function restartSurvey() {
-      // Track restart
-      if (typeof trackEvent !== 'undefined') {
-        trackEvent('survey_restart', {
-          survey_id: surveyData.id
-        });
-      }
-      
       currentQuestion = 0;
       answers = [];
-      surveyStartTime = Date.now();
       renderQuestion(0);
-      window.scrollTo(0, 0);
     }
     
     // Start survey
     renderQuestion(0);
   </script>
-  
-  <style>
-    /* Additional styles for feedback form */
-    .feedback-section {
-      background: var(--bg-dark);
-      border-radius: 15px;
-      padding: 30px;
-      margin: 30px 0;
-      border: 1px solid var(--border-dark);
-    }
-    
-    .feedback-section h3 {
-      color: var(--primary-color);
-      margin-bottom: 15px;
-      font-size: 20px;
-      text-align: center;
-    }
-    
-    .form-group {
-      margin-bottom: 20px;
-      text-align: left;
-    }
-    
-    .form-group label {
-      display: block;
-      color: var(--text-dark);
-      font-weight: 600;
-      margin-bottom: 8px;
-      font-size: 14px;
-    }
-  </style>
 </body>
 </html>
