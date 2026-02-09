@@ -16,13 +16,20 @@ if (!fs.existsSync(surveyPath)) {
 
 const surveyData = JSON.parse(fs.readFileSync(surveyPath, 'utf8'));
 
+// Limitează numărul maxim de participanți la 600
+const maxParticipants = 600;
+if (surveyData.metadata.sampleSize > maxParticipants) {
+  surveyData.metadata.sampleSize = maxParticipants;
+}
+
 console.log(`📄 Generez pagina pentru: ${surveyData.title}`);
 console.log(`📊 Bazat pe ${surveyData.metadata.sampleSize.toLocaleString()} participanți din studii validate`);
 
 // Convertește distribuțiile reale în numere absolute pentru afișare
 const convertToAbsoluteNumbers = () => {
   return surveyData.questions.map((q, qIdx) => {
-    const total = q.context.realWorldData.totalResponses;
+    // Limitează totalResponses la maxim 600
+    const total = Math.min(q.context.realWorldData.totalResponses, maxParticipants);
     const distribution = q.context.realWorldData.distribution;
     
     return distribution.map(percentage => Math.round(total * percentage / 100));
@@ -35,6 +42,15 @@ const realStats = convertToAbsoluteNumbers();
 const html = `<!DOCTYPE html>
 <html lang="ro">
 <head>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+  
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${surveyData.title}</title>
@@ -106,6 +122,15 @@ const html = `<!DOCTYPE html>
     function selectAnswer(questionIndex, optionIndex) {
       answers[questionIndex] = optionIndex;
       
+      // Track answer selection
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'answer_selected', {
+          'question_number': questionIndex + 1,
+          'option_index': optionIndex,
+          'survey_id': surveyData.id
+        });
+      }
+      
       if (currentQuestion < 2) {
         currentQuestion++;
         renderQuestion(currentQuestion);
@@ -126,6 +151,15 @@ const html = `<!DOCTYPE html>
           result = r;
         }
       });
+      
+      // Track survey completion
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'survey_completed', {
+          'survey_id': surveyData.id,
+          'total_score': totalScore,
+          'result_category': result.title
+        });
+      }
       
       const analysisHTML = answers.map((ansIdx, qIdx) => {
         const q = surveyData.questions[qIdx];
@@ -355,6 +389,13 @@ const html = `<!DOCTYPE html>
       const button = event.target;
       const originalText = button.innerHTML;
       
+      // Track download attempt
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'download_results', {
+          'survey_id': surveyData.id
+        });
+      }
+      
       if (typeof domtoimage === 'undefined') {
         alert('Librăria de export nu este încărcată. Te rugăm să reîmprospătezi pagina.');
         return;
@@ -428,6 +469,13 @@ const html = `<!DOCTYPE html>
     }
     
     function restartSurvey() {
+      // Track restart
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'survey_restart', {
+          'survey_id': surveyData.id
+        });
+      }
+      
       currentQuestion = 0;
       answers = [];
       renderQuestion(0);
@@ -435,6 +483,14 @@ const html = `<!DOCTYPE html>
     
     // Start survey
     renderQuestion(0);
+    
+    // Track survey start
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'survey_started', {
+        'survey_id': surveyData.id,
+        'survey_title': surveyData.title
+      });
+    }
   </script>
 </body>
 </html>`;

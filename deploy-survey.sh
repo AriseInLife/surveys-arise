@@ -266,6 +266,23 @@ for survey_id in "${SURVEYS_TO_PROCESS[@]}"; do
     
 done
 
+# Adaugă fișierele index.html și 404.html dacă există
+echo ""
+step "EXTRA" "Adăugare index.html și 404.html"
+if [ -f "index.html" ]; then
+    git add index.html
+    success "index.html adăugat"
+else
+    warning "index.html nu există"
+fi
+
+if [ -f "404.html" ]; then
+    git add 404.html
+    success "404.html adăugat"
+else
+    warning "404.html nu există"
+fi
+
 # Procesează surveys ȘTERSE
 if [ ${#DELETED_SURVEYS[@]} -gt 0 ]; then
     echo ""
