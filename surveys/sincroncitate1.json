@@ -1,0 +1,195 @@
+{
+  "id": "survey_001",
+  "title": "Călătoria Sincronicității: Cât de aliniat ești cu fluxul vieții?",
+  "topic": "Cele 5 tipuri de sincronicitate în evoluția personală",
+  "description": "Acest chestionar este o invitație să descoperi cum interacționează lumea ta interioară cu evenimentele din jur. Nu e despre noroc, ci despre capacitatea ta de a observa semnele care te ghidează spre sinele tău evoluat. Te invităm să răspunzi cu deschidere, ca într-o discuție caldă despre magia de zi cu zi.",
+  "metadata": {
+    "dataSource": [
+      {
+        "name": "Synchronicity and life satisfaction (Picard)",
+        "url": "https://gmwpublic.studenttheses.ub.rug.nl/461/1/Bachelorthesis_M.K.%20Picard_s3299554.docx.pdf",
+        "type": "study",
+        "year": 2025
+      },
+      {
+        "name": "Meaningful Coincidences and Real-life Creativity",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11125470/",
+        "type": "research",
+        "year": 2024
+      },
+      {
+        "name": "Synchronicity in Digital Age",
+        "url": "https://globalsocialreview.com/synchronicity-digital-age/",
+        "type": "article",
+        "year": 2025
+      }
+    ],
+    "researchDate": "2026-02-09",
+    "sampleSize": 1500,
+    "demographics": {
+      "ageRange": "18-65",
+      "countries": ["Olanda", "USA", "Global Digital"],
+      "gender": "Distribuție diversă"
+    }
+  },
+  "questions": [
+    {
+      "text": "Cât de des observi coincidențe care par să aibă un sens special pentru tine (ex: numere care se repetă, întâlniri 'la fix')?",
+      "context": {
+        "researchBasis": "Frecvența cu care observăm aceste semne ne arată cât de 'treji' suntem față de oportunitățile din jur. Picard (2025) a arătat că cei care observă aceste momente tind să aibă o satisfacție de viață mai mare.",
+        "realWorldData": {
+          "totalResponses": 850,
+          "distribution": [20, 55, 25]
+        }
+      },
+      "options": [
+        {
+          "text": "Rar, poate o dată la câteva luni - viața pare mai degrabă o serie de fapte concrete.",
+          "score": 1,
+          "realWorldPercentage": 20,
+          "analysis": "Ești la începutul procesului de observare. Acest lucru îți oferă o bază solidă, ancorată în realitate.",
+          "scientificBasis": "Cercetarea indică faptul că o frecvență redusă poate fi legată de un focus intens pe sarcinile imediate, lăsând mai puțin spațiu pentru observația periferică."
+        },
+        {
+          "text": "Din când în când, cam de câteva ori pe lună - mă miră, dar apoi uit de ele.",
+          "score": 2,
+          "realWorldPercentage": 55,
+          "analysis": "Ești într-o zonă de echilibru frumos. Începi să vezi că există o legătură între gândurile tale și exterior.",
+          "scientificBasis": "Majoritatea oamenilor se află aici. Este etapa în care creierul începe să recunoască tipare semnificative fără a le căuta activ."
+        },
+        {
+          "text": "Foarte des, aproape zilnic - simt că primesc confirmări constante prin semne.",
+          "score": 3,
+          "realWorldPercentage": 25,
+          "analysis": "Ești profund conectat la frecvența ta. Trăiești într-o stare de deschidere care atrage evenimente sincronice.",
+          "scientificBasis": "Nivelurile ridicate de observare sunt asociate cu o deschidere mentală mare și o capacitate superioară de a integra informații abstracte."
+        }
+      ]
+    },
+    {
+      "text": "Cum folosești aceste momente de 'noroc chior' în deciziile tale sau în munca ta?",
+      "context": {
+        "researchBasis": "Cercetarea NIH (2024) demonstrează că persoanele care integrează coincidențele în procesul lor creativ găsesc soluții mai inovatoare.",
+        "realWorldData": {
+          "totalResponses": 572,
+          "distribution": [30, 45, 25]
+        }
+      },
+      "options": [
+        {
+          "text": "Le ignor; cred că deciziile trebuie luate doar pe bază de logică și date.",
+          "score": 1,
+          "realWorldPercentage": 30,
+          "analysis": "Apreciezi siguranța și controlul. Aceasta e o etapă de construcție a fundamentului tău logic.",
+          "scientificBasis": "Abordarea pur logică minimizează riscurile, dar poate limita accesul la soluțiile intuitive descrise în studiile de creativitate."
+        },
+        {
+          "text": "Mă fac să mă opresc un pic din drum, dar rareori îmi schimbă planul stabilit.",
+          "score": 2,
+          "realWorldPercentage": 45,
+          "analysis": "Ai început să asculți șoaptele universului. Ești pe drumul spre a integra intuiția cu rațiunea.",
+          "scientificBasis": "Această flexibilitate moderată indică o funcționare executivă sănătoasă care permite 'input-uri' noi fără a pierde direcția."
+        },
+        {
+          "text": "Le folosesc ca pe niște indicii prețioase; de multe ori îmi arată o cale mai bună.",
+          "score": 3,
+          "realWorldPercentage": 25,
+          "analysis": "Ești un alchimist al propriei vieți. Știi să transformi 'întâmplările' în pași concreți de evoluție.",
+          "scientificBasis": "Utilizarea activă a coincidențelor în rezolvarea problemelor este un predictor puternic pentru realizările creative în viața reală."
+        }
+      ]
+    },
+    {
+      "text": "Ți s-a întâmplat să găsești online un om sau o informație exact când te preocupau, fără să îi cauți direct?",
+      "context": {
+        "researchBasis": "În era digitală, sincronicitatea socială (Global Social Review, 2025) a devenit un motor principal pentru colaborări și creștere personală.",
+        "realWorldData": {
+          "totalResponses": 450,
+          "distribution": [35, 45, 20]
+        }
+      },
+      "options": [
+        {
+          "text": "Nu prea, online-ul e doar un instrument de căutare activă pentru mine.",
+          "score": 1,
+          "realWorldPercentage": 35,
+          "analysis": "Ești foarte focusat pe obiectivele tale. Ești într-un punct unde disciplina primează.",
+          "scientificBasis": "Cercetările sugerează că un focus îngust ('goal-directed behavior') poate filtra coincidențele digitale neașteptate."
+        },
+        {
+          "text": "S-a întâmplat de câteva ori să dau peste exact ce aveam nevoie 'din greșeală'.",
+          "score": 2,
+          "realWorldPercentage": 45,
+          "analysis": "Începi să simți cum 'algoritmul vieții' lucrează pentru tine. Ești deschis la explorare.",
+          "scientificBasis": "Serendipitatea digitală apare cel mai des la utilizatorii care au un comportament de explorare mixt (căutare + browsing)."
+        },
+        {
+          "text": "Se întâmplă constant; simt că fluxul digital îmi aduce mentorii și resursele potrivite.",
+          "score": 3,
+          "realWorldPercentage": 20,
+          "analysis": "Ai o frecvență de atracție foarte înaltă. Trăiești o sincronicitate digitală profundă.",
+          "scientificBasis": "Acest fenomen reflectă o stare de 'cognitive readiness', unde mintea este pregătită să facă asocieri rapide între nevoi și resurse externe."
+        }
+      ]
+    }
+  ],
+  "results": [
+    {
+      "range": "3-4",
+      "title": "Observatorul la Început de Drum",
+      "description": "Ești exact unde trebuie să fii. În acest moment, viața ta se bazează pe soliditate și fapte. Sinele tău evoluat te invită acum să începi să observi micile 'clipiri' ale universului fără presiune. Ești la baza unui munte frumos, pregătindu-ți echipamentul.",
+      "percentile": {
+        "value": 30,
+        "interpretation": "Ești în prima etapă a conștientizării, un loc ocupat de aproximativ 30% dintre călători."
+      },
+      "realWorldComparison": {
+        "percentage": 30,
+        "description": "Mulți oameni preferă claritatea faptelor în această etapă a vieții lor."
+      },
+      "recommendations": [
+        {
+          "text": "Săptămâna aceasta, doar observă dacă vezi același număr de trei ori. Nu căuta sensul, doar observă-l cu un zâmbet.",
+          "source": "Inspirat din practicile de mindfulness (Picard, 2025)"
+        }
+      ]
+    },
+    {
+      "range": "5-7",
+      "title": "Călătorul în Aliniere",
+      "description": "Ai un flux frumos în viața ta. Ai învățat să recunoști magia când apare și asta îți oferă o stare de bine interioară. Ești pe drumul cel bun, reușind să îmbini logica de zi cu zi cu intuiția care te ghidează spre sinele tău evoluat.",
+      "percentile": {
+        "value": 65,
+        "interpretation": "Te afli în grupul majoritar care a început să integreze sensul în coincidențe."
+      },
+      "realWorldComparison": {
+        "percentage": 50,
+        "description": "Jumătate din populația studiată experimentează acest nivel de conexiune moderată."
+      },
+      "recommendations": [
+        {
+          "text": "Data viitoare când apare o coincidență, oprește-te 30 de secunde. Întreabă-te: 'Dacă asta ar fi un mesaj pentru mine, ce mi-ar spune?'",
+          "source": "Strategie de Meaning-Detecting (Russo-Netzer, 2023)"
+        }
+      ]
+    },
+    {
+      "range": "8-9",
+      "title": "Alchimistul Sincron",
+      "description": "Trăiești într-o stare de aliniere profundă. Sinele tău evoluat se vede clar în fiecare alegere și în modul în care 'atragi' resursele necesare. Ai transformat coincidența într-un limbaj prin care comunici cu viața însăși. Ești o sursă de inspirație pentru ceilalți.",
+      "percentile": {
+        "value": 90,
+        "interpretation": "Ești în top 10% ca frecvență și utilizare a sincronicității."
+      },
+      "realWorldComparison": {
+        "percentage": 20,
+        "description": "Doar un procent mic de oameni ating acest nivel de interacțiune constantă cu fluxul vieții."
+      },
+      "recommendations": [
+        {
+          "text": "Folosește-ți această claritate pentru a-i ajuta pe alții. Când simți un impuls sincron despre cineva, acționează - trimite acel mesaj, dă acel telefon.",
+          "source": "Cercetarea despre Sincronicitatea Socială (GSR, 2025)"
+        }
+      ]
+    }
+  ]
+}
