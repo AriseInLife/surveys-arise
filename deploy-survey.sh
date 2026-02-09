@@ -95,10 +95,12 @@ fi
 
 # Caută surveys noi sau modificate AUTOMAT
 echo ""
-info "Scanez folderul surveys/ pentru fișiere JSON noi sau modificate..."
+info "Scanez folderul surveys/ pentru fișiere JSON noi, modificate sau șterse..."
 echo ""
 
 NEW_SURVEYS=()
+MODIFIED_SURVEYS=()
+DELETED_SURVEYS=()
 
 # Parcurge TOATE fișierele .json din surveys/
 for file in surveys/*.json; do
@@ -111,14 +113,39 @@ for file in surveys/*.json; do
             info "Găsit survey NOU: $survey_id (fișier: $(basename "$file"))"
         # Verifică dacă e fișier modificat
         elif [ -n "$(git diff HEAD "$file" 2>/dev/null)" ]; then
-            NEW_SURVEYS+=("$survey_id")
+            MODIFIED_SURVEYS+=("$survey_id")
             info "Găsit survey MODIFICAT: $survey_id (fișier: $(basename "$file"))"
         fi
     fi
 done
 
+# Verifică și fișierele șterse (care erau în Git dar nu mai sunt pe disc)
+while IFS= read -r deleted_file; do
+    if [[ "$deleted_file" == surveys/*.json ]]; then
+        survey_id=$(basename "$deleted_file" .json)
+        DELETED_SURVEYS+=("$survey_id")
+        warning "Găsit survey ȘTERS: $survey_id (fișier: $(basename "$deleted_file"))"
+    fi
+done < <(git ls-files --deleted 2>/dev/null)
+
+# Verifică și directoarele șterse din public/survey/
+# Găsește toate directoarele care erau în Git dar nu mai există pe disc
+while IFS= read -r deleted_path; do
+    if [[ "$deleted_path" =~ ^public/survey/([^/]+)/ ]]; then
+        survey_id="${BASH_REMATCH[1]}"
+        # Verifică dacă nu e deja în lista de șterse
+        if [[ ! " ${DELETED_SURVEYS[@]} " =~ " ${survey_id} " ]]; then
+            DELETED_SURVEYS+=("$survey_id")
+            warning "Găsit survey ȘTERS din public: $survey_id (director: public/survey/${survey_id}/)"
+        fi
+    fi
+done < <(git ls-files --deleted 2>/dev/null | grep "^public/survey/")
+
+# Combină toate survey-urile care au schimbări
+ALL_CHANGED_SURVEYS=("${NEW_SURVEYS[@]}" "${MODIFIED_SURVEYS[@]}" "${DELETED_SURVEYS[@]}")
+
 # Verifică dacă am găsit surveys
-if [ ${#NEW_SURVEYS[@]} -eq 0 ]; then
+if [ ${#ALL_CHANGED_SURVEYS[@]} -eq 0 ]; then
     warning "Nu am găsit surveys noi sau modificate în folderul surveys/"
     echo ""
     echo "Pentru a adăuga un survey:"
@@ -142,17 +169,36 @@ if [ ${#NEW_SURVEYS[@]} -eq 0 ]; then
 fi
 
 echo ""
-success "Găsite ${#NEW_SURVEYS[@]} survey(s) de procesat:"
-for survey_id in "${NEW_SURVEYS[@]}"; do
-    echo "  - $survey_id"
-done
+success "Găsite ${#ALL_CHANGED_SURVEYS[@]} survey(s) cu schimbări:"
+if [ ${#NEW_SURVEYS[@]} -gt 0 ]; then
+    echo ""
+    echo -e "${GREEN}Surveys NOI (${#NEW_SURVEYS[@]}):${NC}"
+    for survey_id in "${NEW_SURVEYS[@]}"; do
+        echo "  + $survey_id"
+    done
+fi
+if [ ${#MODIFIED_SURVEYS[@]} -gt 0 ]; then
+    echo ""
+    echo -e "${YELLOW}Surveys MODIFICATE (${#MODIFIED_SURVEYS[@]}):${NC}"
+    for survey_id in "${MODIFIED_SURVEYS[@]}"; do
+        echo "  ~ $survey_id"
+    done
+fi
+if [ ${#DELETED_SURVEYS[@]} -gt 0 ]; then
+    echo ""
+    echo -e "${RED}Surveys ȘTERSE (${#DELETED_SURVEYS[@]}):${NC}"
+    for survey_id in "${DELETED_SURVEYS[@]}"; do
+        echo "  - $survey_id"
+    done
+fi
 
 # Calculăm numărul total de pași
-TOTAL_STEPS=$((${#NEW_SURVEYS[@]} * 3 + 2))  # 3 pași per survey + commit + push
+SURVEYS_TO_PROCESS=("${NEW_SURVEYS[@]}" "${MODIFIED_SURVEYS[@]}")
+TOTAL_STEPS=$((${#SURVEYS_TO_PROCESS[@]} * 3 + ${#DELETED_SURVEYS[@]} + 2))  # 3 pași per survey + șterse + commit + push
 CURRENT_STEP=0
 
-# Procesează fiecare survey
-for survey_id in "${NEW_SURVEYS[@]}"; do
+# Procesează fiecare survey NOU sau MODIFICAT
+for survey_id in "${SURVEYS_TO_PROCESS[@]}"; do
     echo ""
     echo "================================================"
     echo -e "${BOLD}Procesez: $survey_id${NC}"
@@ -220,6 +266,44 @@ for survey_id in "${NEW_SURVEYS[@]}"; do
     
 done
 
+# Procesează surveys ȘTERSE
+if [ ${#DELETED_SURVEYS[@]} -gt 0 ]; then
+    echo ""
+    echo "================================================"
+    echo -e "${BOLD}Procesez surveys ȘTERSE${NC}"
+    echo "================================================"
+    
+    for survey_id in "${DELETED_SURVEYS[@]}"; do
+        echo ""
+        step "ȘTERS" "Înregistrez ștergerea pentru $survey_id"
+        ((CURRENT_STEP++))
+        show_progress $CURRENT_STEP $TOTAL_STEPS
+        
+        SURVEY_FILE="surveys/${survey_id}.json"
+        SURVEY_DIR="public/survey/${survey_id}"
+        
+        # Adaugă fișierul JSON șters în Git (dacă există)
+        if git ls-files --error-unmatch "$SURVEY_FILE" > /dev/null 2>&1; then
+            git add "$SURVEY_FILE" 2>/dev/null || true
+            info "Înregistrat: $SURVEY_FILE (șters)"
+        fi
+        
+        # Adaugă directorul public șters în Git (dacă există)
+        if git ls-files "$SURVEY_DIR/" 2>/dev/null | grep -q .; then
+            git add "$SURVEY_DIR/" 2>/dev/null || true
+            info "Înregistrat: $SURVEY_DIR/ (șters)"
+        fi
+        
+        # Șterge directorul din public dacă încă există pe disc (cleanup)
+        if [ -d "$SURVEY_DIR" ]; then
+            rm -rf "$SURVEY_DIR"
+            info "Curățat: $SURVEY_DIR/ (șters de pe disc)"
+        fi
+        
+        success "Ștergere înregistrată pentru $survey_id"
+    done
+fi
+
 # Git commit
 echo ""
 echo "================================================"
@@ -227,10 +311,36 @@ step "4" "Creare commit"
 ((CURRENT_STEP++))
 show_progress $CURRENT_STEP $TOTAL_STEPS
 
-if [ ${#NEW_SURVEYS[@]} -eq 1 ]; then
-    COMMIT_MSG="Add survey: ${NEW_SURVEYS[0]}"
-else
-    COMMIT_MSG="Add surveys: ${NEW_SURVEYS[*]}"
+# Construiește mesajul de commit bazat pe schimbări
+COMMIT_MSG=""
+if [ ${#NEW_SURVEYS[@]} -gt 0 ]; then
+    if [ ${#NEW_SURVEYS[@]} -eq 1 ]; then
+        COMMIT_MSG="Add survey: ${NEW_SURVEYS[0]}"
+    else
+        COMMIT_MSG="Add surveys: ${NEW_SURVEYS[*]}"
+    fi
+fi
+
+if [ ${#MODIFIED_SURVEYS[@]} -gt 0 ]; then
+    if [ -n "$COMMIT_MSG" ]; then
+        COMMIT_MSG="${COMMIT_MSG}; "
+    fi
+    if [ ${#MODIFIED_SURVEYS[@]} -eq 1 ]; then
+        COMMIT_MSG="${COMMIT_MSG}Update survey: ${MODIFIED_SURVEYS[0]}"
+    else
+        COMMIT_MSG="${COMMIT_MSG}Update surveys: ${MODIFIED_SURVEYS[*]}"
+    fi
+fi
+
+if [ ${#DELETED_SURVEYS[@]} -gt 0 ]; then
+    if [ -n "$COMMIT_MSG" ]; then
+        COMMIT_MSG="${COMMIT_MSG}; "
+    fi
+    if [ ${#DELETED_SURVEYS[@]} -eq 1 ]; then
+        COMMIT_MSG="${COMMIT_MSG}Delete survey: ${DELETED_SURVEYS[0]}"
+    else
+        COMMIT_MSG="${COMMIT_MSG}Delete surveys: ${DELETED_SURVEYS[*]}"
+    fi
 fi
 
 if git diff --cached --quiet; then
@@ -273,21 +383,83 @@ echo -e "${GREEN}${BOLD}Deployment finalizat cu succes!${NC}"
 echo "================================================"
 echo ""
 
-for survey_id in "${NEW_SURVEYS[@]}"; do
-    echo -e "${CYAN}Survey: $survey_id${NC}"
-    echo "  JSON: surveys/${survey_id}.json"
-    echo "  HTML: public/survey/${survey_id}/index.html"
-    echo "  URL (după deploy): https://yoursite.netlify.app/survey/${survey_id}"
-    
-    # Arată info despre date reale dacă există
-    if [ "$SCHEMA_FILE" = "survey-schema-enhanced.json" ]; then
-        SURVEY_FILE="surveys/${survey_id}.json"
-        if grep -q '"dataSource"' "$SURVEY_FILE"; then
-            echo -e "  ${GREEN}✓ Bazat pe date reale din cercetare${NC}"
+# Afișează informații despre surveys NOI
+if [ ${#NEW_SURVEYS[@]} -gt 0 ]; then
+    echo -e "${GREEN}${BOLD}✓ Surveys NOI adăugate:${NC}"
+    for survey_id in "${NEW_SURVEYS[@]}"; do
+        echo -e "${CYAN}Survey: $survey_id${NC}"
+        echo "  JSON: surveys/${survey_id}.json"
+        echo "  HTML: public/survey/${survey_id}/index.html"
+        echo "  URL (după deploy): https://yoursite.netlify.app/survey/${survey_id}"
+        
+        # Arată info despre date reale dacă există
+        if [ "$SCHEMA_FILE" = "survey-schema-enhanced.json" ]; then
+            SURVEY_FILE="surveys/${survey_id}.json"
+            if grep -q '"dataSource"' "$SURVEY_FILE" 2>/dev/null; then
+                echo -e "  ${GREEN}✓ Bazat pe date reale din cercetare${NC}"
+            fi
         fi
-    fi
-    echo ""
-done
+        echo ""
+    done
+fi
+
+# Afișează informații despre surveys MODIFICATE
+if [ ${#MODIFIED_SURVEYS[@]} -gt 0 ]; then
+    echo -e "${YELLOW}${BOLD}✓ Surveys MODIFICATE:${NC}"
+    for survey_id in "${MODIFIED_SURVEYS[@]}"; do
+        echo -e "${CYAN}Survey: $survey_id${NC}"
+        echo "  JSON: surveys/${survey_id}.json"
+        echo "  HTML: public/survey/${survey_id}/index.html"
+        echo "  URL (după deploy): https://yoursite.netlify.app/survey/${survey_id}"
+        
+        # Arată info despre date reale dacă există
+        if [ "$SCHEMA_FILE" = "survey-schema-enhanced.json" ]; then
+            SURVEY_FILE="surveys/${survey_id}.json"
+            if grep -q '"dataSource"' "$SURVEY_FILE" 2>/dev/null; then
+                echo -e "  ${GREEN}✓ Bazat pe date reale din cercetare${NC}"
+            fi
+        fi
+        echo ""
+    done
+fi
+
+# Afișează informații despre surveys ȘTERSE
+if [ ${#DELETED_SURVEYS[@]} -gt 0 ]; then
+    echo -e "${RED}${BOLD}✓ Surveys ȘTERSE:${NC}"
+    for survey_id in "${DELETED_SURVEYS[@]}"; do
+        echo -e "${CYAN}Survey: $survey_id${NC}"
+        
+        SURVEY_FILE="surveys/${survey_id}.json"
+        SURVEY_DIR="public/survey/${survey_id}"
+        
+        # Verifică ce anume a fost șters
+        JSON_DELETED=false
+        DIR_DELETED=false
+        
+        if git ls-files --deleted 2>/dev/null | grep -q "^${SURVEY_FILE}$"; then
+            JSON_DELETED=true
+        fi
+        
+        if git ls-files --deleted 2>/dev/null | grep -q "^${SURVEY_DIR}/"; then
+            DIR_DELETED=true
+        fi
+        
+        if [ "$JSON_DELETED" = true ]; then
+            echo "  - Fișier JSON: surveys/${survey_id}.json (șters)"
+        fi
+        
+        if [ "$DIR_DELETED" = true ]; then
+            echo "  - Director public: public/survey/${survey_id}/ (șters)"
+        fi
+        
+        if [ "$JSON_DELETED" = false ] && [ "$DIR_DELETED" = false ]; then
+            echo "  - Schimbări de ștergere detectate"
+        fi
+        
+        echo "  ⚠️  URL-ul nu va mai fi accesibil după deploy"
+        echo ""
+    done
+fi
 
 if [ "$SCHEMA_FILE" = "survey-schema-enhanced.json" ]; then
     echo -e "${CYAN}💡 Tips pentru survey-uri cu date reale:${NC}"

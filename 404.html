@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagină Negăsită - Arise In Life</title>
+  <meta name="description" content="Pagina pe care o cauți nu a fost găsită.">
+  <link rel="stylesheet" href="public/assets/style.css">
+  <style>
+    .error-container {
+      text-align: center;
+      padding: 60px 20px;
+      min-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .error-code {
+      font-size: 120px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+      line-height: 1;
+      text-shadow: 0 4px 20px rgba(139, 158, 255, 0.3);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .error-title {
+      color: var(--text-dark);
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+
+    .error-message {
+      color: var(--text-medium);
+      font-size: 18px;
+      line-height: 1.6;
+      margin-bottom: 40px;
+      max-width: 500px;
+    }
+
+    .error-illustration {
+      font-size: 80px;
+      margin: 30px 0;
+      opacity: 0.6;
+      filter: drop-shadow(0 4px 12px rgba(139, 158, 255, 0.2));
+    }
+
+    @media (max-width: 768px) {
+      .error-code {
+        font-size: 80px;
+      }
+
+      .error-title {
+        font-size: 28px;
+      }
+
+      .error-message {
+        font-size: 16px;
+      }
+
+      .error-illustration {
+        font-size: 60px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <a href="/">
+        <img src="public/assets/logo.png" alt="Arise In Life">
+      </a>
+    </div>
+
+    <div class="error-container">
+      <div class="error-code">404</div>
+      <h1 class="error-title">Pagina nu a fost găsită</h1>
+      <p class="error-message">
+        Se pare că pagina pe care o cauți nu există sau a fost mutată.
+      </p>
+
+      <a href="/" class="primary-btn">
+        Înapoi la Pagina Principală
+      </a>
+    </div>
+
+    <!-- Footer info -->
+    <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid var(--border-dark); text-align: center;">
+      <p style="color: var(--text-light); font-size: 14px;">
+        Cod eroare: 404 • Pagină negăsită
+      </p>
+      <p style="color: var(--text-light); font-size: 13px; margin-top: 10px;">
+        © 2026 Arise In Life. Toate drepturile rezervate.
+      </p>
+    </div>
+  </div>
+</body>
+</html>

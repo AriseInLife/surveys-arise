@@ -17,7 +17,7 @@ if (!fs.existsSync(surveyPath)) {
 const surveyData = JSON.parse(fs.readFileSync(surveyPath, 'utf8'));
 
 console.log(`📄 Generez pagina pentru: ${surveyData.title}`);
-console.log(`📊 Bazat pe ${surveyData.metadata.sampleSize.toLocaleString()} participanți din cercetare reală`);
+console.log(`📊 Bazat pe ${surveyData.metadata.sampleSize.toLocaleString()} participanți din studii validate`);
 
 // Convertește distribuțiile reale în numere absolute pentru afișare
 const convertToAbsoluteNumbers = () => {
@@ -54,7 +54,7 @@ const html = `<!DOCTYPE html>
       <h1>${surveyData.title}</h1>
       <p class="description">${surveyData.description}</p>
       <div class="research-badge">
-        📊 Bazat pe cercetare reală: ${surveyData.metadata.sampleSize.toLocaleString()} participanți
+        📊 Bazat pe studii validate: ${surveyData.metadata.sampleSize.toLocaleString()} participanți
       </div>
       <div id="content"></div>
     </div>
@@ -87,7 +87,7 @@ const html = `<!DOCTYPE html>
           <div class="research-context">
             <div class="research-icon">🧠</div>
             <div class="research-text">
-              <strong>Context științific:</strong> \${context.researchBasis}
+              <strong>Context de dezvoltare:</strong> \${context.researchBasis}
             </div>
           </div>
           
@@ -142,7 +142,7 @@ const html = `<!DOCTYPE html>
             </div>
             <div class="scientific-basis">
               <span class="science-icon">🧠</span>
-              <strong>Bază științifică:</strong> \${selectedOption.scientificBasis}
+              <strong>De ce contează acest răspuns:</strong> \${selectedOption.scientificBasis}
             </div>
           </div>
         \`;
@@ -163,10 +163,7 @@ const html = `<!DOCTYPE html>
         <div class="results">
           <div class="result-header">
             <h2>\${result.title}</h2>
-            <div class="percentile-display">
-              <div class="percentile-value">\${result.percentile.value}%</div>
-              <div class="percentile-label">Percentila ta</div>
-            </div>
+            <p class="result-description">\${result.description}</p>
           </div>
           
           <div class="score-display">
@@ -181,8 +178,6 @@ const html = `<!DOCTYPE html>
               \${result.realWorldComparison.description}
             </div>
           </div>
-          
-          <p class="result-description">\${result.description}</p>
           
           <div id="chartContainer">
             <h3 class="chart-title">📈 Comparație: Tu vs Cercetare Reală</h3>
@@ -207,7 +202,7 @@ const html = `<!DOCTYPE html>
           \${recommendationsHTML}
           
           <div class="sources-section">
-            <h3>📚 Surse Științifice</h3>
+            <h3>📚 Surse de Cercetare</h3>
             <div class="sources-list">
               \${realWorldStats.sources.map((source, idx) => \`
                 <div class="source-item">
@@ -240,7 +235,7 @@ const html = `<!DOCTYPE html>
           
           <!-- Footer pentru export PNG -->
           <div class="export-footer" id="export-footer">
-            <div class="export-footer-text">Bazat pe cercetare științifică reală</div>
+            <div class="export-footer-text">Bazat pe cercetare validată</div>
             <div class="export-footer-link">Arise in Life</div>
             <div class="export-footer-text" style="margin-top: 5px; font-size: 13px;">
               https://ariseinlife.com
@@ -451,12 +446,76 @@ if (!fs.existsSync(outputDir)) {
 
 fs.writeFileSync(path.join(outputDir, 'index.html'), html);
 
+// Actualizează surveys-list.json
+updateSurveysList(surveyData);
+
 console.log(`✅ Pagina generată cu succes!`);
 console.log(`   Locație: ${outputDir}/index.html`);
 console.log(`   Funcționalități:`);
-console.log(`   ✓ Grafic comparativ cu date reale din cercetare`);
-console.log(`   ✓ Afișare percentile și comparație realistă`);
-console.log(`   ✓ Surse științifice verificabile`);
-console.log(`   ✓ Context științific pentru fiecare întrebare`);
+console.log(`   ✓ Grafic comparativ cu date din cercetare`);
+console.log(`   ✓ Afișare percentile și comparație cu populația`);
+console.log(`   ✓ Surse de cercetare verificabile`);
+console.log(`   ✓ Context de dezvoltare pentru fiecare întrebare`);
 console.log(`   ✓ Recomandări personalizate bazate pe rezultat`);
 console.log(`   ✓ Metadate complete despre cercetare`);
+
+function updateSurveysList(newSurvey) {
+  const surveysListPath = 'public/survey/surveys-list.json';
+  
+  let surveysListData;
+  try {
+    if (fs.existsSync(surveysListPath)) {
+      surveysListData = JSON.parse(fs.readFileSync(surveysListPath, 'utf8'));
+    } else {
+      surveysListData = {
+        surveys: [],
+        lastUpdated: new Date().toISOString().split('T')[0],
+        totalCount: 0
+      };
+    }
+  } catch (error) {
+    console.error('⚠️  Eroare la citirea surveys-list.json, creez unul nou');
+    surveysListData = {
+      surveys: [],
+      lastUpdated: new Date().toISOString().split('T')[0],
+      totalCount: 0
+    };
+  }
+  
+  // Verifică dacă chestionarul există deja
+  const existingIndex = surveysListData.surveys.findIndex(s => s.id === newSurvey.id);
+  
+  const surveyEntry = {
+    id: newSurvey.id,
+    folderName: surveyId, // Folosim surveyId care este argumentul din command line (numele real al folderului)
+    title: newSurvey.title,
+    topic: newSurvey.topic,
+    description: newSurvey.description,
+    metadata: {
+      sampleSize: newSurvey.metadata.sampleSize
+    }
+  };
+  
+  if (existingIndex >= 0) {
+    // Actualizează chestionarul existent
+    surveysListData.surveys[existingIndex] = surveyEntry;
+    console.log(`📝 Actualizat ${newSurvey.id} în surveys-list.json`);
+  } else {
+    // Adaugă chestionar nou
+    surveysListData.surveys.push(surveyEntry);
+    console.log(`➕ Adăugat ${newSurvey.id} în surveys-list.json`);
+  }
+  
+  // Actualizează metadata
+  surveysListData.totalCount = surveysListData.surveys.length;
+  surveysListData.lastUpdated = new Date().toISOString().split('T')[0];
+  
+  // Salvează fișierul
+  const surveysListDir = path.dirname(surveysListPath);
+  if (!fs.existsSync(surveysListDir)) {
+    fs.mkdirSync(surveysListDir, { recursive: true });
+  }
+  
+  fs.writeFileSync(surveysListPath, JSON.stringify(surveysListData, null, 2));
+  console.log(`✅ surveys-list.json actualizat (${surveysListData.totalCount} chestionare)`);
+}

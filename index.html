@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chestionare de Dezvoltare Personală - Arise In Life</title>
+  <meta name="description" content="Descoperă-te prin chestionare bazate pe cercetări științifice validate. Peste 100,000+ participanți din studii globale.">
+  <link rel="stylesheet" href="public/assets/style.css">
+  <style>
+    /* Additional styles for survey list page */
+    .survey-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 25px;
+      margin-top: 40px;
+    }
+
+    .survey-card {
+      background: var(--bg-dark);
+      border: 2px solid var(--border-dark);
+      border-radius: 15px;
+      padding: 25px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .survey-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(139, 158, 255, 0.1), transparent);
+      transition: left 0.5s;
+    }
+
+    .survey-card:hover::before {
+      left: 100%;
+    }
+
+    .survey-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--primary-color);
+      box-shadow: 0 8px 25px rgba(139, 158, 255, 0.3);
+      background: linear-gradient(135deg, var(--bg-dark) 0%, rgba(139, 158, 255, 0.05) 100%);
+    }
+
+    .survey-card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .survey-icon {
+      font-size: 32px;
+      flex-shrink: 0;
+      filter: drop-shadow(0 2px 4px rgba(139, 158, 255, 0.3));
+    }
+
+    .survey-title {
+      color: var(--text-dark);
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .survey-description {
+      color: var(--text-medium);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+
+    .survey-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid var(--border-dark);
+    }
+
+    .meta-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--bg-medium);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      color: var(--text-light);
+      font-weight: 600;
+    }
+
+    .meta-badge.primary {
+      background: linear-gradient(135deg, rgba(139, 158, 255, 0.2), rgba(157, 111, 212, 0.2));
+      color: var(--primary-color);
+      border: 1px solid var(--primary-color);
+    }
+
+    .hero-section {
+      text-align: center;
+      margin-bottom: 50px;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, rgba(139, 158, 255, 0.08), rgba(157, 111, 212, 0.08));
+      border-radius: 20px;
+      border: 2px solid rgba(139, 158, 255, 0.2);
+    }
+
+    .hero-title {
+      font-size: 42px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+
+    .hero-subtitle {
+      font-size: 18px;
+      color: var(--text-medium);
+      line-height: 1.6;
+      max-width: 600px;
+      margin: 0 auto 25px;
+    }
+
+    .stats-row {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 36px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .loading-message {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-medium);
+      font-size: 16px;
+    }
+
+    .error-message {
+      text-align: center;
+      padding: 40px;
+      color: var(--warning-color);
+      font-size: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 32px;
+      }
+
+      .hero-subtitle {
+        font-size: 16px;
+      }
+
+      .survey-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-row {
+        gap: 25px;
+      }
+
+      .stat-number {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <a href="https://ariseinlife.com/" target="_blank">
+        <img src="public/assets/logo.png" alt="Arise In Life">
+      </a>
+    </div>
+
+    <div class="hero-section">
+      <h1 class="hero-title">Descoperă-te Prin Știință</h1>
+      <p class="hero-subtitle">
+        Chestionare de dezvoltare personală bazate pe cercetări validate din Gallup, Harvard Business Review, 
+        McKinsey și altele. Date reale de la peste 100,000+ participanți.
+      </p>
+      
+      <div class="stats-row">
+        <div class="stat-item">
+          <span class="stat-number" id="surveyCount">-</span>
+          <span class="stat-label">Chestionare</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">100K+</span>
+          <span class="stat-label">Participanți</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">2020-2026</span>
+          <span class="stat-label">Studii Recente</span>
+        </div>
+      </div>
+    </div>
+
+    <h2 style="color: var(--primary-color); font-size: 24px; margin-bottom: 25px; text-align: center;">
+      📊 Toate Chestionarele
+    </h2>
+
+    <div class="survey-grid" id="surveyGrid">
+      <div class="loading-message">Se încarcă chestionarele...</div>
+    </div>
+
+    <!-- Footer CTA -->
+    <div style="margin-top: 60px; text-align: center; padding: 40px 20px; background: linear-gradient(135deg, rgba(139, 158, 255, 0.05), rgba(157, 111, 212, 0.05)); border-radius: 20px; border: 1px solid var(--border-dark);">
+      <h3 style="color: var(--text-dark); font-size: 24px; margin-bottom: 15px;">
+        Ai nevoie de mai mult?
+      </h3>
+      <p style="color: var(--text-medium); margin-bottom: 25px; font-size: 16px; line-height: 1.6;">
+        Descoperă programele noastre complete de coaching și dezvoltare personală.
+      </p>
+      <a href="https://ariseinlife.com/" class="primary-btn" target="_blank">
+        Explorează Arise In Life
+      </a>
+    </div>
+
+    <!-- Footer info -->
+    <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid var(--border-dark); text-align: center;">
+      <p style="color: var(--text-light); font-size: 14px; line-height: 1.6;">
+        📊 Toate chestionarele sunt bazate pe cercetări științifice validate<br>
+        🔒 Datele tale nu sunt salvate sau partajate
+      </p>
+      <p style="color: var(--text-light); font-size: 13px; margin-top: 15px;">
+        © 2026 Arise In Life. Toate drepturile rezervate.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Mapare iconițe pentru topicuri
+    const topicIcons = {
+      'Managementul Timpului': '⏰',
+      'Inteligența Emoțională': '💡',
+      'Reziliența Mentală': '💪',
+      'Leadership și Influență': '👑',
+      'Creativitate și Inovație': '🎨',
+      'Comunicare Eficientă': '🗣️',
+      'Echilibru Viață-Muncă': '⚖️',
+      'Mindfulness și Prezență': '🧘',
+      'Rezolvare de Probleme': '🧩',
+      'Motivație și Disciplină': '🔥',
+      'Adaptabilitate': '🌊',
+      'Gestionarea Stresului': '🛡️'
+    };
+
+    // Funcție pentru a obține categoria dintr-un topic
+    function getCategoryFromTopic(topic) {
+      const categories = {
+        'Managementul Timpului': 'Productivitate',
+        'Inteligența Emoțională': 'Emoții',
+        'Reziliența Mentală': 'Mentalitate',
+        'Leadership și Influență': 'Carieră',
+        'Creativitate și Inovație': 'Creativitate',
+        'Comunicare Eficientă': 'Comunicare',
+        'Echilibru Viață-Muncă': 'Lifestyle',
+        'Mindfulness și Prezență': 'Wellbeing',
+        'Rezolvare de Probleme': 'Gândire',
+        'Motivație și Disciplină': 'Performanță',
+        'Adaptabilitate': 'Creștere',
+        'Gestionarea Stresului': 'Wellbeing'
+      };
+      return categories[topic] || 'General';
+    }
+
+    // Funcție pentru a crea un card de chestionar
+    function createSurveyCard(survey) {
+      const icon = topicIcons[survey.topic] || '📋';
+      const category = getCategoryFromTopic(survey.topic);
+      const sampleSize = survey.metadata?.sampleSize || 0;
+      // Folosim folderName dacă există, altfel id
+      const surveyPath = survey.folderName || survey.id;
+      
+      return `
+        <a href="public/survey/${surveyPath}/index.html" class="survey-card">
+          <div class="survey-card-header">
+            <div class="survey-icon">${icon}</div>
+            <div>
+              <h3 class="survey-title">${survey.title}</h3>
+            </div>
+          </div>
+          <p class="survey-description">
+            ${survey.description}
+          </p>
+          <div class="survey-meta">
+            ${sampleSize > 0 ? `<span class="meta-badge primary">📊 ${sampleSize.toLocaleString()} participanți</span>` : ''}
+            <span class="meta-badge">⏱️ 3 min</span>
+            <span class="meta-badge">🎯 ${category}</span>
+          </div>
+        </a>
+      `;
+    }
+
+    // Încarcă chestionarele dinamic
+    async function loadSurveys() {
+      const surveyGrid = document.getElementById('surveyGrid');
+      const surveyCountElement = document.getElementById('surveyCount');
+      
+      try {
+        // Încearcă să încarce lista de chestionare din surveys-list.json
+        const response = await fetch('public/survey/surveys-list.json');
+        
+        if (!response.ok) {
+          throw new Error('Nu s-a putut încărca lista de chestionare');
+        }
+        
+        const surveysData = await response.json();
+        const surveys = surveysData.surveys || [];
+        
+        if (surveys.length === 0) {
+          surveyGrid.innerHTML = '<div class="error-message">Nu există chestionare disponibile momentan.</div>';
+          surveyCountElement.textContent = '0';
+          return;
+        }
+        
+        // Sortează chestionarele după ID
+        surveys.sort((a, b) => a.id.localeCompare(b.id));
+        
+        // Creează cardurile pentru fiecare chestionar
+        surveyGrid.innerHTML = surveys.map(survey => createSurveyCard(survey)).join('');
+        surveyCountElement.textContent = surveys.length;
+        
+      } catch (error) {
+        console.error('Eroare la încărcarea chestionarelor:', error);
+        surveyGrid.innerHTML = `
+          <div class="error-message">
+            Nu s-au putut încărca chestionarele. Te rugăm să reîncarci pagina.
+          </div>
+        `;
+        surveyCountElement.textContent = '0';
+      }
+    }
+
+    // Încarcă chestionarele când pagina este gata
+    document.addEventListener('DOMContentLoaded', loadSurveys);
+  </script>
+</body>
+</html>

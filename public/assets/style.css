@@ -274,7 +274,12 @@ h1 {
 }
 
 .result-header {
-  margin-bottom: 30px;
+  margin-bottom: 40px;
+  padding: 30px 20px;
+  background: linear-gradient(135deg, rgba(139, 158, 255, 0.08), rgba(157, 111, 212, 0.08));
+  border-radius: 20px;
+  border: 2px solid rgba(139, 158, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(139, 158, 255, 0.15);
 }
 
 .results h2 {
@@ -282,12 +287,16 @@ h1 {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: 20px;
-  font-size: 28px;
-  font-weight: 700;
+  margin-bottom: 25px;
+  font-size: 40px;
+  font-weight: 800;
+  text-shadow: 0 0 30px rgba(139, 158, 255, 0.3);
+  letter-spacing: 0.5px;
+  line-height: 1.2;
 }
 
 .percentile-display {
+  display: none; /* Nu mai este folosit - scorul a luat locul percentilei */
   display: inline-block;
   background: var(--bg-dark);
   padding: 20px 40px;
@@ -314,7 +323,7 @@ h1 {
 }
 
 .score-display {
-  margin: 25px 0;
+  margin: 35px 0;
 }
 
 .score {
@@ -365,9 +374,9 @@ h1 {
 .result-description {
   color: var(--text-medium);
   line-height: 1.8;
-  margin-bottom: 35px;
+  margin-top: 20px;
   font-size: 17px;
-  padding: 0 20px;
+  text-align: center;
 }
 
 /* Analysis Section */
