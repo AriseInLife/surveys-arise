@@ -2,12 +2,12 @@ const fs = require('fs');
 const path = require('path');
 
 if (process.argv.length < 3) {
-  console.error('❌ Utilizare: node scripts/generate-page.js <survey_id>');
+  console.error('❌ Utilizare: node scripts/generate-page.js <survey_slug>');
   process.exit(1);
 }
 
-const surveyId = process.argv[2];
-const surveyPath = `surveys/${surveyId}.json`;
+const surveySlug = process.argv[2];
+const surveyPath = `surveys/${surveySlug}.json`;
 
 if (!fs.existsSync(surveyPath)) {
   console.error(`❌ Fișierul ${surveyPath} nu există!`);
@@ -25,20 +25,19 @@ if (surveyData.metadata.sampleSize > maxParticipants) {
 console.log(`📄 Generez pagina pentru: ${surveyData.title}`);
 console.log(`📊 Bazat pe ${surveyData.metadata.sampleSize.toLocaleString()} participanți din studii validate`);
 
+const totalQuestions = surveyData.questions.length;
+
 // Convertește distribuțiile reale în numere absolute pentru afișare
 const convertToAbsoluteNumbers = () => {
-  return surveyData.questions.map((q, qIdx) => {
-    // Limitează totalResponses la maxim 600
+  return surveyData.questions.map((q) => {
     const total = Math.min(q.context.realWorldData.totalResponses, maxParticipants);
     const distribution = q.context.realWorldData.distribution;
-    
-    return distribution.map(percentage => Math.round(total * percentage / 100));
+    return distribution.map((percentage) => Math.round((total * percentage) / 100));
   });
 };
 
 const realStats = convertToAbsoluteNumbers();
 
-// Template HTML cu date reale și funcționalități îmbunătățite
 const html = `<!DOCTYPE html>
 <html lang="ro">
 <head>
@@ -50,7 +49,7 @@ const html = `<!DOCTYPE html>
     gtag('js', new Date());
     gtag('config', 'G-XXXXXXXXXX');
   </script>
-  
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${surveyData.title}</title>
@@ -75,38 +74,32 @@ const html = `<!DOCTYPE html>
       <div id="content"></div>
     </div>
   </div>
-  
+
   <script>
+    const surveySlug = ${JSON.stringify(surveySlug)};
     const surveyData = ${JSON.stringify(surveyData, null, 2)};
     let currentQuestion = 0;
     let answers = [];
-    
+    const totalQuestions = surveyData.questions.length;
+
     // Date reale din cercetare
     const realWorldStats = {
       totalResponses: surveyData.metadata.sampleSize,
       questionStats: ${JSON.stringify(realStats)},
       sources: surveyData.metadata.dataSource
     };
-    
     function renderQuestion(index) {
       const q = surveyData.questions[index];
       const context = q.context;
-      
+
       const html = \`
         <div class="question">
           <div class="progress-bar">
-            <div class="progress-fill" style="width: \${((index + 1) / 3) * 100}%"></div>
+            <div class="progress-fill" style="width: \${((index + 1) / totalQuestions) * 100}%"></div>
           </div>
-          <h2>Întrebarea \${index + 1} din 3</h2>
+          <h2>?ntrebarea \${index + 1} din \${totalQuestions}</h2>
           <p class="question-text">\${q.text}</p>
-          
-          <div class="research-context">
-            <div class="research-icon">🧠</div>
-            <div class="research-text">
-              <strong>Context de dezvoltare:</strong> \${context.researchBasis}
-            </div>
-          </div>
-          
+
           <div class="options">
             \${q.options.map((opt, i) => \`
               <button class="option-btn" onclick="selectAnswer(\${index}, \${i})">
@@ -114,53 +107,62 @@ const html = `<!DOCTYPE html>
               </button>
             \`).join('')}
           </div>
+
+          <div class="research-context" style="margin-top: 16px;">
+            <div class="research-icon"><img src="../../assets/brain.png" alt="Creier"></div>
+            <div class="research-text">
+              <strong>Context de dezvoltare:</strong> \${context.researchBasis}
+            </div>
+          </div>
         </div>
       \`;
       document.getElementById('content').innerHTML = html;
     }
-    
+
+
+
     function selectAnswer(questionIndex, optionIndex) {
       answers[questionIndex] = optionIndex;
-      
-      // Track answer selection
+
       if (typeof gtag !== 'undefined') {
         gtag('event', 'answer_selected', {
           'question_number': questionIndex + 1,
           'option_index': optionIndex,
-          'survey_id': surveyData.id
+          'survey_slug': surveySlug
         });
       }
-      
-      if (currentQuestion < 2) {
+
+      if (currentQuestion < totalQuestions - 1) {
         currentQuestion++;
         renderQuestion(currentQuestion);
       } else {
         showResults();
       }
     }
-    
+
     function showResults() {
-      const totalScore = answers.reduce((sum, answerIdx, qIdx) => {
+      const rawScore = answers.reduce((sum, answerIdx, qIdx) => {
         return sum + surveyData.questions[qIdx].options[answerIdx].score;
       }, 0);
-      
+      const maxScore = totalQuestions * 3;
+      const normalizedScore = Math.round((rawScore / maxScore) * 10);
+
       let result;
       surveyData.results.forEach(r => {
         const [min, max] = r.range.split('-').map(Number);
-        if (totalScore >= min && totalScore <= max) {
+        if (normalizedScore >= min && normalizedScore <= max) {
           result = r;
         }
       });
-      
-      // Track survey completion
+
       if (typeof gtag !== 'undefined') {
         gtag('event', 'survey_completed', {
-          'survey_id': surveyData.id,
-          'total_score': totalScore,
-          'result_category': result.title
+          'survey_slug': surveySlug,
+          'total_score': normalizedScore,
+          'result_category': result ? result.title : 'N/A'
         });
       }
-      
+
       const analysisHTML = answers.map((ansIdx, qIdx) => {
         const q = surveyData.questions[qIdx];
         const selectedOption = q.options[ansIdx];
@@ -181,9 +183,9 @@ const html = `<!DOCTYPE html>
           </div>
         \`;
       }).join('');
-      
-      const recommendationsHTML = result.recommendations ? 
-        \`<div class="recommendations">
+
+      const recommendationsHTML = result && result.recommendations
+        ? \`<div class="recommendations">
           <h3>📌 Recomandări Personalizate</h3>
           \${result.recommendations.map(rec => \`
             <div class="recommendation-item">
@@ -191,28 +193,29 @@ const html = `<!DOCTYPE html>
               <div class="rec-source">📚 Sursă: \${rec.source}</div>
             </div>
           \`).join('')}
-        </div>\` : '';
-      
+        </div>\`
+        : '';
+
       document.getElementById('content').innerHTML = \`
         <div class="results">
           <div class="result-header">
-            <h2>\${result.title}</h2>
-            <p class="result-description">\${result.description}</p>
+            <h2>\${result ? result.title : 'Rezultat indisponibil'}</h2>
+            <p class="result-description">\${result ? result.description : ''}</p>
           </div>
-          
+
           <div class="score-display">
-            <div class="score">\${totalScore}/10</div>
+            <div class="score">\${normalizedScore}/10</div>
             <div class="score-label">Scorul tău</div>
           </div>
-          
+
           <div class="real-world-comparison">
             <div class="comparison-icon">📊</div>
             <div class="comparison-text">
-              <strong>\${result.percentile.interpretation}</strong><br>
-              \${result.realWorldComparison.description}
+              <strong>\${result ? result.percentile.interpretation : ''}</strong><br>
+              \${result ? result.realWorldComparison.description : ''}
             </div>
           </div>
-          
+
           <div id="chartContainer">
             <h3 class="chart-title">📈 Comparație: Tu vs Cercetare Reală</h3>
             <canvas id="resultsChart"></canvas>
@@ -227,14 +230,14 @@ const html = `<!DOCTYPE html>
               </div>
             </div>
           </div>
-          
+
           <div class="analysis">
             <h3>🔍 Analiza Detaliată a Răspunsurilor</h3>
             \${analysisHTML}
           </div>
-          
+
           \${recommendationsHTML}
-          
+
           <div class="sources-section">
             <h3>📚 Surse de Cercetare</h3>
             <div class="sources-list">
@@ -252,7 +255,7 @@ const html = `<!DOCTYPE html>
               \`).join('')}
             </div>
           </div>
-          
+
           <div class="action-buttons">
             <button class="secondary-btn" onclick="downloadResults()">
               Descarcă rezultate
@@ -261,13 +264,11 @@ const html = `<!DOCTYPE html>
               Începe din nou
             </button>
           </div>
-          
-          <!-- Fixed floating button -->
+
           <a href="https://ariseinlife.com/" class="floating-cta-btn" target="_blank">
             Află mai multe
           </a>
-          
-          <!-- Footer pentru export PNG -->
+
           <div class="export-footer" id="export-footer">
             <div class="export-footer-text">Bazat pe cercetare validată</div>
             <div class="export-footer-link">Arise in Life</div>
@@ -277,38 +278,36 @@ const html = `<!DOCTYPE html>
           </div>
         </div>
       \`;
-      
+
       createComparisonChart();
     }
-    
+
     function createComparisonChart() {
       const ctx = document.getElementById('resultsChart');
-      
-      // Calculăm răspunsurile utilizatorului (scalate la 10)
+      const labels = surveyData.questions.map((_, idx) => \`Întrebarea \${idx + 1}\`);
+
       const userScores = answers.map((ansIdx, qIdx) => {
         const score = surveyData.questions[qIdx].options[ansIdx].score;
-        return (score / 3) * 10; // Scalăm de la 1-3 la 0-10
+        return (score / 3) * 10;
       });
-      
-      // Calculăm media reală din cercetare (scalată la 10)
+
       const avgScores = answers.map((ansIdx, qIdx) => {
         const distribution = surveyData.questions[qIdx].context.realWorldData.distribution;
         const options = surveyData.questions[qIdx].options;
-        
-        // Calculăm scorul mediu ponderat bazat pe distribuția reală
+
         let weightedSum = 0;
         distribution.forEach((percentage, idx) => {
           const score = options[idx].score;
-          weightedSum += (percentage * score / 100);
+          weightedSum += (percentage * score) / 100;
         });
-        
-        return parseFloat(((weightedSum / 3) * 10).toFixed(2)); // Scalăm la 10
+
+        return parseFloat(((weightedSum / 3) * 10).toFixed(2));
       });
-      
+
       new Chart(ctx, {
         type: 'bar',
         data: {
-          labels: ['Întrebarea 1', 'Întrebarea 2', 'Întrebarea 3'],
+          labels,
           datasets: [
             {
               label: 'Scorul tău',
@@ -384,39 +383,38 @@ const html = `<!DOCTYPE html>
         }
       });
     }
-    
+
     async function downloadResults() {
       const button = event.target;
       const originalText = button.innerHTML;
-      
-      // Track download attempt
+
       if (typeof gtag !== 'undefined') {
         gtag('event', 'download_results', {
-          'survey_id': surveyData.id
+          'survey_slug': surveySlug
         });
       }
-      
+
       if (typeof domtoimage === 'undefined') {
         alert('Librăria de export nu este încărcată. Te rugăm să reîmprospătezi pagina.');
         return;
       }
-      
+
       button.innerHTML = '⏳ Generez...';
       button.disabled = true;
-      
+
       try {
         const actionButtons = document.querySelector('.action-buttons');
         const floatingBtn = document.querySelector('.floating-cta-btn');
         const exportFooter = document.getElementById('export-footer');
-        
+
         actionButtons.style.display = 'none';
         floatingBtn.style.display = 'none';
         exportFooter.classList.add('export-footer-visible');
-        
+
         await new Promise(resolve => setTimeout(resolve, 300));
-        
+
         const container = document.getElementById('survey-container');
-        
+
         const dataUrl = await domtoimage.toPng(container, {
           quality: 1.0,
           bgcolor: '#2a2f45',
@@ -427,67 +425,63 @@ const html = `<!DOCTYPE html>
           width: container.offsetWidth,
           height: container.offsetHeight
         });
-        
+
         actionButtons.style.display = 'flex';
         floatingBtn.style.display = 'inline-block';
         exportFooter.classList.remove('export-footer-visible');
-        
+
         const link = document.createElement('a');
         const timestamp = new Date().toISOString().slice(0, 10);
-        link.download = \`rezultate-\${surveyData.id}-\${timestamp}.png\`;
+        link.download = 'rezultate-' + surveySlug + '-' + timestamp + '.png';
         link.href = dataUrl;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        
+
         button.innerHTML = '✅ Descărcat!';
         button.disabled = false;
-        
+
         setTimeout(() => {
           button.innerHTML = originalText;
         }, 2000);
-        
       } catch (error) {
         console.error('Eroare la generarea imaginii:', error);
-        
+
         const actionButtons = document.querySelector('.action-buttons');
         const floatingBtn = document.querySelector('.floating-cta-btn');
         const exportFooter = document.getElementById('export-footer');
-        
+
         if (actionButtons) actionButtons.style.display = 'flex';
         if (floatingBtn) floatingBtn.style.display = 'inline-block';
         if (exportFooter) exportFooter.classList.remove('export-footer-visible');
-        
+
         button.innerHTML = '❌ Eroare';
         setTimeout(() => {
           button.innerHTML = originalText;
           button.disabled = false;
         }, 2000);
-        
+
         alert('A apărut o eroare. Încearcă din nou sau folosește Print (Ctrl+P).');
       }
     }
-    
+
     function restartSurvey() {
-      // Track restart
       if (typeof gtag !== 'undefined') {
         gtag('event', 'survey_restart', {
-          'survey_id': surveyData.id
+          'survey_slug': surveySlug
         });
       }
-      
+
       currentQuestion = 0;
       answers = [];
       renderQuestion(0);
     }
-    
-    // Start survey
+
     renderQuestion(0);
-    
-    // Track survey start
+
     if (typeof gtag !== 'undefined') {
       gtag('event', 'survey_started', {
-        'survey_id': surveyData.id,
+        'survey_slug': surveySlug,
         'survey_title': surveyData.title
       });
     }
@@ -495,29 +489,28 @@ const html = `<!DOCTYPE html>
 </body>
 </html>`;
 
-const outputDir = path.join('public', 'survey', surveyId);
+const outputDir = path.join('public', 'survey', surveySlug);
 if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir, { recursive: true });
 }
 
 fs.writeFileSync(path.join(outputDir, 'index.html'), html);
 
-// Actualizează surveys-list.json
 updateSurveysList(surveyData);
 
-console.log(`✅ Pagina generată cu succes!`);
+console.log('✅ Pagina generată cu succes!');
 console.log(`   Locație: ${outputDir}/index.html`);
-console.log(`   Funcționalități:`);
-console.log(`   ✓ Grafic comparativ cu date din cercetare`);
-console.log(`   ✓ Afișare percentile și comparație cu populația`);
-console.log(`   ✓ Surse de cercetare verificabile`);
-console.log(`   ✓ Context de dezvoltare pentru fiecare întrebare`);
-console.log(`   ✓ Recomandări personalizate bazate pe rezultat`);
-console.log(`   ✓ Metadate complete despre cercetare`);
+console.log('   Funcționalități:');
+console.log('   ✓ Grafic comparativ cu date din cercetare');
+console.log('   ✓ Afișare percentile și comparație cu populația');
+console.log('   ✓ Surse de cercetare verificabile');
+console.log('   ✓ Context de dezvoltare pentru fiecare întrebare');
+console.log('   ✓ Recomandări personalizate bazate pe rezultat');
+console.log('   ✓ Metadate complete despre cercetare');
 
 function updateSurveysList(newSurvey) {
   const surveysListPath = 'public/survey/surveys-list.json';
-  
+
   let surveysListData;
   try {
     if (fs.existsSync(surveysListPath)) {
@@ -537,13 +530,11 @@ function updateSurveysList(newSurvey) {
       totalCount: 0
     };
   }
-  
-  // Verifică dacă chestionarul există deja
-  const existingIndex = surveysListData.surveys.findIndex(s => s.id === newSurvey.id);
-  
+
+  const existingIndex = surveysListData.surveys.findIndex(s => s.slug === surveySlug);
+
   const surveyEntry = {
-    id: newSurvey.id,
-    folderName: surveyId, // Folosim surveyId care este argumentul din command line (numele real al folderului)
+    slug: surveySlug,
     title: newSurvey.title,
     topic: newSurvey.topic,
     description: newSurvey.description,
@@ -551,27 +542,23 @@ function updateSurveysList(newSurvey) {
       sampleSize: newSurvey.metadata.sampleSize
     }
   };
-  
+
   if (existingIndex >= 0) {
-    // Actualizează chestionarul existent
     surveysListData.surveys[existingIndex] = surveyEntry;
-    console.log(`📝 Actualizat ${newSurvey.id} în surveys-list.json`);
+    console.log(`📝 Actualizat ${surveySlug} în surveys-list.json`);
   } else {
-    // Adaugă chestionar nou
     surveysListData.surveys.push(surveyEntry);
-    console.log(`➕ Adăugat ${newSurvey.id} în surveys-list.json`);
+    console.log(`➕ Adăugat ${surveySlug} în surveys-list.json`);
   }
-  
-  // Actualizează metadata
+
   surveysListData.totalCount = surveysListData.surveys.length;
   surveysListData.lastUpdated = new Date().toISOString().split('T')[0];
-  
-  // Salvează fișierul
+
   const surveysListDir = path.dirname(surveysListPath);
   if (!fs.existsSync(surveysListDir)) {
     fs.mkdirSync(surveysListDir, { recursive: true });
   }
-  
+
   fs.writeFileSync(surveysListPath, JSON.stringify(surveysListData, null, 2));
   console.log(`✅ surveys-list.json actualizat (${surveysListData.totalCount} chestionare)`);
 }

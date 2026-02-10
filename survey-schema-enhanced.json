@@ -2,13 +2,8 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Enhanced Survey Schema with Real Data",
   "type": "object",
-  "required": ["id", "title", "topic", "questions", "results", "metadata"],
+  "required": ["title", "topic", "questions", "results", "metadata"],
   "properties": {
-    "id": {
-      "type": "string",
-      "pattern": "^survey_[0-9]{3}$",
-      "description": "ID format: survey_001, survey_002, etc."
-    },
     "title": {
       "type": "string",
       "description": "Titlul chestionarului"
@@ -84,8 +79,8 @@
     },
     "questions": {
       "type": "array",
-      "minItems": 3,
-      "maxItems": 3,
+      "minItems": 6,
+      "maxItems": 6,
       "items": {
         "type": "object",
         "required": ["text", "options", "context"],
@@ -174,7 +169,7 @@
         "properties": {
           "range": {
             "type": "string",
-            "description": "Range de puncte (ex: 3-4, 5-7, 8-9)",
+            "description": "Range de puncte (ex: 0-3, 4-6, 7-10)",
             "pattern": "^[0-9]+-[0-9]+$"
           },
           "title": {

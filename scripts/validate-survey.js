@@ -1,8 +1,6 @@
 const Ajv = require('ajv');
 const fs = require('fs');
-const path = require('path');
 
-// Verifică dacă a fost dat un argument
 if (process.argv.length < 3) {
   console.error('❌ Utilizare: node scripts/validate-survey.js <fisier.json>');
   process.exit(1);
@@ -10,17 +8,14 @@ if (process.argv.length < 3) {
 
 const surveyFile = process.argv[2];
 
-// Verifică dacă fișierul există
 if (!fs.existsSync(surveyFile)) {
   console.error(`❌ Fișierul ${surveyFile} nu există!`);
   process.exit(1);
 }
 
-// Încarcă schema și survey-ul
 const schema = JSON.parse(fs.readFileSync('survey-schema-enhanced.json', 'utf8'));
 const survey = JSON.parse(fs.readFileSync(surveyFile, 'utf8'));
 
-// Validează structura JSON
 const ajv = new Ajv();
 const validate = ajv.compile(schema);
 const valid = validate(survey);
@@ -34,7 +29,6 @@ if (!valid) {
   process.exit(1);
 }
 
-// Validări suplimentare pentru datele reale
 let hasErrors = false;
 
 console.log('✅ Structura JSON este validă!');
@@ -42,19 +36,27 @@ console.log('');
 console.log('🔍 Verificare date reale...');
 console.log('');
 
-// Verifică că procentele din fiecare întrebare însumează ~100%
+if (survey.questions.length !== 6) {
+  console.error(`❌ Numărul de întrebări este ${survey.questions.length}, dar trebuie să fie 6.`);
+  hasErrors = true;
+}
+
+if (survey.results.length !== 3) {
+  console.error(`❌ Numărul de rezultate este ${survey.results.length}, dar trebuie să fie 3.`);
+  hasErrors = true;
+}
+
 survey.questions.forEach((q, qIdx) => {
   const percentages = q.options.map(opt => opt.realWorldPercentage);
   const sum = percentages.reduce((a, b) => a + b, 0);
-  
+
   if (Math.abs(sum - 100) > 2) {
     console.error(`❌ Întrebarea ${qIdx + 1}: Procentele nu însumează 100% (total: ${sum}%)`);
     hasErrors = true;
   } else {
     console.log(`✅ Întrebarea ${qIdx + 1}: Procente valide (${sum}%)`);
   }
-  
-  // Verifică consistența cu context.realWorldData.distribution
+
   const contextDist = q.context.realWorldData.distribution;
   if (contextDist) {
     const contextSum = contextDist.reduce((a, b) => a + b, 0);
@@ -62,8 +64,7 @@ survey.questions.forEach((q, qIdx) => {
       console.error(`❌ Întrebarea ${qIdx + 1}: Distribution în context nu însumează 100% (total: ${contextSum}%)`);
       hasErrors = true;
     }
-    
-    // Verifică că distribution corespunde cu realWorldPercentage
+
     contextDist.forEach((dist, idx) => {
       if (Math.abs(dist - percentages[idx]) > 1) {
         console.error(`❌ Întrebarea ${qIdx + 1}, Opțiunea ${idx + 1}: Inconsistență între distribution (${dist}%) și realWorldPercentage (${percentages[idx]}%)`);
@@ -75,9 +76,9 @@ survey.questions.forEach((q, qIdx) => {
 
 console.log('');
 
-// Verifică că percentilele din rezultate au sens
-const totalResultPercentage = survey.results.reduce((sum, r) => 
-  sum + r.realWorldComparison.percentage, 0
+const totalResultPercentage = survey.results.reduce(
+  (sum, r) => sum + r.realWorldComparison.percentage,
+  0
 );
 
 if (Math.abs(totalResultPercentage - 100) > 5) {
@@ -87,7 +88,6 @@ if (Math.abs(totalResultPercentage - 100) > 5) {
   console.log(`✅ Rezultate: Distribuție validă (${totalResultPercentage}%)`);
 }
 
-// Verifică că percentilele sunt în ordine crescătoare
 const percentiles = survey.results.map(r => r.percentile.value);
 for (let i = 1; i < percentiles.length; i++) {
   if (percentiles[i] <= percentiles[i - 1]) {
@@ -97,16 +97,13 @@ for (let i = 1; i < percentiles.length; i++) {
 }
 
 console.log('');
-
-// Verifică surse
 console.log('📚 Surse de date:');
 survey.metadata.dataSource.forEach((source, idx) => {
   console.log(`   ${idx + 1}. ${source.name} (${source.year})`);
   console.log(`      ${source.url}`);
-  
-  // Verifică URL
+
   if (!source.url.startsWith('http://') && !source.url.startsWith('https://')) {
-    console.error(`      ⚠️  URL invalid (ar trebui să înceapă cu http:// sau https://)`);
+    console.error('      ⚠️  URL invalid (ar trebui să înceapă cu http:// sau https://)');
   }
 });
 
@@ -129,7 +126,6 @@ if (hasErrors) {
 } else {
   console.log('✅ Toate validările au trecut cu succes!');
   console.log('');
-  console.log(`📋 Survey ID: ${survey.id}`);
   console.log(`📋 Titlu: ${survey.title}`);
   console.log(`📋 Topic: ${survey.topic}`);
   console.log('');

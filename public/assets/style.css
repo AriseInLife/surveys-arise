@@ -149,18 +149,21 @@ h1 {
 
 /* Research Context Box */
 .research-context {
-  background: var(--bg-dark);
-  border-left: 4px solid var(--primary-color);
-  padding: 20px;
-  margin-bottom: 25px;
-  border-radius: 10px;
+  color: var(--text-light);
+  font-size: 13px;
+  line-height: 1.6;
+  padding: 12px;
+  background: rgba(139, 158, 255, 0.1);
+  border-radius: 8px;
+  border-left: 3px solid var(--secondary-color);
   display: flex;
-  gap: 15px;
-  align-items: flex-start;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .research-icon {
-  font-size: 24px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -168,9 +171,14 @@ h1 {
   background: linear-gradient(135deg, rgba(139, 158, 255, 0.15), rgba(157, 111, 212, 0.15));
   border: 2px solid var(--primary-color);
   border-radius: 10px;
-  width: 44px;
-  height: 44px;
+  width: 38px;
+  height: 38px;
 }
+
+.research-icon img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
 }
 
 .research-text {
