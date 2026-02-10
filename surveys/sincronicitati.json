@@ -36,7 +36,7 @@
       }
     ],
     "researchDate": "2026-02-10",
-    "sampleSize": 1500,
+    "sampleSize": 56,
     "demographics": {
       "ageRange": "18-70",
       "countries": ["Global", "România"],
@@ -49,7 +49,7 @@
       "context": {
         "researchBasis": "Acest tip se numește Sincronicitate de Ghidare (The Nudge) și acționează ca un semnal de validare a subconștientului.",
         "realWorldData": {
-          "totalResponses": 1500,
+          "totalResponses": 56,
           "distribution": [35, 45, 20]
         }
       },
@@ -82,7 +82,7 @@
       "context": {
         "researchBasis": "Jung numește aceasta Sincronicitate Precognitivă, unde timpul pare să nu mai fie liniar.",
         "realWorldData": {
-          "totalResponses": 1500,
+          "totalResponses": 56,
           "distribution": [40, 40, 20]
         }
       },
@@ -115,7 +115,7 @@
       "context": {
         "researchBasis": "Sincronicitatea de Vindecare sau Catalizatoare apare frecvent în momente de criză psihologică.",
         "realWorldData": {
-          "totalResponses": 1500,
+          "totalResponses": 56,
           "distribution": [25, 40, 35]
         }
       },
@@ -148,7 +148,7 @@
       "context": {
         "researchBasis": "Sincronicitatea de Conexiune se bazează pe ideea de 'rețea invizibilă' de interese comune la nivel subconștient.",
         "realWorldData": {
-          "totalResponses": 1500,
+          "totalResponses": 56,
           "distribution": [30, 50, 20]
         }
       },
@@ -181,7 +181,7 @@
       "context": {
         "researchBasis": "Sincronicitatea Simbolică (Oglinda) reflectă starea ta psihică internă în obiecte sau simboluri exterioare.",
         "realWorldData": {
-          "totalResponses": 1500,
+          "totalResponses": 56,
           "distribution": [45, 30, 25]
         }
       },
@@ -214,7 +214,7 @@
       "context": {
         "researchBasis": "Principiul acauzal al lui Jung susține că sensul este puntea dintre spirit și materie.",
         "realWorldData": {
-          "totalResponses": 1500,
+          "totalResponses": 56,
           "distribution": [20, 50, 30]
         }
       },
