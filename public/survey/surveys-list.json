@@ -1,13 +1,12 @@
 {
   "surveys": [
     {
-      "id": "survey_001",
-      "folderName": "test2",
-      "title": "Autoevaluare: Managementul Timpului",
+      "slug": "survey555",
+      "title": "Cum Îți Gestionezi Timpul?",
       "topic": "Managementul Timpului",
-      "description": "Descoperă cum gestionezi timpul comparat cu 15,000+ profesioniști studiați în cercetările recente.",
+      "description": "Descoperă cât de eficient îți organizezi timpul și învață strategii validate științific pentru a-ți crește productivitatea cu până la 40%.",
       "metadata": {
-        "sampleSize": 600
+        "sampleSize": 147
       }
     }
   ],
