@@ -27,3 +27,6 @@ Flux obligatoriu:
 5) Sumarizeaza simplu informatiile din sursele selectate.
 6) Inainte de livrare, verifica daca JSON-ul respecta schema `survey-schema-enhanced.json`.
 7) Livreaza JSON-ul final.
+
+Nota sampleSize:
+- `metadata.sampleSize` trebuie sa fie intre 25-328

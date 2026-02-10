@@ -92,6 +92,7 @@ DELETED_SURVEYS=()
 for file in surveys/*.json; do
     if [ -f "$file" ]; then
         survey_slug=$(basename "$file" .json)
+        output_html="public/survey/${survey_slug}/index.html"
 
         if ! git ls-files --error-unmatch "$file" > /dev/null 2>&1; then
             NEW_SURVEYS+=("$survey_slug")
@@ -99,6 +100,9 @@ for file in surveys/*.json; do
         elif [ -n "$(git diff HEAD "$file" 2>/dev/null)" ]; then
             MODIFIED_SURVEYS+=("$survey_slug")
             info "Găsit survey MODIFICAT: $survey_slug (fișier: $(basename "$file"))"
+        elif [ ! -f "$output_html" ]; then
+            MODIFIED_SURVEYS+=("$survey_slug")
+            warning "Lipsește HTML pentru $survey_slug - regenerez pagina"
         fi
     fi
 done
@@ -225,6 +229,27 @@ else
     warning "index.html nu există"
 fi
 
+echo ""
+info "Curăț public/survey/ de directoare fără JSON în surveys/..."
+SURVEY_DIRS=()
+if [ -d "public/survey" ]; then
+    while IFS= read -r dir; do
+        SURVEY_DIRS+=("$(basename "$dir")")
+    done < <(find public/survey -maxdepth 1 -mindepth 1 -type d 2>/dev/null)
+fi
+
+SURVEY_JSONS=()
+while IFS= read -r file; do
+    SURVEY_JSONS+=("$(basename "$file" .json)")
+done < <(find surveys -maxdepth 1 -type f -name "*.json" 2>/dev/null)
+
+for survey_dir in "${SURVEY_DIRS[@]}"; do
+    if [[ ! " ${SURVEY_JSONS[@]} " =~ " ${survey_dir} " ]]; then
+        warning "Director vechi în public/survey: ${survey_dir} (nu mai există JSON)"
+        rm -rf "public/survey/${survey_dir}"
+    fi
+done
+
 if [ -f "404.html" ]; then
     git add 404.html
     success "404.html adăugat"
@@ -321,11 +346,10 @@ if git diff --cached --quiet; then
     warning "Nu sunt modificări de commit"
 else
     if [ -z "$COMMIT_MSG" ]; then
-        warning "Mesaj de commit gol - nu creez commit"
-    else
-        git commit -m "$COMMIT_MSG" > /dev/null 2>&1
-        success "Commit creat: $COMMIT_MSG"
+        COMMIT_MSG="Update site files"
     fi
+    git commit -m "$COMMIT_MSG" > /dev/null 2>&1
+    success "Commit creat: $COMMIT_MSG"
 fi
 
 echo ""
@@ -347,7 +371,9 @@ fi
 
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
-if git diff --cached --quiet; then
+AHEAD_COUNT=$(git rev-list --count @{u}..HEAD 2>/dev/null || echo 0)
+
+if [ "$AHEAD_COUNT" -eq 0 ]; then
     warning "Nu există commit nou - sar peste push"
 else
     if git push origin "$CURRENT_BRANCH" 2>&1; then

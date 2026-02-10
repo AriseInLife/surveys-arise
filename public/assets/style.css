@@ -893,6 +893,7 @@ h1 {
 
   #chartContainer {
     padding: 20px 15px;
+    max-width: 100%;
   }
 
   .chart-grid {
