@@ -2,15 +2,15 @@
   "surveys": [
     {
       "id": "survey_001",
-      "folderName": "123123123",
-      "title": "Sincronicitatea: Dialogul tău cu Universul",
-      "topic": "Sincronicitate și Conexiune",
-      "description": "Te invit să descoperi cum se manifestă acele coincidențe pline de sens în viața ta. Acest chestionar nu este o evaluare, ci o oglindă care îți arată cât de deschis este sufletul tău să primească ghidarea de care are nevoie în călătoria evoluției tale.",
+      "folderName": "test2",
+      "title": "Autoevaluare: Managementul Timpului",
+      "topic": "Managementul Timpului",
+      "description": "Descoperă cum gestionezi timpul comparat cu 15,000+ profesioniști studiați în cercetările recente.",
       "metadata": {
-        "sampleSize": 4500
+        "sampleSize": 600
       }
     }
   ],
-  "lastUpdated": "2026-02-09",
+  "lastUpdated": "2026-02-10",
   "totalCount": 1
 }
