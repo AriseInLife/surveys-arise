@@ -8,8 +8,17 @@
       "metadata": {
         "sampleSize": 147
       }
+    },
+    {
+      "slug": "survey4555",
+      "title": "Cum Îți Gestionezi Timpul?",
+      "topic": "Managementul Timpului",
+      "description": "Descoperă cât de eficient îți organizezi timpul și învață strategii validate științific pentru a-ți crește productivitatea cu până la 40%.",
+      "metadata": {
+        "sampleSize": 147
+      }
     }
   ],
   "lastUpdated": "2026-02-10",
-  "totalCount": 1
+  "totalCount": 2
 }
