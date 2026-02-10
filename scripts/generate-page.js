@@ -82,12 +82,12 @@ const html = `<!DOCTYPE html>
     let answers = [];
     const totalQuestions = surveyData.questions.length;
 
-    // Date reale din cercetare
     const realWorldStats = {
       totalResponses: surveyData.metadata.sampleSize,
       questionStats: ${JSON.stringify(realStats)},
       sources: surveyData.metadata.dataSource
     };
+
     function renderQuestion(index) {
       const q = surveyData.questions[index];
       const context = q.context;
@@ -97,7 +97,7 @@ const html = `<!DOCTYPE html>
           <div class="progress-bar">
             <div class="progress-fill" style="width: \${((index + 1) / totalQuestions) * 100}%"></div>
           </div>
-          <h2>?ntrebarea \${index + 1} din \${totalQuestions}</h2>
+          <h2>Întrebarea \${index + 1} din \${totalQuestions}</h2>
           <p class="question-text">\${q.text}</p>
 
           <div class="options">
@@ -118,8 +118,6 @@ const html = `<!DOCTYPE html>
       \`;
       document.getElementById('content').innerHTML = html;
     }
-
-
 
     function selectAnswer(questionIndex, optionIndex) {
       answers[questionIndex] = optionIndex;
@@ -177,7 +175,7 @@ const html = `<!DOCTYPE html>
               <strong>Analiză:</strong> \${selectedOption.analysis}
             </div>
             <div class="scientific-basis">
-              <span class="science-icon">🧠</span>
+              <span class="science-icon">i</span>
               <strong>De ce contează acest răspuns:</strong> \${selectedOption.scientificBasis}
             </div>
           </div>
@@ -186,20 +184,22 @@ const html = `<!DOCTYPE html>
 
       const recommendationsHTML = result && result.recommendations
         ? \`<div class="recommendations">
-          <h3>📌 Recomandări Personalizate</h3>
+          <h3>Recomandări personalizate</h3>
           \${result.recommendations.map(rec => \`
             <div class="recommendation-item">
               <div class="rec-text">\${rec.text}</div>
-              <div class="rec-source">📚 Sursă: \${rec.source}</div>
+              <div class="rec-source">Sursă: \${rec.source}</div>
             </div>
           \`).join('')}
         </div>\`
         : '';
 
+      const resultTitle = result ? result.title.replace(/^[^A-Za-z0-9ăâîșțĂÂÎȘȚ]+/g, '').trim() : 'Rezultat indisponibil';
+
       document.getElementById('content').innerHTML = \`
         <div class="results">
           <div class="result-header">
-            <h2>\${result ? result.title : 'Rezultat indisponibil'}</h2>
+            <h2>\${resultTitle}</h2>
             <p class="result-description">\${result ? result.description : ''}</p>
           </div>
 
@@ -209,7 +209,7 @@ const html = `<!DOCTYPE html>
           </div>
 
           <div class="real-world-comparison">
-            <div class="comparison-icon">📊</div>
+            <div class="comparison-icon">i</div>
             <div class="comparison-text">
               <strong>\${result ? result.percentile.interpretation : ''}</strong><br>
               \${result ? result.realWorldComparison.description : ''}
@@ -217,8 +217,15 @@ const html = `<!DOCTYPE html>
           </div>
 
           <div id="chartContainer">
-            <h3 class="chart-title">📈 Comparație: Tu vs Cercetare Reală</h3>
-            <canvas id="resultsChart"></canvas>
+            <h3 class="chart-title">Comparație: Tu vs Cercetare Reală</h3>
+            <div class="chart-grid" id="chartGrid">
+              \${surveyData.questions.map((_, idx) => \`
+                <div class="chart-card">
+                  <div class="chart-card-title">Întrebarea \${idx + 1}</div>
+                  <canvas id="resultsChart-\${idx}"></canvas>
+                </div>
+              \`).join('')}
+            </div>
             <div class="stats-legend">
               <div class="stats-legend-item">
                 <div class="legend-color" style="background: #8b9eff;"></div>
@@ -232,14 +239,14 @@ const html = `<!DOCTYPE html>
           </div>
 
           <div class="analysis">
-            <h3>🔍 Analiza Detaliată a Răspunsurilor</h3>
+            <h3>Analiza detaliată a răspunsurilor</h3>
             \${analysisHTML}
           </div>
 
           \${recommendationsHTML}
 
           <div class="sources-section">
-            <h3>📚 Surse de Cercetare</h3>
+            <h3>Surse de cercetare</h3>
             <div class="sources-list">
               \${realWorldStats.sources.map((source, idx) => \`
                 <div class="source-item">
@@ -248,7 +255,7 @@ const html = `<!DOCTYPE html>
                     <div class="source-name">\${source.name} (\${source.year})</div>
                     <div class="source-type">\${source.type.toUpperCase()}</div>
                     <a href="\${source.url}" target="_blank" class="source-link">
-                      Vezi sursa →
+                      Vezi sursa
                     </a>
                   </div>
                 </div>
@@ -283,9 +290,6 @@ const html = `<!DOCTYPE html>
     }
 
     function createComparisonChart() {
-      const ctx = document.getElementById('resultsChart');
-      const labels = surveyData.questions.map((_, idx) => \`Întrebarea \${idx + 1}\`);
-
       const userScores = answers.map((ansIdx, qIdx) => {
         const score = surveyData.questions[qIdx].options[ansIdx].score;
         return (score / 3) * 10;
@@ -304,83 +308,81 @@ const html = `<!DOCTYPE html>
         return parseFloat(((weightedSum / 3) * 10).toFixed(2));
       });
 
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels,
-          datasets: [
-            {
-              label: 'Scorul tău',
-              data: userScores,
-              backgroundColor: 'rgba(139, 158, 255, 0.8)',
-              borderColor: 'rgba(139, 158, 255, 1)',
-              borderWidth: 2,
-              borderRadius: 8
-            },
-            {
-              label: 'Media din cercetare (' + realWorldStats.totalResponses.toLocaleString() + ' participanți)',
-              data: avgScores,
-              backgroundColor: 'rgba(241, 120, 182, 0.8)',
-              borderColor: 'rgba(241, 120, 182, 1)',
-              borderWidth: 2,
-              borderRadius: 8
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: true,
-          scales: {
-            y: {
-              beginAtZero: true,
-              max: 10,
-              ticks: {
-                stepSize: 1,
-                color: '#c1c7d0',
-                callback: function(value) {
-                  return value.toFixed(0);
-                }
+      surveyData.questions.forEach((_, idx) => {
+        const ctx = document.getElementById('resultsChart-' + idx);
+        if (!ctx) return;
+
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['Tu', 'Cercetare'],
+            datasets: [
+              {
+                label: 'Scorul tău',
+                data: [userScores[idx], null],
+                backgroundColor: 'rgba(139, 158, 255, 0.8)',
+                borderColor: 'rgba(139, 158, 255, 1)',
+                borderWidth: 2,
+                borderRadius: 8
               },
-              grid: {
-                color: 'rgba(54, 59, 82, 0.5)'
+              {
+                label: 'Media din cercetare',
+                data: [null, avgScores[idx]],
+                backgroundColor: 'rgba(241, 120, 182, 0.8)',
+                borderColor: 'rgba(241, 120, 182, 1)',
+                borderWidth: 2,
+                borderRadius: 8
               }
-            },
-            x: {
-              ticks: {
-                color: '#c1c7d0'
-              },
-              grid: {
-                display: false
-              }
-            }
+            ]
           },
-          plugins: {
-            legend: {
-              position: 'bottom',
-              labels: {
-                color: '#c1c7d0',
-                padding: 15,
-                font: {
-                  size: 12
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                beginAtZero: true,
+                max: 10,
+                ticks: {
+                  stepSize: 2,
+                  color: '#c1c7d0',
+                  callback: function(value) {
+                    return value.toFixed(0);
+                  }
+                },
+                grid: {
+                  color: 'rgba(54, 59, 82, 0.35)'
+                }
+              },
+              x: {
+                ticks: {
+                  color: '#c1c7d0'
+                },
+                grid: {
+                  display: false
                 }
               }
             },
-            tooltip: {
-              backgroundColor: 'rgba(26, 29, 41, 0.95)',
-              titleColor: '#e4e7eb',
-              bodyColor: '#c1c7d0',
-              borderColor: '#363b52',
-              borderWidth: 1,
-              padding: 12,
-              displayColors: true,
-              callbacks: {
-                label: function(context) {
-                  return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + '/10';
+            plugins: {
+              legend: {
+                display: false
+              },
+              tooltip: {
+                backgroundColor: 'rgba(26, 29, 41, 0.95)',
+                titleColor: '#e4e7eb',
+                bodyColor: '#c1c7d0',
+                borderColor: '#363b52',
+                borderWidth: 1,
+                padding: 10,
+                displayColors: true,
+                callbacks: {
+                  label: function(context) {
+                    return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + '/10';
+                  }
                 }
               }
             }
           }
-        }
+        });
       });
     }
 
