@@ -62,7 +62,7 @@ const html = `<!DOCTYPE html>
   <div class="container" id="survey-container">
     <div class="logo">
       <a href="https://ariseinlife.com/" target="_blank">
-        <img src="../../assets/logo.png" alt="Arise In Life">
+        <img src="../../assets/logo.png" alt="ARISEINLIFE">
       </a>
     </div>
     <div id="content-wrapper">
@@ -97,7 +97,7 @@ const html = `<!DOCTYPE html>
           <div class="progress-bar">
             <div class="progress-fill" style="width: \${((index + 1) / totalQuestions) * 100}%"></div>
           </div>
-          <h2>?ntrebarea \${index + 1} din \${totalQuestions}</h2>
+          <h2>Întrebarea \${index + 1} din \${totalQuestions}</h2>
           <p class="question-text">\${q.text}</p>
 
           <div class="options">
@@ -218,7 +218,7 @@ const html = `<!DOCTYPE html>
 
           <div id="chartContainer">
             <h3 class="chart-title">📈 Comparație: Tu vs Cercetare Reală</h3>
-            <canvas id="resultsChart"></canvas>
+            <div class="chart-grid" id="chartGrid"></div>
             <div class="stats-legend">
               <div class="stats-legend-item">
                 <div class="legend-color" style="background: #8b9eff;"></div>
@@ -271,7 +271,7 @@ const html = `<!DOCTYPE html>
 
           <div class="export-footer" id="export-footer">
             <div class="export-footer-text">Bazat pe cercetare validată</div>
-            <div class="export-footer-link">Arise in Life</div>
+            <div class="export-footer-link">ARISEINLIFE</div>
             <div class="export-footer-text" style="margin-top: 5px; font-size: 13px;">
               https://ariseinlife.com
             </div>
@@ -283,104 +283,130 @@ const html = `<!DOCTYPE html>
     }
 
     function createComparisonChart() {
-      const ctx = document.getElementById('resultsChart');
-      const labels = surveyData.questions.map((_, idx) => \`Întrebarea \${idx + 1}\`);
+      const chartGrid = document.getElementById('chartGrid');
+      if (!chartGrid) return;
 
-      const userScores = answers.map((ansIdx, qIdx) => {
-        const score = surveyData.questions[qIdx].options[ansIdx].score;
-        return (score / 3) * 10;
-      });
+      const chunkSize = 2;
+      const chunks = [];
+      for (let i = 0; i < totalQuestions; i += chunkSize) {
+        const start = i;
+        const end = Math.min(i + chunkSize, totalQuestions);
+        chunks.push({ start, end });
+      }
 
-      const avgScores = answers.map((ansIdx, qIdx) => {
-        const distribution = surveyData.questions[qIdx].context.realWorldData.distribution;
-        const options = surveyData.questions[qIdx].options;
+      chartGrid.innerHTML = chunks.map((chunk, chartIndex) => {
+        return (
+          '<div class="chart-card">' +
+          '<div class="chart-card-title">Întrebările ' + (chunk.start + 1) + '-' + chunk.end + '</div>' +
+          '<canvas id="resultsChart-' + chartIndex + '"></canvas>' +
+          '</div>'
+        );
+      }).join('');
 
-        let weightedSum = 0;
-        distribution.forEach((percentage, idx) => {
-          const score = options[idx].score;
-          weightedSum += (percentage * score) / 100;
+      chunks.forEach((chunk, chartIndex) => {
+        const ctx = document.getElementById('resultsChart-' + chartIndex);
+        const labels = surveyData.questions
+          .slice(chunk.start, chunk.end)
+          .map((_, idx) => 'Întrebarea ' + (chunk.start + idx + 1));
+
+        const userScores = answers.slice(chunk.start, chunk.end).map((ansIdx, localIdx) => {
+          const qIdx = chunk.start + localIdx;
+          const score = surveyData.questions[qIdx].options[ansIdx].score;
+          return (score / 3) * 10;
         });
 
-        return parseFloat(((weightedSum / 3) * 10).toFixed(2));
-      });
+        const avgScores = answers.slice(chunk.start, chunk.end).map((ansIdx, localIdx) => {
+          const qIdx = chunk.start + localIdx;
+          const distribution = surveyData.questions[qIdx].context.realWorldData.distribution;
+          const options = surveyData.questions[qIdx].options;
 
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels,
-          datasets: [
-            {
-              label: 'Scorul tău',
-              data: userScores,
-              backgroundColor: 'rgba(139, 158, 255, 0.8)',
-              borderColor: 'rgba(139, 158, 255, 1)',
-              borderWidth: 2,
-              borderRadius: 8
-            },
-            {
-              label: 'Media din cercetare (' + realWorldStats.totalResponses.toLocaleString() + ' participanți)',
-              data: avgScores,
-              backgroundColor: 'rgba(241, 120, 182, 0.8)',
-              borderColor: 'rgba(241, 120, 182, 1)',
-              borderWidth: 2,
-              borderRadius: 8
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: true,
-          scales: {
-            y: {
-              beginAtZero: true,
-              max: 10,
-              ticks: {
-                stepSize: 1,
-                color: '#c1c7d0',
-                callback: function(value) {
-                  return value.toFixed(0);
-                }
+          let weightedSum = 0;
+          distribution.forEach((percentage, idx) => {
+            const score = options[idx].score;
+            weightedSum += (percentage * score) / 100;
+          });
+
+          return parseFloat(((weightedSum / 3) * 10).toFixed(2));
+        });
+
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels,
+            datasets: [
+              {
+                label: 'Scorul tău',
+                data: userScores,
+                backgroundColor: 'rgba(139, 158, 255, 0.8)',
+                borderColor: 'rgba(139, 158, 255, 1)',
+                borderWidth: 2,
+                borderRadius: 8
               },
-              grid: {
-                color: 'rgba(54, 59, 82, 0.5)'
+              {
+                label: 'Media din cercetare (' + realWorldStats.totalResponses.toLocaleString() + ' participanți)',
+                data: avgScores,
+                backgroundColor: 'rgba(241, 120, 182, 0.8)',
+                borderColor: 'rgba(241, 120, 182, 1)',
+                borderWidth: 2,
+                borderRadius: 8
               }
-            },
-            x: {
-              ticks: {
-                color: '#c1c7d0'
-              },
-              grid: {
-                display: false
-              }
-            }
+            ]
           },
-          plugins: {
-            legend: {
-              position: 'bottom',
-              labels: {
-                color: '#c1c7d0',
-                padding: 15,
-                font: {
-                  size: 12
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                beginAtZero: true,
+                max: 10,
+                ticks: {
+                  stepSize: 1,
+                  color: '#c1c7d0',
+                  callback: function(value) {
+                    return value.toFixed(0);
+                  }
+                },
+                grid: {
+                  color: 'rgba(54, 59, 82, 0.5)'
+                }
+              },
+              x: {
+                ticks: {
+                  color: '#c1c7d0'
+                },
+                grid: {
+                  display: false
                 }
               }
             },
-            tooltip: {
-              backgroundColor: 'rgba(26, 29, 41, 0.95)',
-              titleColor: '#e4e7eb',
-              bodyColor: '#c1c7d0',
-              borderColor: '#363b52',
-              borderWidth: 1,
-              padding: 12,
-              displayColors: true,
-              callbacks: {
-                label: function(context) {
-                  return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + '/10';
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  color: '#c1c7d0',
+                  padding: 10,
+                  font: {
+                    size: 11
+                  }
+                }
+              },
+              tooltip: {
+                backgroundColor: 'rgba(26, 29, 41, 0.95)',
+                titleColor: '#e4e7eb',
+                bodyColor: '#c1c7d0',
+                borderColor: '#363b52',
+                borderWidth: 1,
+                padding: 12,
+                displayColors: true,
+                callbacks: {
+                  label: function(context) {
+                    return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + '/10';
+                  }
                 }
               }
             }
           }
-        }
+        });
       });
     }
 

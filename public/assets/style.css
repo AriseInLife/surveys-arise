@@ -549,7 +549,7 @@ h1 {
 
 .chart-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 16px;
 }
 
@@ -569,7 +569,7 @@ h1 {
 
 .chart-card canvas {
   width: 100% !important;
-  height: 140px !important;
+  height: 160px !important;
 }
 
 .stats-legend {
@@ -896,12 +896,12 @@ h1 {
   }
 
   .chart-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     gap: 12px;
   }
 
   .chart-card canvas {
-    height: 120px !important;
+    height: 180px !important;
   }
 
   .action-buttons {
@@ -925,6 +925,13 @@ h1 {
   .source-item {
     flex-direction: column;
   }
+
+  .scientific-basis {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: left;
+  }
 }
 
 @media (max-width: 480px) {
@@ -942,6 +949,10 @@ h1 {
 
   .score {
     font-size: 36px;
+  }
+
+  .chart-card canvas {
+    height: 200px !important;
   }
 }
 
