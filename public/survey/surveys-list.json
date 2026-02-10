@@ -1,15 +1,5 @@
 {
-  "surveys": [
-    {
-      "slug": "test_123_!23",
-      "title": "Test: Organizarea Timpului",
-      "topic": "Managementul Timpului",
-      "description": "Test simplu pentru validare schema si flux.",
-      "metadata": {
-        "sampleSize": 600
-      }
-    }
-  ],
+  "surveys": [],
   "lastUpdated": "2026-02-10",
-  "totalCount": 1
+  "totalCount": 0
 }
