@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chestionare de Dezvoltare Personală - Arise In Life</title>
-  <meta name="description" content="Descoperă-te prin chestionare bazate pe cercetări științifice validate. Peste 100,000+ participanți din studii globale.">
+  <title>Chestionare de Dezvoltare PersonalÄƒ - Arise In Life</title>
+  <meta name="description" content="DescoperÄƒ-te prin chestionare bazate pe cercetÄƒri È™tiinÈ›ifice validate. Peste 100,000+ participanÈ›i din studii globale.">
   <link rel="stylesheet" href="public/assets/style.css">
   <style>
     /* Additional styles for survey list page */
@@ -209,10 +209,10 @@
     </div>
 
     <div class="hero-section">
-      <h1 class="hero-title">Descoperă-te Prin Autoevaluare</h1>
+      <h1 class="hero-title">DescoperÄƒ-te Prin Autoevaluare</h1>
       <p class="hero-subtitle">
-        Chestionare de dezvoltare personală inspirate de programele <a href="https://ariseinlife.com/" target="_blank" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">Arise In Life</a>. 
-        Explorează-ți abilitățile și descoperă unde poți evolua.
+        Chestionare de dezvoltare personalÄƒ inspirate de programele <a href="https://ariseinlife.com/" target="_blank" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">Arise In Life</a>. 
+        ExploreazÄƒ-È›i abilitÄƒÈ›ile È™i descoperÄƒ unde poÈ›i evolua.
       </p>
       
       <div class="stats-row">
@@ -226,17 +226,17 @@
         </div>
         <div class="stat-item">
           <span class="stat-number">3 min</span>
-          <span class="stat-label">Durată Medie</span>
+          <span class="stat-label">DuratÄƒ Medie</span>
         </div>
       </div>
     </div>
 
     <h2 style="color: var(--primary-color); font-size: 24px; margin-bottom: 25px; text-align: center;">
-      📊 Toate Chestionarele
+      ðŸ“Š Toate Chestionarele
     </h2>
 
     <div class="survey-grid" id="surveyGrid">
-      <div class="loading-message">Se încarcă chestionarele...</div>
+      <div class="loading-message">Se Ã®ncarcÄƒ chestionarele...</div>
     </div>
 
     <!-- Footer CTA -->
@@ -245,67 +245,67 @@
         Ai nevoie de mai mult?
       </h3>
       <p style="color: var(--text-medium); margin-bottom: 25px; font-size: 16px; line-height: 1.6;">
-        Descoperă programul noastru de evoluție personală.
+        DescoperÄƒ programul noastru de evoluÈ›ie personalÄƒ.
       </p>
       <a href="https://ariseinlife.com/" class="primary-btn" target="_blank">
-        Explorează Arise In Life
+        ExploreazÄƒ Arise In Life
       </a>
     </div>
 
     <!-- Footer info -->
     <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid var(--border-dark); text-align: center;">
       <p style="color: var(--text-light); font-size: 14px; line-height: 1.6;">
-        📊 Toate chestionarele sunt bazate pe cercetări științifice validate<br>
-        🔒 Datele tale nu sunt salvate sau partajate
+        ðŸ“Š Toate chestionarele sunt bazate pe cercetÄƒri È™tiinÈ›ifice validate<br>
+        ðŸ”’ Datele tale nu sunt salvate sau partajate
       </p>
       <p style="color: var(--text-light); font-size: 13px; margin-top: 15px;">
-        © 2026 Arise In Life. Toate drepturile rezervate.
+        Â© 2026 Arise In Life. Toate drepturile rezervate.
       </p>
     </div>
   </div>
 
   <script>
-    // Mapare iconițe pentru topicuri
+    // Mapare iconiÈ›e pentru topicuri
     const topicIcons = {
-      'Managementul Timpului': '⏰',
-      'Inteligența Emoțională': '💡',
-      'Reziliența Mentală': '💪',
-      'Leadership și Influență': '👑',
-      'Creativitate și Inovație': '🎨',
-      'Comunicare Eficientă': '🗣️',
-      'Echilibru Viață-Muncă': '⚖️',
-      'Mindfulness și Prezență': '🧘',
-      'Rezolvare de Probleme': '🧩',
-      'Motivație și Disciplină': '🔥',
-      'Adaptabilitate': '🌊',
-      'Gestionarea Stresului': '🛡️'
+      'Managementul Timpului': 'â°',
+      'InteligenÈ›a EmoÈ›ionalÄƒ': 'ðŸ’¡',
+      'RezilienÈ›a MentalÄƒ': 'ðŸ’ª',
+      'Leadership È™i InfluenÈ›Äƒ': 'ðŸ‘‘',
+      'Creativitate È™i InovaÈ›ie': 'ðŸŽ¨',
+      'Comunicare EficientÄƒ': 'ðŸ—£ï¸',
+      'Echilibru ViaÈ›Äƒ-MuncÄƒ': 'âš–ï¸',
+      'Mindfulness È™i PrezenÈ›Äƒ': 'ðŸ§˜',
+      'Rezolvare de Probleme': 'ðŸ§©',
+      'MotivaÈ›ie È™i DisciplinÄƒ': 'ðŸ”¥',
+      'Adaptabilitate': 'ðŸŒŠ',
+      'Gestionarea Stresului': 'ðŸ›¡ï¸'
     };
 
-    // Funcție pentru a obține categoria dintr-un topic
+    // FuncÈ›ie pentru a obÈ›ine categoria dintr-un topic
     function getCategoryFromTopic(topic) {
       const categories = {
         'Managementul Timpului': 'Productivitate',
-        'Inteligența Emoțională': 'Emoții',
-        'Reziliența Mentală': 'Mentalitate',
-        'Leadership și Influență': 'Carieră',
-        'Creativitate și Inovație': 'Creativitate',
-        'Comunicare Eficientă': 'Comunicare',
-        'Echilibru Viață-Muncă': 'Lifestyle',
-        'Mindfulness și Prezență': 'Wellbeing',
-        'Rezolvare de Probleme': 'Gândire',
-        'Motivație și Disciplină': 'Performanță',
-        'Adaptabilitate': 'Creștere',
+        'InteligenÈ›a EmoÈ›ionalÄƒ': 'EmoÈ›ii',
+        'RezilienÈ›a MentalÄƒ': 'Mentalitate',
+        'Leadership È™i InfluenÈ›Äƒ': 'CarierÄƒ',
+        'Creativitate È™i InovaÈ›ie': 'Creativitate',
+        'Comunicare EficientÄƒ': 'Comunicare',
+        'Echilibru ViaÈ›Äƒ-MuncÄƒ': 'Lifestyle',
+        'Mindfulness È™i PrezenÈ›Äƒ': 'Wellbeing',
+        'Rezolvare de Probleme': 'GÃ¢ndire',
+        'MotivaÈ›ie È™i DisciplinÄƒ': 'PerformanÈ›Äƒ',
+        'Adaptabilitate': 'CreÈ™tere',
         'Gestionarea Stresului': 'Wellbeing'
       };
       return categories[topic] || 'General';
     }
 
-    // Funcție pentru a crea un card de chestionar
+    // FuncÈ›ie pentru a crea un card de chestionar
     function createSurveyCard(survey) {
-      const icon = topicIcons[survey.topic] || '📋';
+      const icon = topicIcons[survey.topic] || 'ðŸ“‹';
       const category = getCategoryFromTopic(survey.topic);
       const sampleSize = survey.metadata?.sampleSize || 0;
-      // Folosim folderName dacă există, altfel id
+      // Folosim folderName dacÄƒ existÄƒ, altfel id
       const surveyPath = survey.folderName || survey.id;
       
       return `
@@ -320,55 +320,55 @@
             ${survey.description}
           </p>
           <div class="survey-meta">
-            ${sampleSize > 0 ? `<span class="meta-badge primary">📊 ${sampleSize.toLocaleString()} participanți</span>` : ''}
-            <span class="meta-badge">⏱️ 3 min</span>
-            <span class="meta-badge">🎯 ${category}</span>
+            ${sampleSize > 0 ? `<span class="meta-badge primary">ðŸ“Š ${sampleSize.toLocaleString()} participanÈ›i</span>` : ''}
+            <span class="meta-badge">â±ï¸ 3 min</span>
+            <span class="meta-badge">ðŸŽ¯ ${category}</span>
           </div>
         </a>
       `;
     }
 
-    // Încarcă chestionarele dinamic
+    // ÃŽncarcÄƒ chestionarele dinamic
     async function loadSurveys() {
       const surveyGrid = document.getElementById('surveyGrid');
       const surveyCountElement = document.getElementById('surveyCount');
       
       try {
-        // Încearcă să încarce lista de chestionare din surveys-list.json
+        // ÃŽncearcÄƒ sÄƒ Ã®ncarce lista de chestionare din surveys-list.json
         const response = await fetch('public/survey/surveys-list.json');
         
         if (!response.ok) {
-          throw new Error('Nu s-a putut încărca lista de chestionare');
+          throw new Error('Nu s-a putut Ã®ncÄƒrca lista de chestionare');
         }
         
         const surveysData = await response.json();
         const surveys = surveysData.surveys || [];
         
         if (surveys.length === 0) {
-          surveyGrid.innerHTML = '<div class="error-message">Nu există chestionare disponibile momentan.</div>';
+          surveyGrid.innerHTML = '<div class="error-message">Nu existÄƒ chestionare disponibile momentan.</div>';
           surveyCountElement.textContent = '0';
           return;
         }
         
-        // Sortează chestionarele după ID
+        // SorteazÄƒ chestionarele dupÄƒ ID
         surveys.sort((a, b) => a.id.localeCompare(b.id));
         
-        // Creează cardurile pentru fiecare chestionar
+        // CreeazÄƒ cardurile pentru fiecare chestionar
         surveyGrid.innerHTML = surveys.map(survey => createSurveyCard(survey)).join('');
         surveyCountElement.textContent = surveys.length;
         
       } catch (error) {
-        console.error('Eroare la încărcarea chestionarelor:', error);
+        console.error('Eroare la Ã®ncÄƒrcarea chestionarelor:', error);
         surveyGrid.innerHTML = `
           <div class="error-message">
-            Nu s-au putut încărca chestionarele. Te rugăm să reîncarci pagina.
+            Nu s-au putut Ã®ncÄƒrca chestionarele. Te rugÄƒm sÄƒ reÃ®ncarci pagina.
           </div>
         `;
         surveyCountElement.textContent = '0';
       }
     }
 
-    // Încarcă chestionarele când pagina este gata
+    // ÃŽncarcÄƒ chestionarele cÃ¢nd pagina este gata
     document.addEventListener('DOMContentLoaded', loadSurveys);
   </script>
 </body>
