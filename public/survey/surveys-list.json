@@ -1,5 +1,15 @@
 {
-  "surveys": [],
+  "surveys": [
+    {
+      "slug": "sincronicitati",
+      "title": "Sincronicitatea: Ghidul tău spre Evoluție",
+      "topic": "Cele 5 tipuri de sincronicitate în dezvoltarea personală",
+      "description": "Acest chestionar analizează modul în care percepi și integrezi coincidențele semnificative în parcursul tău de creștere, având la bază conceptele fundamentale ale lui Carl Jung și cercetările contemporane din psihologia pozitivă.",
+      "metadata": {
+        "sampleSize": 1500
+      }
+    }
+  ],
   "lastUpdated": "2026-02-10",
-  "totalCount": 0
+  "totalCount": 1
 }
