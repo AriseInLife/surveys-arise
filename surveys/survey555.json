@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "id": "survey_001",
   "title": "Cum Îți Gestionezi Timpul?",
   "topic": "Managementul Timpului",
   "description": "Descoperă cât de eficient îți organizezi timpul și învață strategii validate științific pentru a-ți crește productivitatea cu până la 40%.",
@@ -59,7 +58,7 @@
           "scientificBasis": "Principiul Eisenhower (urgent vs important) arată că 60% din activitățile urgente nu sunt importante pe termen lung (Covey, adaptare Harvard 2024)."
         },
         {
-          "text": "Dedicat 15-20 min planificării strategice și celui mai important task",
+          "text": "Dedic 15-20 min planificării strategice și celui mai important task",
           "score": 3,
           "analysis": "Abordarea optimă! Doar 15% din oameni fac asta, dar ei raportează o creștere de 58% în productivitate și 43% mai puțin stres. Aceasta este tehnica 'peak productivity window'.",
           "realWorldPercentage": 15,
@@ -193,7 +192,7 @@
         {
           "text": "Am un sistem: telefon în altă cameră, modul avion sau intervale dedicate",
           "score": 3,
-          "analysis": "Perfekt! Cei cu 'digital boundaries' clare câștigă 2.8 ore productive/zi și raportează wellbeing superior cu 71%. Sistemele externe elimină nevoia de voință constantă.",
+          "analysis": "Perfect! Cei cu 'digital boundaries' clare câștigă 2.8 ore productive/zi și raportează wellbeing superior cu 71%. Sistemele externe elimină nevoia de voință constantă.",
           "realWorldPercentage": 17,
           "scientificBasis": "Principiul 'environment design' - modificarea mediului e de 10 ori mai eficientă decât voința. Telefonul invizibil reduce impulsul de verificare cu 82% (Clear, 2024)."
         }
@@ -212,12 +211,12 @@
         {
           "text": "Frustrat - simt că am fost ocupat dar nu am avansat la ce contează",
           "score": 1,
-          "analysis": "Ești în situația a 49% din profesioniști - busy, dar nu productive. Această stare cronică duce la burnout în 6-9 luni și scade motivația cu 68%.",
+          "analysis": "Ești în situația a 49% din profesioniști - busy, dar nu productivi. Această stare cronică duce la burnout în 6-9 luni și scade motivația cu 68%.",
           "realWorldPercentage": 49,
           "scientificBasis": "Sindromul 'busy trap' - activitatea fără progres vizibil creează disconfort cognitiv. Lipsa achievement-urilor măsurabile reduce dopamina și serotonina (sănătate mentală scăzută, WHO 2024)."
         },
         {
-          "text": "Amestec - unele zile bune, altele frustante",
+          "text": "Amestec - unele zile bune, altele frustrante",
           "score": 2,
           "analysis": "Inconsistența indică lipsa unui sistem. Zilele bune sunt rezultatul 'norocului', nu al designului intențional. Satisfacția fluctuează, dar media rămâne sub potențial.",
           "realWorldPercentage": 36,
@@ -228,14 +227,14 @@
           "score": 3,
           "analysis": "Top 15%! Persoanele cu claritate zilnică raportează: 73% satisfacție profesională, 58% mai puțin stres, 3.2x șanse de promovare. Aceasta e zona 'high performance + wellbeing'.",
           "realWorldPercentage": 15,
-          "scientificBasis": "Teoria progresului (Teresa Amabile, Harvard) - sentimentul avansurii zilnice este cel mai puternic factor motivațional. Micro-wins susțin dopamina și angajamentul pe termen lung."
+          "scientificBasis": "Teoria progresului (Teresa Amabile, Harvard) - sentimentul avansului zilnic este cel mai puternic factor motivațional. Micro-wins susțin dopamina și angajamentul pe termen lung."
         }
       ]
     }
   ],
   "results": [
     {
-      "range": "6-10",
+      "range": "0-3",
       "title": "🌱 Nivel Începător - Faza de Descoperire",
       "description": "Te afli în faza în care 42% din populație se confruntă cu aceleași provocări ca tine, conform studiului global Gallup 2024. Acest lucru nu înseamnă o lipsă, ci o oportunitate clară de transformare. Cercetările arată că persoanele care își recunosc această etapă și aplică metode validate științific pot avansa la nivelul următor în doar 6-10 săptămâni. Timpul tău este valoros - și merită investit strategic.",
       "percentile": {
@@ -266,9 +265,9 @@
       ]
     },
     {
-      "range": "11-15",
+      "range": "4-6",
       "title": "🚀 Nivel Intermediar - Pe Drumul Creșterii",
-      "description": "Felicitări! Te afli în zona unde 44% din populația profesională activă se poziționează - ai deja câteva obiceiuri solide, dar există spațiu clar pentru optimizare. Cercetările arată că persoanele din această categorie, cu ajustări strategice minore, pot sări în top 15% în doar 4-8 săptămâni. Ești deja peste medie - acum e momentul să devii exceptional.",
+      "description": "Felicitări! Te afli în zona unde 44% din populația profesională activă se poziționează - ai deja câteva obiceiuri solide, dar există spațiu clar pentru optimizare. Cercetările arată că persoanele din această categorie, cu ajustări strategice minore, pot sări în top 15% în doar 4-8 săptămâni. Ești deja peste medie - acum e momentul să devii excepțional.",
       "percentile": {
         "value": 65,
         "interpretation": "Te afli în top 50% din populație - ești peste medie! Cu câteva ajustări strategice, poți urca rapid spre top 15%."
@@ -297,7 +296,7 @@
       ]
     },
     {
-      "range": "16-18",
+      "range": "7-10",
       "title": "⭐ Nivel Avansat - Peak Performance",
       "description": "Extraordinar! Te afli în top 14% din populație - zona de 'high performance sustained' conform studiului global de productivitate 2024. Ai construit sisteme solide și le practici consistent. Persoanele din această categorie raportează nu doar productivitate superioară (5x față de medie), ci și wellbeing ridicat - echilibrul perfect între performanță și sănătate. Acum focusul tău e menținerea și rafinarea continuă.",
       "percentile": {
