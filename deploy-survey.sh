@@ -232,6 +232,13 @@ else
     warning "404.html nu există"
 fi
 
+# Reconstruiește surveys-list.json din surveys/ ca să șteargă intrările lipsă
+if [ -f "scripts/rebuild-surveys-list.js" ]; then
+    node scripts/rebuild-surveys-list.js
+else
+    warning "scripts/rebuild-surveys-list.js nu există"
+fi
+
 if [ -f "public/survey/surveys-list.json" ]; then
     git add public/survey/surveys-list.json
     success "surveys-list.json adăugat"
@@ -313,8 +320,12 @@ fi
 if git diff --cached --quiet; then
     warning "Nu sunt modificări de commit"
 else
-    git commit -m "$COMMIT_MSG" > /dev/null 2>&1
-    success "Commit creat: $COMMIT_MSG"
+    if [ -z "$COMMIT_MSG" ]; then
+        warning "Mesaj de commit gol - nu creez commit"
+    else
+        git commit -m "$COMMIT_MSG" > /dev/null 2>&1
+        success "Commit creat: $COMMIT_MSG"
+    fi
 fi
 
 echo ""
@@ -336,10 +347,14 @@ fi
 
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
-if git push origin "$CURRENT_BRANCH" 2>&1; then
-    success "Push pe GitHub reușit!"
+if git diff --cached --quiet; then
+    warning "Nu există commit nou - sar peste push"
 else
-    error_exit "Eroare la push pe GitHub"
+    if git push origin "$CURRENT_BRANCH" 2>&1; then
+        success "Push pe GitHub reușit!"
+    else
+        error_exit "Eroare la push pe GitHub"
+    fi
 fi
 
 echo ""
