@@ -2,15 +2,15 @@
   "surveys": [
     {
       "id": "survey_001",
-      "folderName": "123123123",
-      "title": "Sincronicitatea: Dialogul tău cu Universul",
-      "topic": "Sincronicitate și Conexiune",
-      "description": "Te invit să descoperi cum se manifestă acele coincidențe pline de sens în viața ta. Acest chestionar nu este o evaluare, ci o oglindă care îți arată cât de deschis este sufletul tău să primească ghidarea de care are nevoie în călătoria evoluției tale.",
+      "folderName": "123",
+      "title": "Explorarea celor 5 Tipuri de Sincronicitate",
+      "topic": "Psihologie Analitică și Intuiție",
+      "description": "Descoperă cum rezonezi cu momentele de conexiune acuzală dintre universul tău interior și lumea exterioară.",
       "metadata": {
-        "sampleSize": 4500
+        "sampleSize": 182
       }
     }
   ],
-  "lastUpdated": "2026-02-09",
+  "lastUpdated": "2026-02-10",
   "totalCount": 1
 }

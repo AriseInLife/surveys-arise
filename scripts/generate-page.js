@@ -3,6 +3,7 @@ const path = require('path');
 
 if (process.argv.length < 3) {
   console.error('❌ Utilizare: node scripts/generate-page.js <survey_id>');
+  console.error('   Exemplu: node scripts/generate-page.js survey_001');
   process.exit(1);
 }
 
@@ -16,29 +17,37 @@ if (!fs.existsSync(surveyPath)) {
 
 const surveyData = JSON.parse(fs.readFileSync(surveyPath, 'utf8'));
 
-// Limitează numărul maxim de participanți la 600
-const maxParticipants = 600;
+// Limitează numărul de participanți
+const maxParticipants = 285;
 if (surveyData.metadata.sampleSize > maxParticipants) {
   surveyData.metadata.sampleSize = maxParticipants;
 }
+if (surveyData.metadata.sampleSize < 25) {
+  surveyData.metadata.sampleSize = 25;
+}
+
+// Calculează scorul maxim posibil bazat pe tipurile de întrebări
+const maxPossibleScore = surveyData.questions.reduce((sum, q) => {
+  const maxOptionScore = Math.max(...q.options.map(opt => opt.score));
+  return sum + maxOptionScore;
+}, 0);
 
 console.log(`📄 Generez pagina pentru: ${surveyData.title}`);
 console.log(`📊 Bazat pe ${surveyData.metadata.sampleSize.toLocaleString()} participanți din studii validate`);
+console.log(`📊 Scor maxim posibil: ${maxPossibleScore} puncte`);
 
-// Convertește distribuțiile reale în numere absolute pentru afișare
+// Convertește distribuțiile reale în numere absolute
 const convertToAbsoluteNumbers = () => {
-  return surveyData.questions.map((q, qIdx) => {
-    // Limitează totalResponses la maxim 600
+  return surveyData.questions.map((q) => {
     const total = Math.min(q.context.realWorldData.totalResponses, maxParticipants);
     const distribution = q.context.realWorldData.distribution;
-    
     return distribution.map(percentage => Math.round(total * percentage / 100));
   });
 };
 
 const realStats = convertToAbsoluteNumbers();
 
-// Template HTML cu date reale și funcționalități îmbunătățite
+// Template HTML
 const html = `<!DOCTYPE html>
 <html lang="ro">
 <head>
@@ -58,6 +67,104 @@ const html = `<!DOCTYPE html>
   <link rel="stylesheet" href="../../assets/style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dom-to-image@2.6.0/dist/dom-to-image.min.js"></script>
+  
+  <style>
+    /* Likert Scale Styles */
+    .likert-container {
+      margin-top: 30px;
+    }
+
+    .likert-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding: 0 10px;
+    }
+
+    .likert-label-min,
+    .likert-label-max {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-medium);
+      max-width: 45%;
+      text-align: left;
+    }
+
+    .likert-label-max {
+      text-align: right;
+    }
+
+    .likert-options {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .likert-btn {
+      flex: 1;
+      min-width: 60px;
+      height: 70px;
+      border: 2px solid var(--border-dark);
+      background: var(--bg-dark);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .likert-btn:hover {
+      border-color: var(--primary-color);
+      background: linear-gradient(135deg, rgba(139, 158, 255, 0.15), rgba(157, 111, 212, 0.15));
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(139, 158, 255, 0.4);
+    }
+
+    .likert-number {
+      font-size: 28px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    @media (max-width: 768px) {
+      .likert-options {
+        max-width: 100%;
+        gap: 8px;
+      }
+      
+      .likert-btn {
+        min-width: 50px;
+        height: 60px;
+      }
+      
+      .likert-number {
+        font-size: 24px;
+      }
+      
+      .likert-label-min,
+      .likert-label-max {
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .likert-btn {
+        min-width: 45px;
+        height: 55px;
+      }
+      
+      .likert-number {
+        font-size: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="container" id="survey-container">
@@ -78,6 +185,7 @@ const html = `<!DOCTYPE html>
   
   <script>
     const surveyData = ${JSON.stringify(surveyData, null, 2)};
+    const maxPossibleScore = ${maxPossibleScore};
     let currentQuestion = 0;
     let answers = [];
     
@@ -91,13 +199,47 @@ const html = `<!DOCTYPE html>
     function renderQuestion(index) {
       const q = surveyData.questions[index];
       const context = q.context;
+      const isLikert = q.type === 'likert';
+      
+      let optionsHTML = '';
+      
+      if (isLikert) {
+        // Afișare pentru scala Likert
+        const likertScale = q.likertScale;
+        optionsHTML = \`
+          <div class="likert-container">
+            <div class="likert-labels">
+              <span class="likert-label-min">\${likertScale.minLabel}</span>
+              <span class="likert-label-max">\${likertScale.maxLabel}</span>
+            </div>
+            <div class="likert-options">
+              \${q.options.map((opt, i) => \`
+                <button class="likert-btn" onclick="selectAnswer(\${index}, \${i})" title="Nivel \${opt.text}">
+                  <span class="likert-number">\${opt.text}</span>
+                </button>
+              \`).join('')}
+            </div>
+          </div>
+        \`;
+      } else {
+        // Afișare pentru întrebări choice (opțiuni descriptive)
+        optionsHTML = \`
+          <div class="options">
+            \${q.options.map((opt, i) => \`
+              <button class="option-btn" onclick="selectAnswer(\${index}, \${i})">
+                <div class="option-text">\${opt.text}</div>
+              </button>
+            \`).join('')}
+          </div>
+        \`;
+      }
       
       const html = \`
         <div class="question">
           <div class="progress-bar">
-            <div class="progress-fill" style="width: \${((index + 1) / 3) * 100}%"></div>
+            <div class="progress-fill" style="width: \${((index + 1) / 6) * 100}%"></div>
           </div>
-          <h2>Întrebarea \${index + 1} din 3</h2>
+          <h2>Întrebarea \${index + 1} din 6</h2>
           <p class="question-text">\${q.text}</p>
           
           <div class="research-context">
@@ -107,13 +249,7 @@ const html = `<!DOCTYPE html>
             </div>
           </div>
           
-          <div class="options">
-            \${q.options.map((opt, i) => \`
-              <button class="option-btn" onclick="selectAnswer(\${index}, \${i})">
-                <div class="option-text">\${opt.text}</div>
-              </button>
-            \`).join('')}
-          </div>
+          \${optionsHTML}
         </div>
       \`;
       document.getElementById('content').innerHTML = html;
@@ -131,7 +267,7 @@ const html = `<!DOCTYPE html>
         });
       }
       
-      if (currentQuestion < 2) {
+      if (currentQuestion < 5) {
         currentQuestion++;
         renderQuestion(currentQuestion);
       } else {
@@ -176,7 +312,7 @@ const html = `<!DOCTYPE html>
             </div>
             <div class="scientific-basis">
               <span class="science-icon">🧠</span>
-              <strong>De ce contează acest răspuns:</strong> \${selectedOption.scientificBasis}
+              <strong>De ce contează:</strong> \${selectedOption.scientificBasis}
             </div>
           </div>
         \`;
@@ -201,7 +337,7 @@ const html = `<!DOCTYPE html>
           </div>
           
           <div class="score-display">
-            <div class="score">\${totalScore}/10</div>
+            <div class="score">\${totalScore}/\${maxPossibleScore}</div>
             <div class="score-label">Scorul tău</div>
           </div>
           
@@ -254,87 +390,74 @@ const html = `<!DOCTYPE html>
           </div>
           
           <div class="action-buttons">
-            <button class="secondary-btn" onclick="downloadResults()">
-              Descarcă rezultate
+            <button onclick="downloadResults()" class="primary-btn">
+              📥 Descarcă Rezultatele
             </button>
-            <button class="tertiary-btn" onclick="restartSurvey()">
-              Începe din nou
+            <button onclick="restartSurvey()" class="secondary-btn">
+              🔄 Reîncepe Chestionarul
             </button>
           </div>
           
-          <!-- Fixed floating button -->
-          <a href="https://ariseinlife.com/" class="floating-cta-btn" target="_blank">
-            Află mai multe
-          </a>
-          
-          <!-- Footer pentru export PNG -->
-          <div class="export-footer" id="export-footer">
-            <div class="export-footer-text">Bazat pe cercetare validată</div>
-            <div class="export-footer-link">Arise in Life</div>
-            <div class="export-footer-text" style="margin-top: 5px; font-size: 13px;">
-              https://ariseinlife.com
-            </div>
+          <div id="export-footer" style="display: none; margin-top: 30px; padding: 20px; text-align: center; border-top: 2px solid var(--border-dark);">
+            <p style="color: var(--text-light); font-size: 14px;">
+              🌐 survey.ariseinlife.com • 📊 Bazat pe cercetare validată
+            </p>
           </div>
         </div>
+        
+        <a href="https://ariseinlife.com/" target="_blank" class="floating-cta-btn">
+          Descoperă Arise In Life
+        </a>
       \`;
       
-      createComparisonChart();
+      renderChart();
     }
     
-    function createComparisonChart() {
-      const ctx = document.getElementById('resultsChart');
-      
-      // Calculăm răspunsurile utilizatorului (scalate la 10)
+    function renderChart() {
       const userScores = answers.map((ansIdx, qIdx) => {
-        const score = surveyData.questions[qIdx].options[ansIdx].score;
-        return (score / 3) * 10; // Scalăm de la 1-3 la 0-10
+        return surveyData.questions[qIdx].options[ansIdx].score;
       });
       
-      // Calculăm media reală din cercetare (scalată la 10)
-      const avgScores = answers.map((ansIdx, qIdx) => {
-        const distribution = surveyData.questions[qIdx].context.realWorldData.distribution;
-        const options = surveyData.questions[qIdx].options;
+      const avgScores = surveyData.questions.map((q, qIdx) => {
+        const stats = realWorldStats.questionStats[qIdx];
+        const totalResponses = stats.reduce((a, b) => a + b, 0);
         
-        // Calculăm scorul mediu ponderat bazat pe distribuția reală
-        let weightedSum = 0;
-        distribution.forEach((percentage, idx) => {
-          const score = options[idx].score;
-          weightedSum += (percentage * score / 100);
-        });
+        const weightedSum = q.options.reduce((sum, opt, idx) => {
+          return sum + (opt.score * stats[idx]);
+        }, 0);
         
-        return parseFloat(((weightedSum / 3) * 10).toFixed(2)); // Scalăm la 10
+        return weightedSum / totalResponses;
       });
       
+      const ctx = document.getElementById('resultsChart').getContext('2d');
       new Chart(ctx, {
         type: 'bar',
         data: {
-          labels: ['Întrebarea 1', 'Întrebarea 2', 'Întrebarea 3'],
+          labels: surveyData.questions.map((q, i) => \`Q\${i + 1}\`),
           datasets: [
             {
               label: 'Scorul tău',
               data: userScores,
               backgroundColor: 'rgba(139, 158, 255, 0.8)',
               borderColor: 'rgba(139, 158, 255, 1)',
-              borderWidth: 2,
-              borderRadius: 8
+              borderWidth: 2
             },
             {
-              label: 'Media din cercetare (' + realWorldStats.totalResponses.toLocaleString() + ' participanți)',
+              label: 'Media cercetare',
               data: avgScores,
               backgroundColor: 'rgba(241, 120, 182, 0.8)',
               borderColor: 'rgba(241, 120, 182, 1)',
-              borderWidth: 2,
-              borderRadius: 8
+              borderWidth: 2
             }
           ]
         },
         options: {
           responsive: true,
-          maintainAspectRatio: true,
+          maintainAspectRatio: false,
           scales: {
             y: {
               beginAtZero: true,
-              max: 10,
+              max: 5,
               ticks: {
                 stepSize: 1,
                 color: '#c1c7d0',
@@ -376,7 +499,9 @@ const html = `<!DOCTYPE html>
               displayColors: true,
               callbacks: {
                 label: function(context) {
-                  return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + '/10';
+                  const q = surveyData.questions[context.dataIndex];
+                  const maxScore = Math.max(...q.options.map(opt => opt.score));
+                  return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + '/' + maxScore;
                 }
               }
             }
@@ -389,7 +514,6 @@ const html = `<!DOCTYPE html>
       const button = event.target;
       const originalText = button.innerHTML;
       
-      // Track download attempt
       if (typeof gtag !== 'undefined') {
         gtag('event', 'download_results', {
           'survey_id': surveyData.id
@@ -411,7 +535,7 @@ const html = `<!DOCTYPE html>
         
         actionButtons.style.display = 'none';
         floatingBtn.style.display = 'none';
-        exportFooter.classList.add('export-footer-visible');
+        exportFooter.style.display = 'block';
         
         await new Promise(resolve => setTimeout(resolve, 300));
         
@@ -430,7 +554,7 @@ const html = `<!DOCTYPE html>
         
         actionButtons.style.display = 'flex';
         floatingBtn.style.display = 'inline-block';
-        exportFooter.classList.remove('export-footer-visible');
+        exportFooter.style.display = 'none';
         
         const link = document.createElement('a');
         const timestamp = new Date().toISOString().slice(0, 10);
@@ -456,7 +580,7 @@ const html = `<!DOCTYPE html>
         
         if (actionButtons) actionButtons.style.display = 'flex';
         if (floatingBtn) floatingBtn.style.display = 'inline-block';
-        if (exportFooter) exportFooter.classList.remove('export-footer-visible');
+        if (exportFooter) exportFooter.style.display = 'none';
         
         button.innerHTML = '❌ Eroare';
         setTimeout(() => {
@@ -469,7 +593,6 @@ const html = `<!DOCTYPE html>
     }
     
     function restartSurvey() {
-      // Track restart
       if (typeof gtag !== 'undefined') {
         gtag('event', 'survey_restart', {
           'survey_id': surveyData.id
@@ -508,12 +631,12 @@ updateSurveysList(surveyData);
 console.log(`✅ Pagina generată cu succes!`);
 console.log(`   Locație: ${outputDir}/index.html`);
 console.log(`   Funcționalități:`);
+console.log(`   ✓ Suport pentru întrebări CHOICE și LIKERT`);
 console.log(`   ✓ Grafic comparativ cu date din cercetare`);
 console.log(`   ✓ Afișare percentile și comparație cu populația`);
 console.log(`   ✓ Surse de cercetare verificabile`);
 console.log(`   ✓ Context de dezvoltare pentru fiecare întrebare`);
 console.log(`   ✓ Recomandări personalizate bazate pe rezultat`);
-console.log(`   ✓ Metadate complete despre cercetare`);
 
 function updateSurveysList(newSurvey) {
   const surveysListPath = 'public/survey/surveys-list.json';
@@ -538,12 +661,11 @@ function updateSurveysList(newSurvey) {
     };
   }
   
-  // Verifică dacă chestionarul există deja
   const existingIndex = surveysListData.surveys.findIndex(s => s.id === newSurvey.id);
   
   const surveyEntry = {
     id: newSurvey.id,
-    folderName: surveyId, // Folosim surveyId care este argumentul din command line (numele real al folderului)
+    folderName: surveyId,
     title: newSurvey.title,
     topic: newSurvey.topic,
     description: newSurvey.description,
@@ -553,20 +675,16 @@ function updateSurveysList(newSurvey) {
   };
   
   if (existingIndex >= 0) {
-    // Actualizează chestionarul existent
     surveysListData.surveys[existingIndex] = surveyEntry;
     console.log(`📝 Actualizat ${newSurvey.id} în surveys-list.json`);
   } else {
-    // Adaugă chestionar nou
     surveysListData.surveys.push(surveyEntry);
     console.log(`➕ Adăugat ${newSurvey.id} în surveys-list.json`);
   }
   
-  // Actualizează metadata
   surveysListData.totalCount = surveysListData.surveys.length;
   surveysListData.lastUpdated = new Date().toISOString().split('T')[0];
   
-  // Salvează fișierul
   const surveysListDir = path.dirname(surveysListPath);
   if (!fs.existsSync(surveysListDir)) {
     fs.mkdirSync(surveysListDir, { recursive: true });

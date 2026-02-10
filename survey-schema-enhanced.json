@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Enhanced Survey Schema with Real Data",
+  "title": "Enhanced Survey Schema with Mixed Question Types",
   "type": "object",
   "required": ["id", "title", "topic", "questions", "results", "metadata"],
   "properties": {
@@ -9,119 +9,73 @@
       "pattern": "^survey_[0-9]{3}$",
       "description": "ID format: survey_001, survey_002, etc."
     },
-    "title": {
-      "type": "string",
-      "description": "Titlul chestionarului"
-    },
-    "topic": {
-      "type": "string",
-      "description": "Subiectul principal"
-    },
-    "description": {
-      "type": "string",
-      "description": "Descriere scurtă a chestionarului"
-    },
+    "title": { "type": "string" },
+    "topic": { "type": "string" },
+    "description": { "type": "string" },
     "metadata": {
       "type": "object",
       "required": ["dataSource", "researchDate", "sampleSize"],
       "properties": {
         "dataSource": {
           "type": "array",
-          "description": "Sursele de date folosite (studii, articole, site-uri)",
+          "minItems": 1,
           "items": {
             "type": "object",
             "required": ["name", "url", "type"],
             "properties": {
-              "name": {
-                "type": "string",
-                "description": "Numele sursei (ex: 'Harvard Business Review Study 2024')"
+              "name": { "type": "string" },
+              "url": { 
+                "type": "string", 
+                "pattern": "^https?://.+$" 
               },
-              "url": {
-                "type": "string",
-                "description": "URL-ul sursei"
-              },
-              "type": {
-                "type": "string",
-                "enum": ["study", "article", "research", "book", "website"],
-                "description": "Tipul sursei"
-              },
-              "year": {
-                "type": "integer",
-                "description": "Anul publicării"
-              }
+              "type": { "type": "string", "enum": ["study", "article", "research", "book", "website"] },
+              "year": { "type": "integer", "minimum": 2010, "maximum": 2026 }
             }
           }
         },
-        "researchDate": {
-          "type": "string",
-          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
-          "description": "Data la care au fost căutate datele (YYYY-MM-DD)"
-        },
-        "sampleSize": {
-          "type": "integer",
-          "description": "Dimensiunea totală a eșantionului de cercetare folosit"
-        },
+        "researchDate": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+        "sampleSize": { "type": "integer", "minimum": 25, "maximum": 285 },
         "demographics": {
           "type": "object",
-          "description": "Informații demografice despre eșantion",
           "properties": {
-            "ageRange": {
-              "type": "string",
-              "description": "Intervalul de vârstă (ex: '18-65')"
-            },
-            "countries": {
-              "type": "array",
-              "items": {"type": "string"},
-              "description": "Țările incluse în cercetare"
-            },
-            "gender": {
-              "type": "string",
-              "description": "Distribuția de gen (ex: '48% bărbați, 52% femei')"
-            }
+            "ageRange": { "type": "string" },
+            "countries": { "type": "array", "items": { "type": "string" } },
+            "gender": { "type": "string" }
           }
         }
       }
     },
     "questions": {
       "type": "array",
-      "minItems": 3,
-      "maxItems": 3,
+      "minItems": 6,
+      "maxItems": 6,
       "items": {
         "type": "object",
-        "required": ["text", "options", "context"],
+        "required": ["text", "type", "options", "context"],
         "properties": {
-          "text": {
-            "type": "string",
-            "description": "Textul întrebării"
+          "text": { "type": "string" },
+          "type": { "type": "string", "enum": ["choice", "likert"] },
+          "likertScale": {
+            "type": "object",
+            "required": ["min", "max", "minLabel", "maxLabel"],
+            "properties": {
+              "min": { "type": "integer", "enum": [1] },
+              "max": { "type": "integer", "enum": [5] },
+              "minLabel": { "type": "string" },
+              "maxLabel": { "type": "string" }
+            }
           },
           "context": {
             "type": "object",
             "required": ["researchBasis", "realWorldData"],
             "properties": {
-              "researchBasis": {
-                "type": "string",
-                "description": "Explicație despre cum întrebarea este bazată pe cercetare reală"
-              },
+              "researchBasis": { "type": "string" },
               "realWorldData": {
                 "type": "object",
-                "description": "Date reale din cercetare",
                 "required": ["totalResponses", "distribution"],
                 "properties": {
-                  "totalResponses": {
-                    "type": "integer",
-                    "description": "Numărul total de respondenți din studii"
-                  },
-                  "distribution": {
-                    "type": "array",
-                    "description": "Distribuția reală a răspunsurilor din cercetare (procente)",
-                    "minItems": 3,
-                    "maxItems": 3,
-                    "items": {
-                      "type": "number",
-                      "minimum": 0,
-                      "maximum": 100
-                    }
-                  }
+                  "totalResponses": { "type": "integer", "minimum": 25, "maximum": 285 },
+                  "distribution": { "type": "array", "items": { "type": "number" }, "minItems": 3, "maxItems": 5 }
                 }
               }
             }
@@ -129,35 +83,16 @@
           "options": {
             "type": "array",
             "minItems": 3,
-            "maxItems": 3,
+            "maxItems": 5,
             "items": {
               "type": "object",
-              "required": ["text", "score", "analysis", "realWorldPercentage"],
+              "required": ["text", "score", "analysis", "realWorldPercentage", "scientificBasis"],
               "properties": {
-                "text": {
-                  "type": "string",
-                  "description": "Textul răspunsului"
-                },
-                "score": {
-                  "type": "number",
-                  "minimum": 1,
-                  "maximum": 3,
-                  "description": "Punctaj: 1 (slab), 2 (mediu), 3 (bun)"
-                },
-                "analysis": {
-                  "type": "string",
-                  "description": "Analiza bazată pe date reale din cercetare"
-                },
-                "realWorldPercentage": {
-                  "type": "number",
-                  "minimum": 0,
-                  "maximum": 100,
-                  "description": "Procentul real de oameni care aleg acest răspuns"
-                },
-                "scientificBasis": {
-                  "type": "string",
-                  "description": "Explicație științifică despre de ce acest răspuns este evaluat astfel"
-                }
+                "text": { "type": "string" },
+                "score": { "type": "number", "minimum": 1, "maximum": 5 },
+                "analysis": { "type": "string" },
+                "realWorldPercentage": { "type": "number" },
+                "scientificBasis": { "type": "string" }
               }
             }
           }
@@ -170,68 +105,36 @@
       "maxItems": 3,
       "items": {
         "type": "object",
-        "required": ["range", "title", "description", "percentile", "realWorldComparison"],
+        "required": ["range", "title", "description", "percentile", "realWorldComparison", "recommendations"],
         "properties": {
-          "range": {
-            "type": "string",
-            "description": "Range de puncte (ex: 3-4, 5-7, 8-9)",
-            "pattern": "^[0-9]+-[0-9]+$"
-          },
-          "title": {
-            "type": "string",
-            "description": "Titlul rezultatului"
-          },
-          "description": {
-            "type": "string",
-            "description": "Descrierea detaliată a rezultatului bazată pe date reale"
-          },
+          "range": { "type": "string", "pattern": "^[0-9]+-[0-9]+$" },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
           "percentile": {
             "type": "object",
             "required": ["value", "interpretation"],
             "properties": {
-              "value": {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 100,
-                "description": "Percentila în care se află utilizatorul (ex: 75 = top 25%)"
-              },
-              "interpretation": {
-                "type": "string",
-                "description": "Interpretare (ex: 'Te afli în top 25% din populație')"
-              }
+              "value": { "type": "number", "minimum": 0, "maximum": 100 },
+              "interpretation": { "type": "string" }
             }
           },
           "realWorldComparison": {
             "type": "object",
             "required": ["percentage", "description"],
             "properties": {
-              "percentage": {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 100,
-                "description": "Procentul real de oameni care cad în acest range"
-              },
-              "description": {
-                "type": "string",
-                "description": "Descriere comparativă bazată pe date (ex: 'Doar 15% din populație atinge acest nivel')"
-              }
+              "percentage": { "type": "number", "minimum": 0, "maximum": 100 },
+              "description": { "type": "string" }
             }
           },
           "recommendations": {
             "type": "array",
-            "description": "Recomandări bazate pe cercetare",
+            "minItems": 3,
             "items": {
               "type": "object",
               "required": ["text", "source"],
               "properties": {
-                "text": {
-                  "type": "string",
-                  "description": "Recomandarea"
-                },
-                "source": {
-                  "type": "string",
-                  "description": "Sursa recomandării (studiu, experți)"
-                }
+                "text": { "type": "string" },
+                "source": { "type": "string" }
               }
             }
           }
