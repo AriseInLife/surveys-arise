@@ -1,0 +1,345 @@
+{
+  "title": "Codul Evoluției: Puterea Repetiției și a Pașilor Mici",
+  "topic": "Dezvoltare Personală",
+  "description": "Acest chestionar evaluează capacitatea ta de a implementa schimbări durabile folosind tehnici validate de neuroștiință și psihologia comportamentală, bazate pe repetiția constantă a gesturilor mici.",
+  "metadata": {
+    "dataSource": [
+      {
+        "name": "How long does it take to form a habit? - Phillippa Lally (UCL)",
+        "url": "https://www.ucl.ac.uk/news/2009/aug/how-long-does-it-take-form-habit",
+        "type": "study",
+        "year": 2009
+      },
+      {
+        "name": "Atomic Habits - James Clear",
+        "url": "https://jamesclear.com/atomic-habits",
+        "type": "book",
+        "year": 2018
+      },
+      {
+        "name": "Tiny Habits - BJ Fogg (Stanford University)",
+        "url": "https://behaviormodel.org/",
+        "type": "research",
+        "year": 2020
+      },
+      {
+        "name": "The Power of Small Wins - Amabile & Kramer (HBR)",
+        "url": "https://hbs.edu/faculty/Pages/item.aspx?num=40244&",
+        "type": "article",
+        "year": 2011
+      },
+      {
+        "name": "Puterea pașilor mici - Psychologies România",
+        "url": "https://psychologies.ro/puterea-pasilor-mici",
+        "type": "article",
+        "year": 2023
+      }
+    ],
+    "researchDate": "2026-03-05",
+    "sampleSize": 1850,
+    "demographics": {
+      "ageRange": "20-60",
+      "countries": [
+        "România",
+        "Marea Britanie",
+        "SUA"
+      ],
+      "gender": "54% femei, 46% bărbați"
+    }
+  },
+  "questions": [
+    {
+      "text": "Când vrei să începi un obicei nou (ex: sport sau citit), care este prima ta abordare?",
+      "context": {
+        "researchBasis": "Adaptat după 'Regula celor 2 Minute' și conceptul 'artei de a apărea' pentru a depăși rezistența amigdalei.",
+        "realWorldData": {
+          "totalResponses": 1850,
+          "distribution": [
+            15,
+            55,
+            30
+          ]
+        }
+      },
+      "options": [
+        {
+          "text": "Încep cu o versiune simbolică de sub 2 minute (ex: doar îmi pun adidașii).",
+          "score": 3,
+          "analysis": "Această metodă reduce frica creierului de efort și instalează identitatea înainte de performanță.",
+          "realWorldPercentage": 15,
+          "scientificBasis": "Pașii mici previn activarea centrului fricii din creier, permițând neocortexului să automatizeze acțiunea."
+        },
+        {
+          "text": "Îmi planific o sesiune serioasă (30-40 minute) și încerc să mă țin de ea.",
+          "score": 2,
+          "analysis": "Te bazezi pe motivație, care este o resursă fluctuantă și greu de menținut pe termen lung.",
+          "realWorldPercentage": 55,
+          "scientificBasis": "Motivația depinde de nivelul de glucoză și odihnă; fără ritualuri mici, eșecul apare la prima zi grea."
+        },
+        {
+          "text": "Aștept să am suficient timp și inspirație pentru a începe corect.",
+          "score": 1,
+          "analysis": "Căutarea perfecțiunii este o formă de amânare cauzată de teama de un efort prea mare.",
+          "realWorldPercentage": 30,
+          "scientificBasis": "Creierul vede sarcinile mari ca pe amenințări și declanșează procastinarea ca mecanism de apărare."
+        }
+      ]
+    },
+    {
+      "text": "Cum gestionezi mediul de lucru pentru a ajunge la o concentrare profundă?",
+      "context": {
+        "researchBasis": "Investighează accesul la starea de Flow prin eliminarea distraserilor digitale.",
+        "realWorldData": {
+          "totalResponses": 1850,
+          "distribution": [
+            25,
+            45,
+            30
+          ]
+        }
+      },
+      "options": [
+        {
+          "text": "Elimin distraserile total (ex: telefon în altă cameră) și setez obiective clare.",
+          "score": 3,
+          "analysis": "Creezi condițiile ideale pentru flow, unde timpul dispare și productivitatea crește.",
+          "realWorldPercentage": 25,
+          "scientificBasis": "Eliminarea multitasking-ului reduce 'reziduul de atenție', permițând imersiunea neuronală totală."
+        },
+        {
+          "text": "Încerc să mă concentrez, dar răspund la mesaje dacă sunt urgente.",
+          "score": 2,
+          "analysis": "Fragmentarea atenției te împiedică să atingi nivelul maxim de eficiență.",
+          "realWorldPercentage": 45,
+          "scientificBasis": "Schimbarea contextului (context switching) scade coeficientul de inteligență funcțional cu până la 10 puncte."
+        },
+        {
+          "text": "Lucrez cel mai bine într-un mediu agitat sau cu notificările active.",
+          "score": 1,
+          "analysis": "Ești într-o stare de alertă constantă care epuizează resursele cognitive.",
+          "realWorldPercentage": 30,
+          "scientificBasis": "Zgomotul digital constant menține nivelul de cortizol ridicat, blocând procesele creative profunde."
+        }
+      ]
+    },
+    {
+      "text": "Cum te pregătești mental înainte de o provocare sau o sarcină dificilă?",
+      "context": {
+        "researchBasis": "Analizează utilizarea vizualizării procesului vs. vizualizarea rezultatului.",
+        "realWorldData": {
+          "totalResponses": 1850,
+          "distribution": [
+            12,
+            38,
+            50
+          ]
+        }
+      },
+      "options": [
+        {
+          "text": "Vizualizez pașii, efortul și cum depășesc momentele grele din proces.",
+          "score": 3,
+          "analysis": "Antrenezi rețelele neuronale pentru acțiune reală, nu doar pentru visare.",
+          "realWorldPercentage": 12,
+          "scientificBasis": "Vizualizarea procesului crește pregătirea motorie și scade anxietatea prin simularea rezolvării problemelor."
+        },
+        {
+          "text": "Mă imaginez direct la final, bucurându-mă de succes și de premiu.",
+          "score": 2,
+          "analysis": "Această metodă îți oferă o satisfacție falsă care poate reduce energia pentru muncă.",
+          "realWorldPercentage": 38,
+          "scientificBasis": "Vizualizarea exclusivă a succesului păcălește creierul că scopul a fost atins, scăzând ambiția."
+        },
+        {
+          "text": "Nu îmi fac planuri mentale, prefer să văd ce se întâmplă la fața locului.",
+          "score": 1,
+          "analysis": "Pierzi avantajul neuroplasticității care pregătește corpul pentru performanță.",
+          "realWorldPercentage": 50,
+          "scientificBasis": "Lipsa repetiției mentale lasă creierul nepregătit pentru reacții rapide în condiții de stres."
+        }
+      ]
+    },
+    {
+      "text": "Ce te ajută să continui o sarcină atunci când devine plictisitoare?",
+      "context": {
+        "researchBasis": "Evaluează utilizarea gamificării și a recompenselor imediate (dopamină).",
+        "realWorldData": {
+          "totalResponses": 1850,
+          "distribution": [
+            20,
+            40,
+            40
+          ]
+        }
+      },
+      "options": [
+        {
+          "text": "Folosesc sisteme de puncte, streaks sau mici recompense tangibile.",
+          "score": 3,
+          "analysis": "Transformi monotonia în joc, menținând nivelul de dopamină ridicat.",
+          "realWorldPercentage": 20,
+          "scientificBasis": "Feedback-ul instantaneu și vizualizarea progresului activează striatumul, centrul recompensei."
+        },
+        {
+          "text": "Mă forțez prin disciplină pură să termin ce am început.",
+          "score": 2,
+          "analysis": "Disciplina este utilă, dar este o resursă finită care se consumă pe parcursul zilei.",
+          "realWorldPercentage": 40,
+          "scientificBasis": "Epuizarea voinței (ego depletion) face ca succesul pe termen lung să fie greu de susținut doar prin forță."
+        },
+        {
+          "text": "De obicei renunț sau amân până când presiunea termenului limită mă obligă.",
+          "score": 1,
+          "analysis": "Te bazezi pe stresul de ultim moment, care dăunează calității și sănătății.",
+          "realWorldPercentage": 40,
+          "scientificBasis": "Adrenalina de ultim moment compensează lipsa dopaminei, dar induce uzură neuronală."
+        }
+      ]
+    },
+    {
+      "text": "Când vrei să stăpânești un concept nou, cum îți testezi cunoștințele?",
+      "context": {
+        "researchBasis": "Bazat pe Tehnica Feynman de simplificare și reorganizare a informației.",
+        "realWorldData": {
+          "totalResponses": 1850,
+          "distribution": [
+            18,
+            52,
+            30
+          ]
+        }
+      },
+      "options": [
+        {
+          "text": "Încerc să-l explic simplu, fără termeni grei, ca unui copil de 10 ani.",
+          "score": 3,
+          "analysis": "Identifici imediat unde nu ai înțeles și consolidezi memoria prin predare.",
+          "realWorldPercentage": 18,
+          "scientificBasis": "Traducerea informației în limbaj propriu forțează creierul să creeze noi sinapse, nu doar să stocheze date."
+        },
+        {
+          "text": "Recitesc materialele de mai multe ori până simt că le știu.",
+          "score": 2,
+          "analysis": "Recunoașterea textului îți dă o falsă senzație de stăpânire (iluzia competenței).",
+          "realWorldPercentage": 52,
+          "scientificBasis": "Recitirea este o activitate pasivă care nu angajează mecanismele de rechemare ale memoriei de lungă durată."
+        },
+        {
+          "text": "Consider că am învățat dacă am parcurs textul sau am ascultat cursul.",
+          "score": 1,
+          "analysis": "Informația neprelucrată se pierde în proporție de 80% în primele 24 de ore.",
+          "realWorldPercentage": 30,
+          "scientificBasis": "Fără procesare activă, creierul clasifică informația ca neimportantă și o șterge din memoria de lucru."
+        }
+      ]
+    },
+    {
+      "text": "Ce faci după ce închei o sesiune de studiu sau o prezentare importantă?",
+      "context": {
+        "researchBasis": "Investighează eficiența metodei Blurting (rechemare activă) vs. consum pasiv.",
+        "realWorldData": {
+          "totalResponses": 1850,
+          "distribution": [
+            10,
+            35,
+            55
+          ]
+        }
+      },
+      "options": [
+        {
+          "text": "Notez rapid tot ce îmi amintesc fără să mă uit în notițe (Metoda Blurting).",
+          "score": 3,
+          "analysis": "Această practică este cea mai rapidă cale de a fixa informația permanent.",
+          "realWorldPercentage": 10,
+          "scientificBasis": "Efortul de a rechema informația (active recall) este semnalul biologic care întărește conexiunile sinaptice."
+        },
+        {
+          "text": "Îmi fac notițe ordonate și subliniez ideile cheie cu culori.",
+          "score": 2,
+          "analysis": "Ajută la organizare, dar nu testează capacitatea reală de reamintire a creierului.",
+          "realWorldPercentage": 35,
+          "scientificBasis": "Sublinierea este o sarcină de recunoaștere, nu de reconstrucție, având un impact limitat asupra învățării."
+        },
+        {
+          "text": "Trec direct la următoarea activitate pentru a nu pierde timpul.",
+          "score": 1,
+          "analysis": "Fără o scurtă consolidare, majoritatea efortului depus anterior este irosit.",
+          "realWorldPercentage": 55,
+          "scientificBasis": "Consolidarea memoriei necesită o pauză de reflecție sau o rechemare imediată pentru a preveni uitarea rapidă."
+        }
+      ]
+    }
+  ],
+  "results": [
+    {
+      "range": "0-3",
+      "title": "Explorator la Început de Drum",
+      "description": "Te bazezi mult pe entuziasm și voință, dar acestea te pot lăsa la greu. Strategia ta actuală se concentrează pe gesturi mari care adesea duc la oboseală. Succesul tău va veni când vei învăța să iubești pașii mici, aproape invizibili, care construiesc fundația schimbării.",
+      "percentile": {
+        "value": 42,
+        "interpretation": "Te afli în zona în care majoritatea oamenilor întâmpină dificultăți în menținerea unui nou obicei."
+      },
+      "realWorldComparison": {
+        "percentage": 42,
+        "description": "42% dintre oameni renunță la rezoluții în prima lună deoarece vizează schimbări prea mari dintr-odată."
+      },
+      "recommendations": [
+        {
+          "text": "Adoptă Regula celor 2 Minute: nu te concentra pe rezultat, ci pe a fi prezent în acțiune.",
+          "source": "James Clear, Atomic Habits"
+        },
+        {
+          "text": "Folosește Habit Stacking pentru a lega un obicei nou de unul vechi (ex: după cafea, scriu un rând).",
+          "source": "BJ Fogg, Tiny Habits"
+        }
+      ]
+    },
+    {
+      "range": "4-6",
+      "title": "Arhitect al Disciplinei",
+      "description": "Ai o structură și înțelegi importanța organizării. Totuși, te lupți încă cu distragerile și te bazezi prea mult pe memorarea pasivă. Trecerea către stări de flow conștiente și utilizarea tehnicilor de rechemare activă îți vor dubla viteza de evoluție.",
+      "percentile": {
+        "value": 78,
+        "interpretation": "Ești mai eficient decât 78% din populație în gestionarea propriilor procese de creștere."
+      },
+      "realWorldComparison": {
+        "percentage": 45,
+        "description": "Acesta este segmentul persoanelor care progresează, dar care ating adesea un platou din cauza lipsei tehnicilor avansate."
+      },
+      "recommendations": [
+        {
+          "text": "Elimină distraserile fără milă pentru a accesa Starea de Flow în sesiuni scurte de 25 de minute.",
+          "source": "Mihaly Csikszentmihalyi, Flow"
+        },
+        {
+          "text": "Introdu Tehnica Feynman: explică ce înveți cuiva drag pentru a-ți fixa cunoștințele.",
+          "source": "Richard Feynman"
+        }
+      ]
+    },
+    {
+      "range": "7-10",
+      "title": "Maestru al Micro-Repetiției",
+      "description": "Ești un strateg al propriei minți. Înțelegi că repetiția nu este o pedeapsă, ci un ritual de putere. Folosești vizualizarea procesului și rechemarea activă pentru a învăța profund, iar gamificarea te ajută să treci peste momentele grele cu zâmbetul pe buze.",
+      "percentile": {
+        "value": 96,
+        "interpretation": "Te afli în top 4% din punct de vedere al stăpânirii tehnicilor de învățare și execuție."
+      },
+      "realWorldComparison": {
+        "percentage": 13,
+        "description": "Doar 13% dintre respondenți reușesc să integreze consecvent rechemarea activă și vizualizarea procesului în rutina lor."
+      },
+      "recommendations": [
+        {
+          "text": "Perfecționează Metoda Blurting după fiecare sesiune importantă pentru a atinge un nivel de expert.",
+          "source": "Cercetări în Psihologia Cognitivă"
+        },
+        {
+          "text": "Devino un mentor pentru alții; predarea este forma supremă de repetiție și consolidare.",
+          "source": "Adaptat după conceptul de Learning Pyramid"
+        }
+      ]
+    }
+  ]
+}

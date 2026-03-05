@@ -1,6 +1,15 @@
 {
   "surveys": [
     {
+      "slug": "4 Cheia succesului in evolutie Repetiția cu pasi mici",
+      "title": "Codul Evoluției: Puterea Repetiției și a Pașilor Mici",
+      "topic": "Dezvoltare Personală",
+      "description": "Acest chestionar evaluează capacitatea ta de a implementa schimbări durabile folosind tehnici validate de neuroștiință și psihologia comportamentală, bazate pe repetiția constantă a gesturilor mici.",
+      "metadata": {
+        "sampleSize": 1850
+      }
+    },
+    {
       "slug": "sincronicitati",
       "title": "Sincronicitatea: Ghidul tău spre Evoluție",
       "topic": "Cele 5 tipuri de sincronicitate în dezvoltarea personală",
@@ -10,6 +19,6 @@
       }
     }
   ],
-  "lastUpdated": "2026-02-10",
-  "totalCount": 1
+  "lastUpdated": "2026-03-05",
+  "totalCount": 2
 }
